@@ -68,7 +68,7 @@
     </style>
 
     <script>
-        // LOADER KILLER
+        // LOADER KILLER (1 second me gayab)
         window.addEventListener('load', function() {
             setTimeout(function() {
                 let loader = document.getElementById('loader');
@@ -76,7 +76,6 @@
             }, 1000); 
         });
 
-        // Variables
         let uE = "Guest";
         let srv = "";
         let method = "";
@@ -204,77 +203,5 @@
             <p id="mPrice" style="color:var(--accent); font-weight:bold; margin:5px 0;"></p>
             
             <input type="number" id="uid" placeholder="Enter Player UID">
-            <div id="g_box" style="display:none"><input type="number" id="gid" placeholder="Enter Guild ID"></div>
-            
-            <div class="owl-box">
-                <input type="text" placeholder="🔍 Search Server..." onkeyup="filterOwl()" id="owl_search" style="margin:0; border-radius:0; background:#111; border:none; border-bottom:1px solid #333;">
-                <div class="owl-list" id="ol">
-                    <div class="owl-item" onclick="selOwl('India 🇮🇳', this)">India 🇮🇳</div>
-                    <div class="owl-item" onclick="selOwl('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩</div>
-                    <div class="owl-item" onclick="selOwl('Pakistan 🇵🇰', this)">Pakistan 🇵🇰</div>
-                    <div class="owl-item" onclick="selOwl('Brazil 🇧🇷', this)">Brazil 🇧🇷</div>
-                    <div class="owl-item" onclick="selOwl('Indonesia 🇮🇩', this)">Indonesia 🇮🇩</div>
-                    <div class="owl-item" onclick="selOwl('Mina 🏜️', this)">Mina 🏜️</div>
-                    <div class="owl-item" onclick="selOwl('Nepal 🇳🇵', this)">Nepal 🇳🇵</div>
-                </div>
-            </div>
-
-            <div style="display:flex; gap:10px; margin:15px 0;">
-                <button onclick="setM('UPI')" id="b1" style="flex:1; padding:12px; border-radius:10px; border:none; background:#222; color:white; font-weight:bold; cursor:pointer;">UPI</button>
-                <button onclick="setM('Binance')" id="b2" style="flex:1; padding:12px; border-radius:10px; border:none; background:#222; color:white; font-weight:bold; cursor:pointer;">BINANCE</button>
-            </div>
-
-            <div id="u_info" style="display:none; padding:15px; background:white; border-radius:15px; margin-bottom:15px;">
-                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=priyanshdaku@gmail.com" style="width:130px;">
-                <p style="color:black; font-size:12px; margin-top:5px; font-weight:bold;">UPI: priyanshdaku@gmail.com</p>
-            </div>
-            <div id="b_info" style="display:none; padding:15px; background:var(--binance); color:black; border-radius:15px; font-weight:bold; margin-bottom:15px;">BINANCE ID: 556695942</div>
-
-            <input type="file" id="file" accept="image/*" style="margin-bottom:10px;">
-            <div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-theme="dark" style="margin: 10px auto;"></div>
-
-            <button class="btn-buy" id="subBtn" onclick="submitOrder()" style="width:100%; padding:15px; font-size:16px;">CONFIRM ORDER</button>
-            <p onclick="closeModal('mModal')" style="margin-top:15px; cursor:pointer; font-size:12px; color:#555;">CANCEL</p>
-        </div>
-    </div>
-
-    <nav class="b-nav">
-        <div class="b-item active" onclick="switchMainView('home', this)"><i class="fas fa-home"></i>HOME</div>
-        <div class="b-item" onclick="switchMainView('orders', this)"><i class="fas fa-list-alt"></i>ORDERS</div>
-        <a href="https://wa.me/60126014273" class="b-item" target="_blank"><i class="fab fa-whatsapp"></i>SUPPORT</a>
-    </nav>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    
-    <script>
-        try {
-            const firebaseConfig = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
-            firebase.initializeApp(firebaseConfig);
-            const auth = firebase.auth();
-            const db = firebase.firestore();
-
-            // 🔥 SMART LOGIN/LOGOUT SYSTEM 🔥
-            auth.onAuthStateChanged(user => { 
-                let btn = document.getElementById('authBtn');
-                if(user) {
-                    uE = user.email; 
-                    document.getElementById('uEmailText').innerText = uE; 
-                    btn.innerText = "SECURE LOGOUT";
-                    btn.style.background = "red";
-                    if(typeof window.fetchMyOrders === 'function') window.fetchMyOrders(); 
-                } else {
-                    uE = "Guest";
-                    document.getElementById('uEmailText').innerText = "Guest User";
-                    btn.innerText = "LOGIN NOW";
-                    btn.style.background = "#0088cc";
-                }
-            });
-
-            // 🔥 DIRECT POPUP LOGIN (NO REDIRECT) 🔥
-            window.handleAuth = function() {
-                let btn = document.getElementById('authBtn');
-                if(uE === "Guest") {
-                    btn.innerText = "WAIT...";
-                    const provider = ne
+            <div id="g_box" style="display:none"><input type="number" id="gid" placeholder
+                                                                                                            
