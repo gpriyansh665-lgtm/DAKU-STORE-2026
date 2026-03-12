@@ -5,138 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DAKU STORE | VIP GLOBAL STORE</title>
     
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
         
-        :root { --primary: #ff4b2b; --secondary: #ff416c; --bg: #05070a; --card: #0f121d; --accent: #00ffcc; --binance: #f3ba2f; }
+        :root { --primary: #ff4b2b; --bg: #05070a; --card: #0f121d; --accent: #00ffcc; --binance: #f3ba2f; }
         
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* 🔥 VIP LOADER SCREEN 🔥 */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease; }
+        /* 🔥 LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .loader-text { margin-top: 15px; font-family: 'Orbitron'; color: var(--primary); font-weight: bold; letter-spacing: 2px; animation: pulse 1.5s infinite; font-size: 18px; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--primary); } 50% { opacity: 0.5; text-shadow: none; } }
 
-        /* HEADER */
-        header { padding: 15px 20px; background: linear-gradient(to right, #000, #111); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 25px rgba(255, 75, 43, 0.4); position: sticky; top: 0; z-index: 1000; }
-        .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; color: var(--primary); letter-spacing: 2px; }
-        .head-icons { display: flex; gap: 15px; align-items: center; }
-        .tg-btn { font-size: 26px; color: #0088cc; text-decoration: none; cursor: pointer; }
-        .prof-btn { font-size: 26px; color: var(--primary); cursor: pointer; }
+        header { padding: 15px 20px; background: #000; border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-family: 'Orbitron'; font-weight: 900; font-size: 20px; color: var(--primary); letter-spacing: 2px; }
 
-        /* TABS */
-        .nav-tabs { display: flex; overflow-x: auto; gap: 15px; padding: 15px; background: rgba(255,255,255,0.05); }
-        .tab-btn { padding: 12px 25px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-family: 'Orbitron', sans-serif; font-size: 11px; }
-        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 15px; scrollbar-width: none; }
+        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-family: 'Orbitron'; font-size: 10px; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
 
-        /* SECTIONS */
-        .section-container { display: none; padding: 15px; animation: fadeIn 0.3s; }
+        .section-container { display: none; padding: 15px; }
         .section-container.active { display: block; }
-        .store-list { display: flex; flex-direction: column; gap: 15px; }
         
-        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
-        .pack-info h3 { margin: 0; font-family: 'Orbitron', sans-serif; font-size: 16px; }
-        .pack-info p { margin: 5px 0 0; font-size: 12px; color: #999; }
-        .pack-price { text-align: right; }
-        .amt { font-size: 20px; font-weight: 900; color: white; display: block; margin-bottom: 8px; font-family: 'Orbitron'; }
-        .btn-buy { background: #0088cc; color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 12px; }
+        .card { background: var(--card); border-radius: 15px; padding: 15px; border: 1px solid #222; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); margin-bottom: 12px; }
+        .card h3 { margin: 0; font-size: 16px; }
+        .card p { margin: 5px 0 0; font-size: 11px; color: #888; }
+        .amt { font-size: 18px; font-weight: 900; color: white; font-family: 'Orbitron'; }
+        .btn-buy { background: #0088cc; color: white; border: none; padding: 8px 15px; border-radius: 5px; font-weight: bold; cursor: pointer; font-size: 12px; }
 
-        /* MODALS */
+        /* 🔥 MODAL & PAYMENT SYSTEM */
         .modal { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
-        .modal-content { background: #0b0e16; width: 90%; max-width: 380px; padding: 25px; border-radius: 25px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #161a26; border: 1px solid #333; border-radius: 12px; color: white; box-sizing: border-box; }
+        .modal-content { background: #0b0e16; width: 90%; max-width: 400px; padding: 20px; border-radius: 20px; border: 1px solid var(--primary); text-align: center; max-height: 90vh; overflow-y: auto; }
         
-        /* COUNTRY SERVER (OWL) BOX */
-        .owl-box { background: #161a26; border-radius: 15px; border: 1px solid #333; margin: 10px 0; text-align: left; overflow: hidden; }
-        .owl-list { max-height: 120px; overflow-y: auto; }
-        .owl-item { padding: 12px 20px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; }
-        .owl-item.active { background: var(--primary); color: white; }
+        input, select { width: 100%; padding: 12px; margin: 8px 0; background: #161a26; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
         
-        /* BOTTOM NAV */
+        .method-box { display: flex; gap: 10px; margin: 15px 0; }
+        .m-btn { flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #333; background: #222; color: white; font-weight: bold; cursor: pointer; }
+        .m-btn.active.upi { background: #ff4b2b; border-color: #ff4b2b; }
+        .m-btn.active.binance { background: #f3ba2f; color: black; border-color: #f3ba2f; }
+        
+        #pay-details { background: white; padding: 15px; border-radius: 15px; margin: 10px 0; display: none; color: black; }
+
+        /* 🔥 FOOTER (PHUTA) */
+        footer { padding: 30px 20px; background: #000; border-top: 1px solid #222; text-align: center; margin-top: 40px; }
+        .foot-logo { font-family: 'Orbitron'; color: var(--primary); font-size: 20px; margin-bottom: 10px; }
+
         .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid var(--primary); z-index: 1000; }
-        .b-item { text-align: center; color: #555; text-decoration: none; font-size: 10px; font-weight: bold; cursor: pointer; flex: 1; }
-        .b-item i { font-size: 22px; margin-bottom: 5px; display: block; }
+        .b-item { text-align: center; color: #555; text-decoration: none; font-size: 10px; font-weight: bold; cursor: pointer; }
         .b-item.active { color: var(--primary); }
-
-        #my-orders-view { display: none; padding: 20px; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
-
-    <script>
-        // LOADER KILLER (1 second me gayab)
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                let loader = document.getElementById('loader');
-                if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }
-            }, 1000); 
-        });
-
-        let uE = "Guest";
-        let srv = "";
-        let method = "";
-
-        // UI Functions
-        function switchTab(id, btn) {
-            document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        function switchMainView(view, btn) {
-            document.querySelectorAll('.b-item').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            
-            if(view === 'home') {
-                document.getElementById('home-view').style.display = 'block';
-                document.getElementById('my-orders-view').style.display = 'none';
-            } else {
-                document.getElementById('home-view').style.display = 'none';
-                document.getElementById('my-orders-view').style.display = 'block';
-                if(typeof window.fetchMyOrders === 'function') window.fetchMyOrders();
-            }
-        }
-
-        function openPay(name, price, type) {
-            document.getElementById('mName').innerText = name;
-            document.getElementById('mPrice').innerText = "AMOUNT: ₹" + price;
-            document.getElementById('g_box').style.display = (type === 'g') ? 'block' : 'none';
-            document.getElementById('mModal').style.display = 'flex';
-        }
-
-        function openProfile() { document.getElementById('profModal').style.display = 'flex'; }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-        
-        function selOwl(v, e) { srv = v; document.querySelectorAll('.owl-item').forEach(o => o.classList.remove('active')); e.classList.add('active'); }
-        function filterOwl() { let v = document.getElementById('owl_search').value.toLowerCase(); document.querySelectorAll('.owl-item').forEach(o => { o.style.display = o.innerText.toLowerCase().includes(v) ? "" : "none"; }); }
-        
-        function setM(m) { 
-            method = m; 
-            document.getElementById('u_info').style.display = (m==='UPI') ? 'block' : 'none'; 
-            document.getElementById('b_info').style.display = (m==='Binance') ? 'block' : 'none'; 
-            document.getElementById('b1').style.background = (m==='UPI') ? 'var(--primary)' : '#222'; 
-            document.getElementById('b2').style.background = (m==='Binance') ? 'var(--binance)' : '#222'; 
-        }
-    </script>
 </head>
 <body>
 
     <div id="loader">
         <div class="spinner"></div>
-        <div class="loader-text">DAKU STORE</div>
+        <p style="margin-top:10px; font-family:'Orbitron'; color:var(--primary);">DAKU STORE</p>
     </div>
 
     <header>
         <div class="logo">DAKU STORE</div>
-        <div class="head-icons">
-            <i class="fas fa-user-circle prof-btn" onclick="openProfile()"></i>
-            <a href="https://t.me/DAKU_YT_1M1" target="_blank" class="tg-btn"><i class="fab fa-telegram"></i></a>
-        </div>
+        <i class="fas fa-user-circle" style="font-size:24px; color:var(--primary); cursor:pointer;" onclick="openProfile()"></i>
     </header>
 
     <div id="home-view">
@@ -144,64 +74,159 @@
             <button class="tab-btn active" onclick="switchTab('topup', this)">DIAMONDS 💎</button>
             <button class="tab-btn" onclick="switchTab('likes', this)">LIKES 👍</button>
             <button class="tab-btn" onclick="switchTab('war', this)">GUILD WAR ⚔️</button>
-            <button class="tab-btn" onclick="switchTab('glory', this)">GLORY 🏆</button>
         </div>
 
-        <div id="topup" class="section-container active"><div class="store-list">
-            <div class="card"><div class="pack-info"><h3>100 Diamonds</h3><p>Instant Delivery</p></div><div class="pack-price"><span class="amt">₹80</span><button class="btn-buy" onclick="openPay('100💎','80','p')">BUY</button></div></div>
-            <div class="card"><div class="pack-info"><h3>520 Diamonds</h3><p>Popular Pack</p></div><div class="pack-price"><span class="amt">₹400</span><button class="btn-buy" onclick="openPay('520💎','400','p')">BUY</button></div></div>
-            <div class="card"><div class="pack-info"><h3>1060 Diamonds</h3><p>Best Value</p></div><div class="pack-price"><span class="amt">₹800</span><button class="btn-buy" onclick="openPay('1060💎','800','p')">BUY</button></div></div>
-        </div></div>
+        <div id="topup" class="section-container active">
+            <div class="card"><div><h3>100 Diamonds</h3><p>Fast Delivery</p></div><div><span class="amt">₹80</span><br><button class="btn-buy" onclick="openPay('100💎','80')">BUY</button></div></div>
+            <div class="card"><div><h3>520 Diamonds</h3><p>Mega Pack</p></div><div><span class="amt">₹400</span><br><button class="btn-buy" onclick="openPay('520💎','400')">BUY</button></div></div>
+        </div>
 
-        <div id="likes" class="section-container"><div class="store-list">
-            <div class="card"><div class="pack-info"><h3>1540 Likes</h3><p>Fast Delivery Bot</p></div><div class="pack-price"><span class="amt">₹100</span><button class="btn-buy" onclick="openPay('1540 Likes','100','p')">BUY</button></div></div>
-            <div class="card"><div class="pack-info"><h3>3300 Likes</h3><p>Ultra Speed Bot</p></div><div class="pack-price"><span class="amt">₹170</span><button class="btn-buy" onclick="openPay('3300 Likes','170','p')">BUY</button></div></div>
-            <div class="card"><div class="pack-info"><h3>6600 Likes</h3><p>Pro Speed Bot</p></div><div class="pack-price"><span class="amt">₹300</span><button class="btn-buy" onclick="openPay('6600 Likes','300','p')">BUY</button></div></div>
-            <div class="card"><div class="pack-info"><h3>19800 Likes</h3><p>Max Speed Bot</p></div><div class="pack-price"><span class="amt">₹800</span><button class="btn-buy" onclick="openPay('19800 Likes','800','p')">BUY</button></div></div>
-        </div></div>
+        <div id="likes" class="section-container">
+            <div class="card"><div><h3>1540 Likes</h3><p>Safe & Fast</p></div><div><span class="amt">₹100</span><br><button class="btn-buy" onclick="openPay('1540 Likes','100')">BUY</button></div></div>
+        </div>
 
-        <div id="war" class="section-container"><div class="store-list">
-            <div class="card"><div class="pack-info"><h3>Starter 10K</h3><p>1 Month Service</p></div><div class="pack-price"><span class="amt">₹2000</span><button class="btn-buy" onclick="openPay('10K War','2000','g')">ORDER</button></div></div>
-            <div class="card"><div class="pack-info"><h3>Master 20K</h3><p>3 Months Service</p></div><div class="pack-price"><span class="amt">₹5000</span><button class="btn-buy" onclick="openPay('20K War','5000','g')">ORDER</button></div></div>
-            <div class="card"><div class="pack-info"><h3>GM 100K</h3><p>1 Year Service</p></div><div class="pack-price"><span class="amt">₹35000</span><button class="btn-buy" onclick="openPay('100K War','35000','g')">ORDER</button></div></div>
-        </div></div>
-
-        <div id="glory" class="section-container"><div class="store-list">
-            <div class="card"><div class="pack-info"><h3>Mini Glory</h3><p>200k Glory Boost</p></div><div class="pack-price"><span class="amt">₹200</span><button class="btn-buy" onclick="openPay('Mini Glory','200','g')">ORDER</button></div></div>
-            <div class="card"><div class="pack-info"><h3>Starter Glory</h3><p>500k Glory Boost</p></div><div class="pack-price"><span class="amt">₹800</span><button class="btn-buy" onclick="openPay('Starter Glory','800','g')">ORDER</button></div></div>
-            <div class="card"><div class="pack-info"><h3>Mega Glory</h3><p>1M Glory Boost</p></div><div class="pack-price"><span class="amt">₹1000</span><button class="btn-buy" onclick="openPay('Mega Glory','1000','g')">ORDER</button></div></div>
-            <div class="card"><div class="pack-info"><h3>Full Match</h3><p>Full Guild Glory</p></div><div class="pack-price"><span class="amt">₹1500</span><button class="btn-buy" onclick="openPay('Full Match','1500','g')">ORDER</button></div></div>
-        </div></div>
-
-        <footer style="margin-top:40px; padding:30px; text-align:center; background:#000; border-top:1px solid #333;">
-            <div style="color:var(--primary); font-family:'Orbitron'; font-size:18px;">DAKU STORE</div>
-            <p style="color:#555; font-size:11px;">&copy; 2026 DAKU STORE. All Rights Reserved.</p>
+        <footer>
+            <div class="foot-logo">DAKU STORE</div>
+            <p style="font-size:12px; color:#666;">Official Premium Store of DAKU YT</p>
+            <div style="margin: 15px 0; color: var(--primary); font-size: 18px;">
+                <i class="fab fa-whatsapp" style="margin: 0 10px;"></i>
+                <i class="fab fa-telegram" style="margin: 0 10px;"></i>
+            </div>
+            <p style="font-size: 10px; color: #444;">&copy; 2026 DAKU STORE | ALL RIGHTS RESERVED</p>
         </footer>
     </div>
 
-    <div id="my-orders-view">
-        <h2 style="font-family:'Orbitron'; color:var(--primary); text-align:center;"><i class="fas fa-list-alt"></i> MY ORDERS</h2>
-        <div id="orders-list-box"><p style="text-align:center; color:#777;">Please login to see orders.</p></div>
-    </div>
-
-    <div id="profModal" class="modal">
-        <div class="modal-content">
-            <i class="fas fa-user-shield" style="font-size: 40px; color: var(--primary);"></i>
-            <h2 style="font-family:'Orbitron'; color:white;">MY PROFILE</h2>
-            <div style="background: #161a26; padding: 15px; border-radius: 15px; margin: 15px 0; border: 1px solid #333; text-align:left;">
-                <small style="color:var(--primary); font-size:10px;">EMAIL</small>
-                <div id="uEmailText" style="color:white; font-size:14px; font-weight:bold;">Guest User</div>
-            </div>
-            <button id="authBtn" class="btn-buy" onclick="handleAuth()" style="width:100%; background:#0088cc; padding:15px; font-size:14px;">LOGIN NOW</button>
-            <p onclick="closeModal('profModal')" style="margin-top:15px; cursor:pointer; font-size:12px; color:#555;">CLOSE</p>
-        </div>
+    <div id="my-orders-view" style="display:none; padding:20px;">
+        <h2 style="text-align:center; font-family:'Orbitron'; color:var(--primary);">MY ORDERS</h2>
+        <div id="orders-list"></div>
     </div>
 
     <div id="mModal" class="modal">
         <div class="modal-content">
             <h2 id="mName" style="color:var(--primary); font-family:'Orbitron'; margin:0;"></h2>
-            <p id="mPrice" style="color:var(--accent); font-weight:bold; margin:5px 0;"></p>
+            <p id="mPrice" style="color:var(--accent); font-weight:bold; font-size:18px; margin:5px 0 15px;"></p>
             
             <input type="number" id="uid" placeholder="Enter Player UID">
-            <div id="g_box" style="display:none"><input type="number" id="gid" placeholder
-                                                                                                            
+            
+            <select id="srv">
+                <option value="">Select Server</option>
+                <option value="India">India 🇮🇳</option>
+                <option value="Bangladesh">Bangladesh 🇧🇩</option>
+                <option value="Pakistan">Pakistan 🇵🇰</option>
+                <option value="Nepal">Nepal 🇳🇵</option>
+            </select>
+
+            <div class="method-box">
+                <button class="m-btn upi" id="btn-upi" onclick="setMethod('UPI')">UPI / QR</button>
+                <button class="m-btn binance" id="btn-bin" onclick="setMethod('Binance')">BINANCE</button>
+            </div>
+
+            <div id="pay-details">
+                <div id="upi-box" style="display:none">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=priyanshdaku@gmail.com" width="130">
+                    <p style="font-size:11px; margin-top:5px;"><b>UPI ID:</b> priyanshdaku@gmail.com</p>
+                </div>
+                <div id="bin-box" style="display:none">
+                    <p style="color:black; font-weight:bold; margin:0;">BINANCE ID:</p>
+                    <p style="font-size:18px; color:#f3ba2f; background:black; padding:5px; border-radius:5px;">556695942</p>
+                </div>
+            </div>
+
+            <label style="font-size:11px; color:#888;">Upload Payment Screenshot:</label>
+            <input type="file" id="file" accept="image/*">
+            
+            <button class="btn-buy" id="subBtn" onclick="submitOrder()" style="width:100%; padding:15px; margin-top:10px; font-size:16px;">CONFIRM ORDER</button>
+            <p onclick="closeModal('mModal')" style="cursor:pointer; color:#555; font-size:12px; margin-top:15px;">CANCEL</p>
+        </div>
+    </div>
+
+    <div id="profModal" class="modal">
+        <div class="modal-content">
+            <h2 style="font-family:'Orbitron'; color:var(--primary);">PROFILE</h2>
+            <p id="uEmailText" style="background:#161a26; padding:10px; border-radius:10px;">Guest User</p>
+            <button class="btn-buy" id="authBtn" onclick="handleAuth()" style="width:100%; padding:12px;">LOGIN NOW</button>
+            <p onclick="closeModal('profModal')" style="cursor:pointer; margin-top:15px; color:#555;">CLOSE</p>
+        </div>
+    </div>
+
+    <nav class="b-nav">
+        <div class="b-item active" onclick="switchMainView('home', this)"><i class="fas fa-home"></i><br>HOME</div>
+        <div class="b-item" onclick="switchMainView('orders', this)"><i class="fas fa-list"></i><br>ORDERS</div>
+        <a href="https://wa.me/60126014273" class="b-item" style="text-decoration:none;"><i class="fab fa-whatsapp"></i><br>HELP</a>
+    </nav>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    
+    <script>
+        window.addEventListener('load', () => { setTimeout(() => { document.getElementById('loader').style.display='none'; }, 1000); });
+
+        let uE = "Guest", currentMethod = "";
+        const firebaseConfig = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(), db = firebase.firestore();
+
+        auth.onAuthStateChanged(user => {
+            let btn = document.getElementById('authBtn');
+            if(user) { uE = user.email; document.getElementById('uEmailText').innerText = uE; btn.innerText = "LOGOUT"; btn.style.background = "red"; }
+            else { uE = "Guest"; document.getElementById('uEmailText').innerText = "Guest User"; btn.innerText = "LOGIN NOW"; btn.style.background = "#0088cc"; }
+        });
+
+        function handleAuth() {
+            if(uE === "Guest") { auth.signInWithRedirect(new firebase.auth.GoogleAuthProvider()); }
+            else { auth.signOut().then(() => location.reload()); }
+        }
+
+        function setMethod(m) {
+            currentMethod = m;
+            document.getElementById('pay-details').style.display = 'block';
+            document.getElementById('upi-box').style.display = (m === 'UPI') ? 'block' : 'none';
+            document.getElementById('bin-box').style.display = (m === 'Binance') ? 'block' : 'none';
+            document.getElementById('btn-upi').className = 'm-btn upi ' + (m === 'UPI' ? 'active' : '');
+            document.getElementById('btn-bin').className = 'm-btn binance ' + (m === 'Binance' ? 'active' : '');
+        }
+
+        function openPay(n, p) { 
+            document.getElementById('mName').innerText = n; 
+            document.getElementById('mPrice').innerText = "Price: ₹" + p; 
+            document.getElementById('mModal').style.display = 'flex'; 
+        }
+
+        async function submitOrder() {
+            if(uE === "Guest") return openProfile();
+            const u = document.getElementById('uid').value, s = document.getElementById('srv').value, f = document.getElementById('file').files[0];
+            if(!u || !s || !f || !currentMethod) return alert("Please fill all details!");
+
+            document.getElementById('subBtn').innerText = "Processing...";
+            const fd = new FormData(); fd.append('image', f); fd.append('key', 'A1037b6cc94b8ad73b08a4d2e9bd529f');
+
+            try {
+                const res = await fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd});
+                const d = await res.json();
+                if(d.success) {
+                    const msg = `🚀 *NEW ORDER*%0AUser: ${uE}%0APlan: ${document.getElementById('mName').innerText}%0AUID: ${u}%0AServer: ${s}%0AMethod: ${currentMethod}%0AProof: ${d.data.url}`;
+                    fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage?chat_id=6829395007&text=${msg}&parse_mode=Markdown`);
+                    await db.collection("orders").add({ email:uE, uid:u, plan:document.getElementById('mName').innerText, status:"Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    alert("Order Placed Successfully!"); location.reload();
+                }
+            } catch(e) { alert("Error! Try again."); document.getElementById('subBtn').innerText = "CONFIRM ORDER"; }
+        }
+
+        function switchTab(id, b) { 
+            document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active')); 
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active')); 
+            document.getElementById(id).classList.add('active'); b.classList.add('active'); 
+        }
+
+        function switchMainView(v, b) {
+            document.querySelectorAll('.b-item').forEach(i => i.classList.remove('active')); b.classList.add('active');
+            document.getElementById('home-view').style.display = (v==='home')?'block':'none';
+            document.getElementById('my-orders-view').style.display = (v==='home')?'none':'block';
+        }
+        function closeModal(id) { document.getElementById(id).style.display='none'; }
+        function openProfile() { document.getElementById('profModal').style.display='flex'; }
+    </script>
+</body>
+                    </html>
+                    
