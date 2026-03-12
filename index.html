@@ -15,6 +15,13 @@
         
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
+        /* 🔥 VIP LOADER SCREEN 🔥 */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease; }
+        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
+        .loader-text { margin-top: 15px; font-family: 'Orbitron'; color: var(--primary); font-weight: bold; letter-spacing: 2px; animation: pulse 1.5s infinite; font-size: 18px; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--primary); } 50% { opacity: 0.5; text-shadow: none; } }
+
         /* HEADER */
         header { padding: 15px 20px; background: linear-gradient(to right, #000, #111); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 25px rgba(255, 75, 43, 0.4); position: sticky; top: 0; z-index: 1000; }
         .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; color: var(--primary); letter-spacing: 2px; }
@@ -44,7 +51,7 @@
         .modal-content { background: #0b0e16; width: 90%; max-width: 380px; padding: 25px; border-radius: 25px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
         input { width: 100%; padding: 15px; margin: 10px 0; background: #161a26; border: 1px solid #333; border-radius: 12px; color: white; box-sizing: border-box; }
         
-        /* 🔥 COUNTRY SERVER (OWL) BOX 🔥 */
+        /* COUNTRY SERVER (OWL) BOX */
         .owl-box { background: #161a26; border-radius: 15px; border: 1px solid #333; margin: 10px 0; text-align: left; overflow: hidden; }
         .owl-list { max-height: 120px; overflow-y: auto; }
         .owl-item { padding: 12px 20px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; }
@@ -61,12 +68,20 @@
     </style>
 
     <script>
+        // LOADER KILLER
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                let loader = document.getElementById('loader');
+                if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 500); }
+            }, 1000); 
+        });
+
         // Variables
         let uE = "Guest";
         let srv = "";
         let method = "";
 
-        // Tab Switch
+        // UI Functions
         function switchTab(id, btn) {
             document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -74,7 +89,6 @@
             btn.classList.add('active');
         }
 
-        // View Switch (Home / Orders)
         function switchMainView(view, btn) {
             document.querySelectorAll('.b-item').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -89,7 +103,6 @@
             }
         }
 
-        // Open Payment Box
         function openPay(name, price, type) {
             document.getElementById('mName').innerText = name;
             document.getElementById('mPrice').innerText = "AMOUNT: ₹" + price;
@@ -97,24 +110,12 @@
             document.getElementById('mModal').style.display = 'flex';
         }
 
-        // Modals
         function openProfile() { document.getElementById('profModal').style.display = 'flex'; }
         function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
         
-        // 🔥 COUNTRY SELECTOR FIX (OWL SERVER) 🔥
-        function selOwl(v, e) { 
-            srv = v; 
-            document.querySelectorAll('.owl-item').forEach(o => o.classList.remove('active')); 
-            e.classList.add('active'); 
-        }
-        function filterOwl() { 
-            let v = document.getElementById('owl_search').value.toLowerCase(); 
-            document.querySelectorAll('.owl-item').forEach(o => {
-                o.style.display = o.innerText.toLowerCase().includes(v) ? "" : "none";
-            }); 
-        }
+        function selOwl(v, e) { srv = v; document.querySelectorAll('.owl-item').forEach(o => o.classList.remove('active')); e.classList.add('active'); }
+        function filterOwl() { let v = document.getElementById('owl_search').value.toLowerCase(); document.querySelectorAll('.owl-item').forEach(o => { o.style.display = o.innerText.toLowerCase().includes(v) ? "" : "none"; }); }
         
-        // Payment Method Select
         function setM(m) { 
             method = m; 
             document.getElementById('u_info').style.display = (m==='UPI') ? 'block' : 'none'; 
@@ -125,6 +126,11 @@
     </script>
 </head>
 <body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+        <div class="loader-text">DAKU STORE</div>
+    </div>
 
     <header>
         <div class="logo">DAKU STORE</div>
@@ -187,7 +193,7 @@
                 <small style="color:var(--primary); font-size:10px;">EMAIL</small>
                 <div id="uEmailText" style="color:white; font-size:14px; font-weight:bold;">Guest User</div>
             </div>
-            <button class="btn-buy" onclick="logout()" style="width:100%; background:red;">SECURE LOGOUT</button>
+            <button id="authBtn" class="btn-buy" onclick="handleAuth()" style="width:100%; background:#0088cc;">LOGIN NOW</button>
             <p onclick="closeModal('profModal')" style="margin-top:15px; cursor:pointer; font-size:12px; color:#555;">CLOSE</p>
         </div>
     </div>
@@ -249,40 +255,26 @@
             const auth = firebase.auth();
             const db = firebase.firestore();
 
-            // Siletly check user
+            // 🔥 SMART LOGIN/LOGOUT SYSTEM 🔥
             auth.onAuthStateChanged(user => { 
+                let btn = document.getElementById('authBtn');
                 if(user) {
                     uE = user.email; 
                     document.getElementById('uEmailText').innerText = uE; 
+                    btn.innerText = "SECURE LOGOUT";
+                    btn.style.background = "red";
                     if(typeof window.fetchMyOrders === 'function') window.fetchMyOrders(); 
+                } else {
+                    uE = "Guest";
+                    document.getElementById('uEmailText').innerText = "Guest User";
+                    btn.innerText = "LOGIN NOW";
+                    btn.style.background = "#0088cc";
                 }
             });
 
-            window.fetchMyOrders = function() {
-                if(uE === "Guest") return;
-                db.collection("orders").where("email", "==", uE).onSnapshot(snap => {
-                    let list = document.getElementById('orders-list-box');
-                    list.innerHTML = "";
-                    if(snap.empty) { list.innerHTML = "<p style='color:#777; text-align:center;'>No orders found.</p>"; return; }
-                    snap.forEach(doc => {
-                        let o = doc.data();
-                        let color = o.status === 'Pending' ? '#f1c40f' : 'var(--accent)';
-                        list.innerHTML += `<div class="order-hist-card" style="border-left-color: ${color};">
-                            <div><div style="font-size:15px; color:white; font-family:'Orbitron';">${o.plan}</div><div style="font-size:11px; color:#888;">UID: ${o.uid} | Srv: ${o.server}</div></div>
-                            <div style="color:${color}; font-weight:bold; font-size:10px; background:rgba(0,0,0,0.5); padding:5px; border-radius:5px;">${o.status.toUpperCase()}</div>
-                        </div>`;
-                    });
-                });
-            };
-
-            window.logout = function() { auth.signOut().then(() => { window.location.href='login.html'; }); };
-
-            // 🔥 ORDER SUBMISSION TO DATABASE 🔥
-            window.submitOrder = async function() {
+            // LOGIN/LOGOUT ACTION BUTTON
+            window.handleAuth = function() {
                 if(uE === "Guest") {
-                    alert("Order karne ke liye pehle Login karna padega bhai!");
-                    window.location.href = 'login.html';
-                    return;
-                }
-                const u = document.getElementById('uid').value;
-                const f = document.getElementById('file').files[0];
+                    window.location.href = 'login.html'; // Go to login page
+                } else {
+                    auth.signOut().then(() => { window.location.href='login.html'; }); /
