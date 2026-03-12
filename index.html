@@ -15,13 +15,6 @@
         
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* 🔥 VIP LOADER SCREEN */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease; }
-        .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        .loader-text { margin-top: 15px; font-family: 'Orbitron'; color: var(--primary); font-weight: bold; letter-spacing: 2px; animation: pulse 1.5s infinite; font-size: 18px; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes pulse { 0%, 100% { opacity: 1; text-shadow: 0 0 15px var(--primary); } 50% { opacity: 0.5; text-shadow: none; } }
-
         /* HEADER */
         header { padding: 15px 20px; background: linear-gradient(to right, #000, #111); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 5px 25px rgba(255, 75, 43, 0.4); position: sticky; top: 0; z-index: 1000; }
         .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 20px; background: linear-gradient(45deg, var(--primary), #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
@@ -81,12 +74,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
-
-    <div id="loader">
-        <div class="spinner"></div>
-        <div class="loader-text">DAKU STORE</div>
-    </div>
+<body onload="init()">
 
     <header>
         <div class="logo">DAKU STORE</div>
@@ -213,32 +201,23 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script>
-        // 🔥 AUTO-KILL LOADER (Failsafe)
-        setTimeout(() => {
-            let loader = document.getElementById('loader');
-            if(loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => loader.style.display = 'none', 500);
-            }
-        }, 1500); // 1.5 second mein loader hat jayega chahe kuch bhi ho
-
         const firebaseConfig = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore();
         let uE="Guest", srv="", method="";
 
-        // INITIALIZE
-        auth.onAuthStateChanged(user => { 
-            if(user) {
-                uE = user.email; 
-                document.getElementById('uEmailText').innerText = uE; 
-                fetchMyOrders(); 
-            } else {
-                // Agar aapne abhi tak login.html nahi banayi hai, toh ye line usko redirect karti hai.
-                // Agar page ruk raha tha toh isiliye kyunki login.html missig thi.
-                window.location.href='login.html'; 
-            }
-        }); 
+        // INITIALIZE (Error-free function)
+        function init() {
+            auth.onAuthStateChanged(user => { 
+                if(user) {
+                    uE = user.email; 
+                    document.getElementById('uEmailText').innerText = uE; 
+                    fetchMyOrders(); 
+                } else {
+                    window.location.href='login.html'; 
+                }
+            }); 
+        }
 
         function switchMainView(view, btn) {
             document.querySelectorAll('.b-item').forEach(b => b.classList.remove('active'));
@@ -261,4 +240,15 @@
                 list.innerHTML = "";
                 if(snap.empty) {
                     list.innerHTML = "<p style='text-align:center; color:#777; margin-top:30px;'>No orders found. Buy something!</p>";
-               
+                    return;
+                }
+                
+                let orders = [];
+                snap.forEach(doc => orders.push(doc.data()));
+                orders.sort((a,b) => (b.timestamp?.seconds || 0) - (a.timestamp?.seconds || 0));
+
+                orders.forEach(o => {
+                    let color = o.status === 'Pending' ? '#f1c40f' : 'var(--accent)';
+                    list.innerHTML += `
+
+    
