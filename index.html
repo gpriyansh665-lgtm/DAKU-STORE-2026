@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAKU STORE | OFFICIAL VIP</title>
+    <title>DAKU STORE | SECTIONAL VIP</title>
     
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
@@ -13,51 +13,51 @@
         :root { --primary: #ff4b2b; --bg: #05070a; --card: #0f121d; --accent: #00ffcc; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
 
-        /* 🌀 LOADING SCREEN */
+        /* 🌀 LOADER */
         #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 30000; }
         .spinner { width: 40px; height: 40px; border: 4px solid #111; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 🛡️ SECURITY & AUTH */
+        /* 🛡️ SECURITY WALL */
         #security-wall { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        #cf-box { transform: scale(0.8); margin-bottom: 20px; } 
-        #auth-screen { display: none; width: 90%; max-width: 350px; text-align: center; }
+        #cf-container { min-height: 70px; margin-bottom: 20px; }
+        #auth-screen { display: none; width: 85%; max-width: 350px; text-align: center; }
 
-        input, select { width: 100%; padding: 12px; margin: 8px 0; background: #161a26; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
+        input { width: 100%; padding: 12px; margin: 8px 0; background: #161a26; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
         .btn-main { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
 
         /* 🛒 HEADER */
         header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-family: 'Orbitron'; color: var(--primary); font-weight: 900; font-size: 18px; letter-spacing: 1px; }
-        .header-icons { display: flex; gap: 20px; align-items: center; }
-        .tg-link { color: #0088cc; font-size: 22px; text-decoration: none; }
+        .logo { font-family: 'Orbitron'; color: var(--primary); font-weight: 900; font-size: 18px; }
 
-        /* 📑 TABS & CARDS */
+        /* 📑 TABS SYSTEM */
         .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: #0a0c14; scrollbar-width: none; }
-        .tab-btn { padding: 8px 18px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; white-space: nowrap; font-size: 10px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; }
+        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; white-space: nowrap; font-size: 10px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; transition: 0.3s; }
         .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 0 10px var(--primary); }
 
         .section-container { display: none; padding: 15px; }
         .section-container.active { display: block; }
-        .card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; border: 1px solid #222; border-left: 5px solid var(--primary); display: flex; justify-content: space-between; align-items: center; }
-        .amt { font-family: 'Orbitron'; color: var(--accent); font-weight: bold; font-size: 16px; }
 
-        /* 🦉 OWL SERVER BOX */
-        .owl-box { background: #161a26; border-radius: 10px; border: 1px solid #333; margin: 10px 0; text-align: left; overflow: hidden; }
-        .owl-list { max-height: 100px; overflow-y: auto; }
-        .owl-item { padding: 10px 15px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; }
+        /* 💎 VIP CARD STYLE */
+        .card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 15px; border: 1px solid #222; position: relative; }
+        .card-title { font-weight: 600; font-size: 16px; margin-bottom: 5px; }
+        .card-subtitle { font-size: 13px; color: #aaa; }
+        .card-price { position: absolute; top: 20px; right: 20px; font-family: 'Orbitron'; font-weight: bold; font-size: 18px; color: var(--accent); }
+        .order-now-btn { background: #0081c9; color: white; border: none; padding: 10px; border-radius: 8px; font-family: 'Orbitron'; font-size: 12px; font-weight: bold; margin-top: 15px; width: 100%; cursor: pointer; }
+
+        /* 🦉 OWL SERVER Selection */
+        .owl-box { background: #161a26; border-radius: 10px; border: 1px solid #333; margin: 10px 0; max-height: 120px; overflow-y: auto; text-align: left; }
+        .owl-item { padding: 10px 15px; border-bottom: 1px solid #222; cursor: pointer; font-size: 13px; color: #bbb; }
         .owl-item.active { background: var(--primary); color: white; }
 
-        /* 📱 BOTTOM NAV */
+        /* 📱 BOTTOM NAVIGATION */
         .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1.5px solid var(--primary); z-index: 1000; }
         .b-item { text-align: center; color: #555; font-size: 10px; font-weight: bold; cursor: pointer; flex: 1; text-decoration: none; }
         .b-item.active { color: var(--primary); }
         .b-item i { font-size: 20px; display: block; margin-bottom: 2px; }
 
-        .modal { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
-        .modal-content { background: #0b0e16; width: 92%; max-width: 400px; padding: 25px; border-radius: 20px; border: 2px solid var(--primary); text-align: center; max-height: 90vh; overflow-y: auto; }
-        
-        footer { padding: 30px 20px; background: #000; text-align: center; border-top: 1px solid #222; font-size: 11px; color: #444; }
+        .modal { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; }
+        .modal-content { background: #0b0e16; width: 90%; max-width: 400px; padding: 25px; border-radius: 20px; border: 1px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
     </style>
 </head>
 <body onload="initSystem()">
@@ -65,54 +65,56 @@
     <div id="loader"><div class="spinner"></div><p style="font-family:'Orbitron'; margin-top:10px;">DAKU STORE</p></div>
 
     <div id="security-wall">
-        <div class="logo" style="font-size: 32px; margin-bottom: 20px;">DAKU STORE</div>
-        <div id="cf-box"><div class="cf-turnstile" data-sitekey="1x00000000000000000000AA" data-callback="onCfSuccess"></div></div>
+        <div class="logo" style="font-family:'Orbitron'; font-size: 30px; color:var(--primary); margin-bottom:20px;">DAKU STORE</div>
+        <div id="cf-container"><div id="turnstile-widget"></div></div>
         <div id="auth-screen">
             <h3 id="auth-title" style="font-family:'Orbitron'; font-size:14px; margin-bottom:10px;">USER REGISTER</h3>
             <input type="email" id="email" placeholder="Email Address">
             <input type="password" id="pass" placeholder="Password">
             <button class="btn-main" onclick="handleAuth()" id="auth-btn">PROCEED</button>
-            <p onclick="toggleAuth()" style="color:var(--accent); cursor:pointer; font-size:12px; margin-top:15px;">Login Account?</p>
+            <p onclick="toggleAuth()" style="color:var(--accent); cursor:pointer; font-size:11px; margin-top:10px;">Login Account?</p>
         </div>
     </div>
 
     <div id="main-store">
         <header>
             <div class="logo">DAKU STORE</div>
-            <div class="header-icons">
-                <a href="https://t.me/DAKU_YT_1M1" target="_blank" class="tg-link"><i class="fab fa-telegram"></i></a>
-                <i class="fas fa-user-circle" style="font-size: 22px; cursor: pointer;" onclick="openProfile()"></i>
+            <div style="display:flex; gap:15px; align-items:center;">
+                <a href="https://t.me/DAKU_YT_1M1" target="_blank" style="color:#0088cc; font-size:22px;"><i class="fab fa-telegram"></i></a>
+                <i class="fas fa-user-circle" style="font-size:22px; cursor:pointer;" onclick="openProfile()"></i>
             </div>
         </header>
 
         <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('topup', this)">DIAMONDS 💎</button>
-            <button class="tab-btn" onclick="switchTab('likes', this)">LIKES 👍</button>
-            <button class="tab-btn" onclick="switchTab('war', this)">GUILD WAR ⚔️</button>
+            <button class="tab-btn active" onclick="switchTab('likes', this)">LIKES 👍</button>
             <button class="tab-btn" onclick="switchTab('glory', this)">GLORY 🏆</button>
+            <button class="tab-btn" onclick="switchTab('war', this)">GUILD WAR ⚔️</button>
+            <button class="tab-btn" onclick="switchTab('diamonds', this)">DIAMONDS 💎</button>
         </div>
 
-        <div id="topup" class="section-container active">
-            <div class="card"><div>100 Diamonds</div><div class="amt">₹80 <button onclick="openPay('100💎','80','player')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-            <div class="card"><div>520 Diamonds</div><div class="amt">₹400 <button onclick="openPay('520💎','400','player')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-        </div>
-
-        <div id="likes" class="section-container">
-            <div class="card"><div>1540 Likes</div><div class="amt">₹100 <button onclick="openPay('1540 Likes','100','player')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-            <div class="card"><div>3300 Likes</div><div class="amt">₹170 <button onclick="openPay('3300 Likes','170','player')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-        </div>
-
-        <div id="war" class="section-container">
-            <div class="card"><div>Guild War (Starter)</div><div class="amt">₹500 <button onclick="openPay('War Starter','500','guild')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-            <div class="card"><div>Guild War (50 Wins)</div><div class="amt">₹1000 <button onclick="openPay('War 50W','1000','guild')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
+        <div id="likes" class="section-container active">
+            <div class="card"><div class="card-title">Weekly Starter</div><div class="card-price">₹100</div><div class="card-subtitle">1540 Total Likes</div><button class="order-now-btn" onclick="openPay('Weekly Starter (1540 Likes)','100','player')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Pro Booster</div><div class="card-price">₹170</div><div class="card-subtitle">3300 Total Likes</div><button class="order-now-btn" onclick="openPay('Pro Booster (3300 Likes)','170','player')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Elite Monthly</div><div class="card-price">₹300</div><div class="card-subtitle">6600 Total Likes</div><button class="order-now-btn" onclick="openPay('Elite Monthly (6600 Likes)','300','player')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Grandmaster</div><div class="card-price">₹800</div><div class="card-subtitle">19800 Total Likes</div><button class="order-now-btn" onclick="openPay('Grandmaster (19800 Likes)','800','player')">ORDER NOW</button></div>
         </div>
 
         <div id="glory" class="section-container">
-            <div class="card"><div>Mini Glory (200k)</div><div class="amt">₹200 <button onclick="openPay('Mini Glory','200','guild')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
-            <div class="card"><div>100k Glory</div><div class="amt">₹600 <button onclick="openPay('100k Glory','600','guild')" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px;">BUY</button></div></div>
+            <div class="card"><div class="card-title">Mini Glory</div><div class="card-price">₹200</div><div class="card-subtitle">200k Glory Boost</div><button class="order-now-btn" onclick="openPay('Mini Glory (200k)','200','guild')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Starter Glory</div><div class="card-price">₹800</div><div class="card-subtitle">500k Glory Boost</div><button class="order-now-btn" onclick="openPay('Starter Glory (500k)','800','guild')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Mega Glory</div><div class="card-price">₹1000</div><div class="card-subtitle">1M Glory Boost</div><button class="order-now-btn" onclick="openPay('Mega Glory (1M)','1000','guild')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">Full Match</div><div class="card-price">₹1500</div><div class="card-subtitle">Full Guild Glory</div><button class="order-now-btn" onclick="openPay('Full Match (Full Glory)','1500','guild')">ORDER NOW</button></div>
         </div>
 
-        <footer><div class="logo" style="font-size:14px;">DAKU STORE</div>© 2026 OFFICIAL DAKU STORE</footer>
+        <div id="war" class="section-container">
+            <div class="card"><div class="card-title">War Starter</div><div class="card-price">₹500</div><div class="card-subtitle">20 Guild War Wins</div><button class="order-now-btn" onclick="openPay('War Starter','500','guild')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">War Pro</div><div class="card-price">₹1000</div><div class="card-subtitle">50 Guild War Wins</div><button class="order-now-btn" onclick="openPay('War Pro','1000','guild')">ORDER NOW</button></div>
+        </div>
+
+        <div id="diamonds" class="section-container">
+            <div class="card"><div class="card-title">100 Diamonds</div><div class="card-price">₹80</div><button class="order-now-btn" onclick="openPay('100 Diamonds','80','player')">ORDER NOW</button></div>
+            <div class="card"><div class="card-title">520 Diamonds</div><div class="card-price">₹400</div><button class="order-now-btn" onclick="openPay('520 Diamonds','400','player')">ORDER NOW</button></div>
+        </div>
 
         <nav class="b-nav">
             <div class="b-item active" onclick="location.reload()"><i class="fas fa-home"></i>HOME</div>
@@ -123,39 +125,37 @@
 
     <div id="payModal" class="modal">
         <div class="modal-content">
-            <h3 id="pName" style="color:var(--primary); font-family:'Orbitron';"></h3>
-            <p id="pPrice" style="color:var(--accent); font-weight:bold;"></p>
+            <h3 id="pName" style="color:var(--primary); font-family:'Orbitron'; font-size:16px;"></h3>
+            <p id="pPrice" style="color:var(--accent); font-weight:bold; margin-bottom:10px;"></p>
             <input type="number" id="uid" placeholder="Player UID">
             <div id="guild-field" style="display:none;"><input type="number" id="gid" placeholder="Guild ID (GID)"></div>
+            <p style="font-size:10px; text-align:left; color:#555; margin-top:5px;">Select Server (Owl):</p>
             <div class="owl-box">
-                <div class="owl-list">
-                    <div class="owl-item" onclick="selOwl('India 🇮🇳', this)">India 🇮🇳</div>
-                    <div class="owl-item" onclick="selOwl('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩</div>
-                    <div class="owl-item" onclick="selOwl('Pakistan 🇵🇰', this)">Pakistan 🇵🇰</div>
-                    <div class="owl-item" onclick="selOwl('Mina 🏜️', this)">Mina 🏜️</div>
-                    <div class="owl-item" onclick="selOwl('Brazil 🇧🇷', this)">Brazil 🇧🇷</div>
-                </div>
+                <div class="owl-item" onclick="selOwl('India 🇮🇳', this)">India 🇮🇳</div>
+                <div class="owl-item" onclick="selOwl('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩</div>
+                <div class="owl-item" onclick="selOwl('Pakistan 🇵🇰', this)">Pakistan 🇵🇰</div>
+                <div class="owl-item" onclick="selOwl('Brazil 🇧🇷', this)">Brazil 🇧🇷</div>
             </div>
-            <div style="display:flex; gap:10px; margin:15px 0;">
-                <button class="btn-main" onclick="setPay('UPI')" style="background:#222; font-size:11px;">UPI</button>
+            <div style="display:flex; gap:10px; margin:10px 0;">
+                <button class="btn-main" onclick="setPay('UPI')" style="background:#222; font-size:11px;">UPI / QR</button>
                 <button class="btn-main" onclick="setPay('Binance')" style="background:#222; font-size:11px;">BINANCE</button>
             </div>
-            <div id="payDetails" style="display:none; background:white; color:black; padding:10px; border-radius:10px; margin-bottom:10px;">
-                <div id="upiQR" style="display:none;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=priyanshdaku@gmail.com" width="100"><br><b style="font-size:10px;">priyanshdaku@gmail.com</b></div>
-                <div id="binID" style="display:none;">ID: <b>556695942</b></div>
+            <div id="payDetails" style="display:none; background:white; color:black; padding:10px; border-radius:10px;">
+                <div id="upiQR" style="display:none;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=priyanshdaku@gmail.com" width="100"></div>
+                <div id="binID" style="display:none;">Binance ID: <b>556695942</b></div>
             </div>
-            <input type="file" id="proof" style="font-size:10px;">
+            <input type="file" id="proof" style="font-size:10px; margin-top:10px;">
             <button class="btn-main" id="subBtn" onclick="submitOrder()" style="margin-top:10px;">CONFIRM ORDER</button>
-            <p onclick="closeModal('payModal')" style="cursor:pointer; color:#777; font-size:12px; margin-top:10px;">CANCEL</p>
+            <p onclick="closeModal('payModal')" style="cursor:pointer; color:#777; font-size:12px; margin-top:15px;">CANCEL</p>
         </div>
     </div>
 
     <div id="profModal" class="modal">
         <div class="modal-content">
-            <h3 style="color:var(--primary);">PROFILE</h3>
-            <p id="userEmail" style="font-size:12px; margin:15px 0; color:var(--accent);"></p>
+            <h3 style="color:var(--primary); font-family:'Orbitron';">PROFILE</h3>
+            <p id="userEmail" style="font-size:12px; margin-bottom:20px;"></p>
             <button class="btn-main" onclick="auth.signOut(); location.reload();" style="background:red;">LOGOUT</button>
-            <p onclick="closeModal('profModal')" style="cursor:pointer; margin-top:10px; color:#555;">CLOSE</p>
+            <p onclick="closeModal('profModal')" style="cursor:pointer; margin-top:10px;">CLOSE</p>
         </div>
     </div>
 
@@ -169,15 +169,26 @@
         const auth = firebase.auth(), db = firebase.firestore();
         let method = "", srv = "";
 
+        window.onloadTurnstileCallback = function () {
+            turnstile.render('#turnstile-widget', {
+                sitekey: '1x00000000000000000000AA',
+                callback: function(token) { document.getElementById('cf-container').style.display='none'; document.getElementById('auth-screen').style.display='block'; },
+            });
+        };
+
         function initSystem() { setTimeout(() => { document.getElementById('loader').style.display='none'; }, 1500); }
-        function onCfSuccess() { document.getElementById('cf-box').style.display='none'; document.getElementById('auth-screen').style.display='block'; }
-        function toggleAuth() { const t=document.getElementById('auth-title'); t.innerText=t.innerText==="USER REGISTER"?"USER LOGIN":"USER REGISTER"; }
+        function toggleAuth() { const t=document.getElementById('auth-title'); t.innerText=t.innerText==="REGISTER"?"LOGIN":"REGISTER"; }
         function handleAuth() {
             const e=document.getElementById('email').value, p=document.getElementById('pass').value;
-            if(document.getElementById('auth-title').innerText==="USER LOGIN") auth.signInWithEmailAndPassword(e,p).catch(a=>alert(a.message));
+            if(document.getElementById('auth-title').innerText==="LOGIN") auth.signInWithEmailAndPassword(e,p).catch(a=>alert(a.message));
             else auth.createUserWithEmailAndPassword(e,p).catch(a=>alert(a.message));
         }
-        auth.onAuthStateChanged(user => { if(user) { document.getElementById('security-wall').style.display='none'; document.getElementById('main-store').style.display='block'; document.getElementById('userEmail').innerText=user.email; } else { document.getElementById('security-wall').style.display='flex'; } });
+
+        auth.onAuthStateChanged(user => {
+            if(user) { document.getElementById('security-wall').style.display='none'; document.getElementById('main-store').style.display='block'; document.getElementById('userEmail').innerText = user.email; }
+            else { document.getElementById('security-wall').style.display='flex'; }
+        });
+
         function switchTab(id,b) { document.querySelectorAll('.section-container').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); b.classList.add('active'); }
         function openPay(n,p,t) { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText="Price: ₹"+p; document.getElementById('guild-field').style.display=t==='guild'?'block':'none'; document.getElementById('payModal').style.display='flex'; }
         function selOwl(v, e) { srv=v; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); e.classList.add('active'); }
@@ -196,8 +207,8 @@
                 if(d.success) {
                     const msg = `🚀 *NEW ORDER*%0AUser: ${auth.currentUser.email}%0APlan: ${document.getElementById('pName').innerText}%0AUID: ${u}%0AGID: ${g || 'N/A'}%0AServer: ${srv}%0AMethod: ${method}%0AProof: ${d.data.url}`;
                     fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage?chat_id=6829395007&text=${msg}&parse_mode=Markdown`);
-                    await db.collection("orders").add({ email:auth.currentUser.email, uid:u, gid:g||"", server:srv, plan:document.getElementById('pName').innerText, screenshot: d.data.url, status:"Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                    alert("Order Success!"); location.reload();
+                    await db.collection("orders").add({ email:auth.currentUser.email, uid:u, gid:g||"", server:srv, plan:document.getElementById('pName').innerText, status:"Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    alert("Order Placed Successfully!"); location.reload();
                 }
             } catch(e) { alert("Error!"); }
         }
