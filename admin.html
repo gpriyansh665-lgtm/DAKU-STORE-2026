@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAKU | Master Admin Panel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root { --primary: #00ffcc; --bg: #0a0a1a; --card: #161b33; --accent: #ff4b2b; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; margin: 0; }
+        header { background: #111; padding: 20px; border-bottom: 2px solid var(--primary); text-align: center; position: sticky; top: 0; z-index: 100; }
+        h1 { margin: 0; font-size: 20px; letter-spacing: 1px; color: var(--primary); }
+        
+        .container { padding: 15px; max-width: 900px; margin: auto; }
+        
+        /* Order Cards */
+        .order-card { background: var(--card); border: 1px solid #2d334a; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 8px 20px rgba(0,0,0,0.4); position: relative; }
+        .order-header { display: flex; justify-content: space-between; border-bottom: 1px solid #2d334a; padding-bottom: 10px; margin-bottom: 10px; }
+        .user-mail { font-size: 12px; color: var(--primary); font-weight: bold; }
+        
+        .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
+        .Pending { background: orange; color: black; }
+        .Approved { background: #00ff88; color: black; }
+        .Rejected { background: #ff4d4d; color: white; }
+
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+        .info-item { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 8px; border: 1px solid #2d334a; }
+        .info-item small { color: #888; display: block; font-size: 10px; text-transform: uppercase; margin-bottom: 2px; }
+        .info-item span { font-weight: bold; font-size: 14px; }
+
+        .ss-link { display: block; background: #333; color: #fff; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; margin: 10px 0; font-weight: bold; font-size: 14px; border: 1px solid #444; }
+        .ss-link:hover { background: #444; }
+
+        .actions { display: flex; gap: 10px; margin-top: 15px; }
+        .action-btn { flex: 1; padding: 12px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-approve { background: #00ff88; color: black; }
+        .btn-reject { background: #ff4d4d; color: white; }
+        .action-btn:hover { transform: scale(0.95); opacity: 0.9; }
+
+        /* Login Box */
+        #login-box { max-width: 350px; margin: 100px auto; background: var(--card); padding: 30px; border-radius: 20px; text-align: center; border: 1px solid var(--primary); }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #000; color: white; box-sizing: border-box; }
+        .login-btn { width: 100%; padding: 12px; background: var(--primary); color: #000; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <div id="login-box">
+        <i class="fas fa-user-shield" style="font-size: 50px; color: var(--primary); margin-bottom: 15px;"></i>
+        <h2>DAKU ADMIN</h2>
+        <input type="email" id="adminEmail" placeholder="Admin Email">
+        <input type="password" id="adminPass" placeholder="Password">
+        <button class="login-btn" onclick="loginAdmin()">LOGIN DASHBOARD</button>
+    </div>
+
+    <div id="dashboard" style="display:none;">
+        <header>
+            <h1>DAKU MASTER CONTROL</h1>
+        </header>
+        
+        <div class="container" id="ordersList">
+            <p style="text-align:center; margin-top: 50px;">Fetching Live Orders...</p>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU",
+            authDomain: "daku-store-f2f40.firebaseapp.com",
+            projectId: "daku-store-f2f40",
+            storageBucket: "daku-store-f2f40.firebasestorage.app",
+            messagingSenderId: "556695942867",
+            appId: "1:556695942867:web:e7ca38cd63e788cee80626"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(), db = firebase.firestore();
+
+        function loginAdmin() {
+            const e = document.getElementById('adminEmail').value;
+            const p = document.getElementById('adminPass').value;
+            auth.signInWithEmailAndPassword(e, p).catch(err => alert("Error: " + err.message));
+        }
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'block';
+                loadOrders();
+            } else {
+                document.getElementById('dashboard').style.display = 'none';
+                document.getElementById('login-box').style.display = 'block';
+            }
+        });
+
+        function loadOrders() {
+            db.collection("orders").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+                const list = document.getElementById('ordersList');
+                list.innerHTML = "";
+                
+                if(snapshot.empty) {
+                    list.innerHTML = "<h3 style='text-align:center; color:#555;'>No Orders Found</h3>";
+                    return;
+                }
+
+                snapshot.forEach(doc => {
+                    const o = doc.data(), id = doc.id;
+                    const date = o.timestamp ? o.timestamp.toDate().toLocaleString() : "Just Now";
+
+                    list.innerHTML += `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="user-mail">${o.email}</span>
+                                <span class="status-badge ${o.status}">${o.status}</span>
+                            </div>
+                            
+                            <div class="info-grid">
+                                <div class="info-item"><small>Player UID</small><span>${o.uid}</span></div>
+                                <div class="info-item"><small>Server</small><span>${o.server}</span></div>
+                                <div class="info-item"><small>Service</small><span>${o.plan}</span></div>
+                                <div class="info-item"><small>Amount</small><span>₹${o.price}</span></div>
+                            </div>
+
+                            <p style="font-size:10px; color:#666; margin:5px 0;">Order ID: ${id} | ${date}</p>
+
+                            <a href="${o.screenshot}" target="_blank" class="ss-link">
+                                <i class="fas fa-image"></i> VIEW PAYMENT SCREENSHOT
+                            </a>
+
+                            ${o.status === 'Pending' ? `
+                                <div class="actions">
+                                    <button class="action-btn btn-approve" onclick="updateStatus('${id}','Approved')">APPROVE</button>
+                                    <button class="action-btn btn-reject" onclick="updateStatus('${id}','Rejected')">REJECT</button>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function updateStatus(id, s) {
+            if(confirm(`Bhai, kya aap is order ko ${s} karna chahte ho?`)) {
+                db.collection("orders").doc(id).update({ status: s });
+            }
+        }
+    </script>
+</body>
+  </html>
+  
