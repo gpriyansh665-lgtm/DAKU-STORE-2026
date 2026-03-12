@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAKU STORE | MASTER ADMIN</title>
+    <title>DAKU ADMIN | VIP PANEL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
@@ -39,7 +39,6 @@
         .act-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; transition: 0.2s; }
         .btn-done { background: #00ffcc; color: #000; }
         .btn-delete { background: #ff4b2b; color: white; }
-        .act-btn:active { transform: scale(0.95); }
     </style>
 </head>
 <body>
@@ -47,21 +46,20 @@
     <div id="admin-auth">
         <div class="auth-box">
             <h2 style="font-family:'Orbitron'; color:var(--primary); margin-bottom: 20px;">DAKU ADMIN</h2>
-            <input type="email" id="admEmail" placeholder="Admin Email">
-            <input type="password" id="admPass" placeholder="Admin Password">
-            <button class="btn-login" onclick="loginAdmin()">ACCESS PANEL</button>
-            <p style="font-size: 10px; color: #444; margin-top: 15px;">Official DAKU YT 1M Security</p>
+            <input type="email" id="admEmail" placeholder="teamcobra665@gmail.com">
+            <input type="password" id="admPass" placeholder="dakuyt1m">
+            <button class="btn-login" onclick="loginAdmin()">ENTER PANEL</button>
         </div>
     </div>
 
     <div id="admin-dashboard">
         <div class="header">
-            <h2 style="font-family:'Orbitron'; font-size: 18px; color: var(--primary);">ORDERS LIST</h2>
-            <button onclick="logoutAdmin()" style="background:none; border: 1px solid #555; color:white; padding:5px 12px; border-radius:5px; cursor:pointer; font-size: 10px;">LOGOUT</button>
+            <h2 style="font-family:'Orbitron'; font-size: 18px; color: var(--primary);">LIVE ORDERS</h2>
+            <button onclick="logoutAdmin()" style="background:red; border: none; color:white; padding:5px 12px; border-radius:5px; cursor:pointer; font-size: 10px;">LOGOUT</button>
         </div>
 
         <div id="orders-container">
-            <p style="text-align:center; color:#555;">Waiting for new orders...</p>
+            <p style="text-align:center; color:#444;">Bhai, orders aa rahe hain...</p>
         </div>
     </div>
 
@@ -69,7 +67,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // 🛠️ FIREBASE CONFIG (SAME AS STORE)
+        // 🛠️ FIREBASE CONFIG
         const firebaseConfig = { 
             apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", 
             authDomain: "daku-store-f2f40.firebaseapp.com", 
@@ -81,9 +79,9 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 🛡️ ADMIN AUTH SETTINGS
-        const ADMIN_USER = "priyanshdaku@gmail.com";
-        const ADMIN_PASS = "Daku@123";
+        // 🛡️ ADMIN DETAILS
+        const ADMIN_USER = "teamcobra665@gmail.com";
+        const ADMIN_PASS = "dakuyt1m";
 
         function loginAdmin() {
             const e = document.getElementById('admEmail').value;
@@ -92,7 +90,7 @@
                 localStorage.setItem("isDakuAdmin", "true");
                 showDashboard();
             } else {
-                alert("Bhai, galat password hai! Sirf DAKU enter kar sakta hai.");
+                alert("DHOKHA DIYA LAUDE 🔥!");
             }
         }
 
@@ -107,22 +105,15 @@
             location.reload();
         }
 
-        // Auto Login Check
         if(localStorage.getItem("isDakuAdmin") === "true") {
             showDashboard();
         }
 
-        // 📥 FETCH ORDERS FROM FIRESTORE
         function fetchOrders() {
             db.collection("orders").orderBy("timestamp", "desc").onSnapshot(snapshot => {
                 const container = document.getElementById('orders-container');
                 container.innerHTML = "";
                 
-                if(snapshot.empty) {
-                    container.innerHTML = "<p style='text-align:center; color:#444; margin-top:50px;'>No orders found yet.</p>";
-                    return;
-                }
-
                 snapshot.forEach(doc => {
                     const order = doc.data();
                     const orderId = doc.id;
@@ -135,9 +126,7 @@
                                 <p><b>User:</b> ${order.email}</p>
                                 <p><b>Plan:</b> ${order.plan}</p>
                                 <p><b>UID:</b> ${order.uid}</p>
-                                <p><b>GID:</b> ${order.gid || 'N/A'}</p>
                                 <p><b>Server:</b> ${order.server}</p>
-                                <p><b>Time:</b> ${order.timestamp ? new Date(order.timestamp.toDate()).toLocaleString() : 'Just now'}</p>
                                 
                                 <a href="${order.screenshot}" target="_blank" class="proof-btn">
                                     <i class="fas fa-eye"></i> VIEW PAYMENT PROOF
@@ -146,7 +135,7 @@
                             
                             <div class="action-btns">
                                 <button class="act-btn btn-done" onclick="markDone('${orderId}')">MARK SUCCESS</button>
-                                <button class="act-btn btn-delete" onclick="deleteOrder('${orderId}')">DELETE ORDER</button>
+                                <button class="act-btn btn-delete" onclick="deleteOrder('${orderId}')">DELETE</button>
                             </div>
                         </div>
                     `;
@@ -154,15 +143,12 @@
             });
         }
 
-        // ✅ UPDATE ORDER STATUS
         function markDone(id) {
-            db.collection("orders").doc(id).update({ status: "Success" })
-            .then(() => alert("Bhai, order success mark ho gaya!"));
+            db.collection("orders").doc(id).update({ status: "Success" });
         }
 
-        // ❌ DELETE ORDER
         function deleteOrder(id) {
-            if(confirm("Bhai, pakka delete karna hai? Ye wapas nahi aayega!")) {
+            if(confirm("Bhai, delete karna hai?")) {
                 db.collection("orders").doc(id).delete();
             }
         }
