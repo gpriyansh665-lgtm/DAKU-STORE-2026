@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAKU YT 1M | Global Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+    <style>
+        :root { --primary: #ff4b2b; --secondary: #ff416c; --bg: #0f0c29; --card: #1a1a2e; --accent: #00ffcc; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(to right, #24243e, #302b63, #0f0c29); color: white; margin: 0; display: flex; flex-direction: column; min-height: 100vh; }
+        
+        /* Auth & Design */
+        .auth-container { background: var(--card); padding: 30px; border-radius: 15px; box-shadow: 0 0 20px rgba(255, 75, 43, 0.4); text-align: center; width: 90%; max-width: 350px; margin: 50px auto; border: 1px solid #333; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #333; background: #0a0a1a; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .cf-turnstile { margin: 15px 0; display: flex; justify-content: center; }
+
+        #main-store, #history-page { display: none; width: 100%; }
+        header { padding: 20px; background: rgba(0,0,0,0.5); border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header-controls { display: flex; gap: 15px; align-items: center; }
+        .nav-btn { background: none; border: 1px solid var(--accent); color: var(--accent); padding: 5px 12px; border-radius: 5px; cursor: pointer; font-size: 12px; }
+        
+        .section-title { text-align: center; color: var(--primary); margin: 30px 0 10px; font-size: 22px; text-transform: uppercase; }
+        .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; padding: 20px; max-width: 1200px; margin: auto; }
+        .card { background: var(--card); padding: 20px; border-radius: 15px; border: 1px solid #333; text-align: center; transition: 0.3s; }
+        .card:hover { border-color: var(--primary); transform: translateY(-5px); }
+        .price { font-size: 24px; color: var(--accent); font-weight: bold; margin: 5px 0; }
+        .buy-btn { width: 100%; padding: 12px; background: #0088cc; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; text-transform: uppercase; }
+
+        /* Scrollable Searchable Server */
+        .server-box { margin: 10px 0; border: 1px solid #444; border-radius: 10px; background: #0a0a1a; overflow: hidden; }
+        .server-search { width: 100%; padding: 10px; border: none; border-bottom: 1px solid #333; background: #161b33; color: white; font-size: 13px; outline: none; }
+        .server-list { max-height: 150px; overflow-y: auto; text-align: left; }
+        .server-item { padding: 10px 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; transition: 0.2s; }
+        .server-item:hover { background: #1a1a2e; color: var(--primary); }
+        .server-item.active { background: var(--primary); color: white; font-weight: bold; }
+
+        /* History */
+        .history-card { background: var(--card); border: 1px solid #333; padding: 15px; border-radius: 12px; margin: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 10px; font-weight: bold; }
+        .Pending { background: orange; color: black; }
+        .Approved { background: #00ffcc; color: black; }
+
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
+        .modal-content { background: var(--card); padding: 25px; border-radius: 20px; width: 90%; max-width: 420px; text-align: center; border: 1px solid var(--primary); }
+        footer { margin-top: auto; padding: 20px; text-align: center; font-size: 12px; color: #888; border-top: 1px solid #333; }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body>
+
+    <div id="login-box" class="auth-container">
+        <h2>DAKU STORE LOGIN</h2>
+        <form onsubmit="event.preventDefault(); loginUser();">
+            <input type="email" id="loginEmail" placeholder="Email" required>
+            <input type="password" id="loginPass" placeholder="Password" required>
+            <div id="turnstile-login" class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO"></div>
+            <button type="submit" class="btn">Login</button>
+        </form>
+        <p onclick="forgotPassword()" style="cursor:pointer; color:#ffcc00; font-size:12px; margin-top:10px;">Forgot Password?</p>
+        <p onclick="toggleAuth('signup')" style="cursor:pointer; color:var(--accent); margin-top:10px;">New Account? Sign Up</p>
+    </div>
+
+    <div id="signup-box" class="auth-container" style="display: none;">
+        <h2>CREATE ACCOUNT</h2>
+        <form onsubmit="event.preventDefault(); registerUser();">
+            <input type="email" id="regEmail" placeholder="Email Address" required>
+            <input type="password" id="regPass" placeholder="Create Password" required>
+            <div id="turnstile-signup" class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO"></div>
+            <button type="submit" class="btn">Register Now</button>
+        </form>
+        <p onclick="toggleAuth('login')" style="cursor:pointer; color:var(--accent); margin-top:10px;">Already have an account? Login</p>
+    </div>
+
+    <div id="main-store">
+        <header>
+            <h1>DAKU YT 1M</h1>
+            <div class="header-controls">
+                <button class="nav-btn" onclick="showHistory()"><i class="fas fa-history"></i> Orders</button>
+                <i class="fas fa-sign-out-alt" style="cursor:pointer; color:red; font-size: 20px;" onclick="logoutUser()"></i>
+            </div>
+        </header>
+
+        <h2 class="section-title">Guild Glory</h2>
+        <div class="store-grid">
+            <div class="card"><h3>Mini Glory</h3><div class="price">₹200</div><div style="color:#888;margin-bottom:10px;">200k Glory Boost</div><button class="buy-btn" onclick="openPayment('Mini Glory', '200')">ORDER NOW</button></div>
+            <div class="card"><h3>Starter Glory</h3><div class="price">₹800</div><div style="color:#888;margin-bottom:10px;">500k Glory Boost</div><button class="buy-btn" onclick="openPayment('Starter Glory', '800')">ORDER NOW</button></div>
+            <div class="card"><h3>Mega Glory</h3><div class="price">₹1000</div><div style="color:#888;margin-bottom:10px;">1M Glory Boost</div><button class="buy-btn" onclick="openPayment('Mega Glory', '1000')">ORDER NOW</button></div>
+            <div class="card"><h3>Full Match</h3><div class="price">₹1500</div><div style="color:#888;margin-bottom:10px;">Full Guild Glory</div><button class="buy-btn" onclick="openPayment('Full Match', '1500')">ORDER NOW</button></div>
+        </div>
+
+        <h2 class="section-title">Likes Boost</h2>
+        <div class="store-grid">
+            <div class="card"><h3>Weekly Starter</h3><div class="price">₹100</div><div style="color:#888;margin-bottom:10px;">1540 Likes</div><button class="buy-btn" onclick="openPayment('Weekly Starter', '100')">ORDER NOW</button></div>
+            <div class="card"><h3>Pro Booster</h3><div class="price">₹170</div><div style="color:#888;margin-bottom:10px;">3300 Likes</div><button class="buy-btn" onclick="openPayment('Pro Booster', '170')">ORDER NOW</button></div>
+            <div class="card"><h3>Elite Monthly</h3><div class="price">₹300</div><div style="color:#888;margin-bottom:10px;">6600 Likes</div><button class="buy-btn" onclick="openPayment('Elite Monthly', '300')">ORDER NOW</button></div>
+            <div class="card"><h3>Grandmaster</h3><div class="price">₹800</div><div style="color:#888;margin-bottom:10px;">19800 Likes</div><button class="buy-btn" onclick="openPayment('Grandmaster', '800')">ORDER NOW</button></div>
+        </div>
+        <footer>© 2026 DAKU YT 1M Game Store. All Rights Reserved.</footer>
+    </div>
+
+    <div id="history-page">
+        <header>
+            <button class="nav-btn" onclick="showStore()"><i class="fas fa-arrow-left"></i> Store</button>
+            <h1>My Orders</h1>
+            <div></div>
+        </header>
+        <div id="historyList" style="max-width:800px; margin:auto; padding:10px;">
+            <p style="text-align:center;">Loading history...</p>
+        </div>
+    </div>
+
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span onclick="closePayment()" style="float:right; cursor:pointer; font-size:28px;">&times;</span>
+            <h3 id="planName" style="color:var(--primary);"></h3><p id="planPrice"></p>
+            <input type="number" id="userUID" placeholder="Enter Player UID" required>
+            
+            <div class="server-box">
+                <input type="text" id="srvSearch" class="server-search" placeholder="🔍 Search Your Server..." onkeyup="filterSrv()">
+                <div class="server-list" id="srvList">
+                    <div class="server-item" onclick="selSrv('India', this)">India 🇮🇳</div>
+                    <div class="server-item" onclick="selSrv('Bangladesh', this)">Bangladesh 🇧🇩</div>
+                    <div class="server-item" onclick="selSrv('Pakistan', this)">Pakistan 🇵🇰</div>
+                    <div class="server-item" onclick="selSrv('Singapore', this)">Singapore 🇸🇬</div>
+                    <div class="server-item" onclick="selSrv('Indonesia', this)">Indonesia 🇮🇩</div>
+                    <div class="server-item" onclick="selSrv('Brazil', this)">Brazil 🇧🇷</div>
+                    <div class="server-item" onclick="selSrv('Thailand', this)">Thailand 🇹🇭</div>
+                    <div class="server-item" onclick="selSrv('Vietnam', this)">Vietnam 🇻🇳</div>
+                    <div class="server-item" onclick="selSrv('Europe', this)">Europe 🇪🇺</div>
+                    <div class="server-item" onclick="selSrv('Middle East', this)">Middle East 🌍</div>
+                    <div class="server-item" onclick="selSrv('North America', this)">North America 🇺🇸</div>
+                </div>
+            </div>
+
+            <select id="payMethod" onchange="switchPay()">
+                <option value="upi">UPI (GPay / PhonePe / Paytm)</option>
+                <option value="binance">Binance Pay</option>
+            </select>
+            <div id="upiSection"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=priyanshdaku@fam&pn=Priyansh%20Gupta&cu=INR" style="width:140px; background:white; margin:10px; border-radius:8px;"></div>
+            <div id="binanceSection" style="display:none; background:#2b2f3a; padding:15px; border-radius:8px; margin:10px 0;">Binance ID: 123456789</div>
+            
+            <input type="file" id="screenshotInput" accept="image/*" onchange="previewFile()">
+            <img id="preview" style="width:100px; display:none; margin:10px auto; border-radius:5px;">
+            <button id="finalSubmitBtn" class="btn" style="width:100%; margin-top:10px;" onclick="submitOrder()">CONFIRM ORDER</button>
+        </div>
+    </div>
+
+    <script>
+        const firebaseConfig = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(), db = firebase.firestore();
+        let userEmail = "", selectedSrv = "";
+
+        function filterSrv() { let input = document.getElementById('srvSearch').value.toLowerCase(); document.querySelectorAll('.server-item').forEach(opt => { opt.style.display = opt.innerText.toLowerCase().includes(input) ? "" : "none"; }); }
+        function selSrv(v, e) { selectedSrv = v; document.querySelectorAll('.server-item').forEach(o => o.classList.remove('active')); e.classList.add('active'); }
+        function toggleAuth(t) { document.getElementById('login-box').style.display=t==='login'?'block':'none'; document.getElementById('signup-box').style.display=t==='signup'?'block':'none'; if(window.turnstile) turnstile.reset(); }
+        function openPayment(n, p) { document.getElementById('planName').innerText=n; document.getElementById('planPrice').innerText="Price: ₹"+p; document.getElementById('paymentModal').style.display="flex"; }
+        function closePayment() { document.getElementById('paymentModal').style.display="none"; }
+        function switchPay() { const m = document.getElementById('payMethod').value; document.getElementById('upiSection').style.display = m==='upi'?'block':'none'; document.getElementById('binanceSection').style.display = m==='binance'?'block':'none'; }
+        function previewFile() { const p=document.getElementById('preview'), f=document.getElementById('screenshotInput').files[0], r=new FileReader(); r.onloadend=()=>{p.src=r.result;p.style.display="block";}; if(f) r.readAsDataURL(f); }
+
+        function showHistory() { document.getElementById('main-store').style.display='none'; document.getElementById('history-page').style.display='block'; loadUserHistory(); }
+        function showStore() { document.getElementById('history-page').style.display='none'; document.getElementById('main-store').style.display='block'; }
+        function loadUserHistory() {
+            db.collection("orders").where("email", "==", userEmail).orderBy("timestamp", "desc").onSnapshot(snap => {
+                const list = document.getElementById('historyList'); list.innerHTML = "";
+                if(snap.empty) list.innerHTML = "<p style='text-align:center;'>No orders found.</p>";
+                snap.forEach(doc => { const o = doc.data(); list.innerHTML += `<div class="history-card"><div><b>${o.plan}</b><br><small>UID: ${o.uid} | ₹${o.price}</small></div><span class="status-badge ${o.status}">${o.status}</span></div>`; });
+            });
+        }
+
+        function loginUser() { auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPass').value).catch(e=>alert(e.message)); }
+        function registerUser() { auth.createUserWithEmailAndPassword(document.getElementById('regEmail').value, document.getElementById('regPass').value).catch(e=>alert(e.message)); }
+        function logoutUser() { auth.signOut().then(()=>location.reload()); }
+        function forgotPassword() { const e = document.getElementById('loginEmail').value; if(!e) return alert("Enter email first!"); auth.sendPasswordResetEmail(e).then(()=>alert("Sent!")).catch(e=>alert(e.message)); }
+
+        auth.onAuthStateChanged(user => { if(user) { userEmail=user.email; document.getElementById('login-box').style.display='none'; document.getElementById('signup-box').style.display='none'; document.getElementById('main-store').style.display='block'; } });
+
+        async function submitOrder() {
+            const uid=document.getElementById('userUID').value, file=document.getElementById('screenshotInput').files[0];
+            if(!uid || !selectedSrv || !file) return alert("All fields are required!");
+            const btn=document.getElementById('finalSubmitBtn'); btn.innerText="Uploading..."; btn.disabled=true;
+            try {
+                const fd=new FormData(); fd.append('image', file); fd.append('key', 'A1037b6cc94b8ad73b08a4d2e9bd529f');
+                const res=await fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd});
+                const data=await res.json();
+                if(data.success) {
+                    await db.collection("orders").add({ email: userEmail, uid: uid, server: selectedSrv, plan: document.getElementById('planName').innerText, price: document.getElementById('planPrice').innerText.replace("Price: ₹", ""), screenshot: data.data.url, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    alert("Order Placed!"); closePayment();
+                }
+            } catch(e) { alert("Error!"); } finally { btn.innerText="CONFIRM ORDER"; btn.disabled=false; }
+        }
+    </script>
+</body>
+          </html>
+                                                                                              
