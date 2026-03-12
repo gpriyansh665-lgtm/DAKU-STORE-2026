@@ -3,142 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DAKU YT 1M | Global Store</title>
+    <title>DAKU YT 1M | Global Secure Store</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <style>
         :root { --primary: #ff4b2b; --secondary: #ff416c; --bg: #0b0d17; --card: rgba(255, 255, 255, 0.05); --accent: #00ffcc; }
         #loader { position: fixed; width: 100%; height: 100%; background: var(--bg); z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .spinner { width: 60px; height: 60px; border: 4px solid #1a1a2e; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; box-shadow: 0 0 15px var(--primary); }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .spinner { width: 60px; height: 60px; border: 4px solid #1a1a2e; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 80px; overflow-x: hidden; }
-        .bounce-click:active { transform: scale(0.9); transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        /* Security Overlay */
+        .auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 5000; display: flex; justify-content: center; align-items: center; }
+        .auth-card { background: var(--card); padding: 30px; border-radius: 20px; border: 1px solid #333; width: 90%; max-width: 380px; text-align: center; }
+        
+        #m-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        
         header { padding: 15px 20px; background: rgba(0,0,0,0.8); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222; }
         .top-profile img { width: 35px; height: 35px; border-radius: 50%; border: 2px solid var(--primary); }
+        
         .nav-tabs { display: flex; gap: 10px; padding: 15px; overflow-x: auto; background: rgba(255,255,255,0.02); }
         .tab-btn { padding: 10px 20px; background: var(--card); border: 1px solid #333; border-radius: 10px; cursor: pointer; white-space: nowrap; font-size: 12px; font-weight: bold; }
-        .tab-btn.active { background: var(--primary); border-color: var(--primary); }
-        .section-container { display: none; padding: 20px; animation: backInUp 0.6s; }
+        .tab-btn.active { background: var(--primary); }
+
+        .section-container { display: none; padding: 20px; animation: fadeIn 0.5s; }
         .section-container.active { display: block; }
         .store-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
-        .card { background: var(--card); border: 1px solid #333; border-radius: 25px; padding: 25px; text-align: center; }
+        .card { background: var(--card); border: 1px solid #333; border-radius: 25px; padding: 25px; text-align: center; position: relative; }
         .price { font-size: 32px; color: var(--accent); font-weight: 800; margin: 10px 0; }
         .buy-btn { width: 100%; padding: 12px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; color: white; border-radius: 12px; font-weight: bold; cursor: pointer; }
+
+        /* OWL SERVER SEARCH */
         .server-box { margin: 15px 0; border: 1px solid #444; border-radius: 12px; background: #000; overflow: hidden; }
-        .server-search { width: 100%; padding: 12px; border: none; background: #161b33; color: white; outline: none; }
-        .server-list { max-height: 120px; overflow-y: auto; text-align: left; }
-        .server-item { padding: 10px 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; }
-        .server-item.active { background: var(--primary); color: white; }
+        .server-search { width: 100%; padding: 12px; border: none; border-bottom: 1px solid #333; background: #161b33; color: white; outline: none; }
+        .server-list { max-height: 150px; overflow-y: auto; text-align: left; }
+        .server-item { padding: 12px 15px; border-bottom: 1px solid #111; cursor: pointer; font-size: 14px; }
+        .server-item.active { background: var(--primary); }
+
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: rgba(10, 10, 20, 0.95); display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #333; z-index: 1000; }
         .nav-item { text-align: center; color: #888; cursor: pointer; flex: 1; font-size: 10px; font-weight: bold; }
         .nav-item.active { color: var(--primary); transform: translateY(-5px); transition: 0.3s; }
         .nav-item i { font-size: 20px; display: block; margin-bottom: 3px; }
+
         .modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
-        .modal-content { background: #161b33; padding: 25px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--primary); }
-        .side-panel { position: fixed; right: -100%; top: 0; width: 80%; height: 100%; background: #161b33; z-index: 2001; transition: 0.4s; padding: 30px; }
-        .side-panel.open { right: 0; }
+        .modal-content { background: #161b33; padding: 25px; border-radius: 25px; width: 90%; max-width: 400px; border: 1px solid var(--primary); text-align: center; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; background: #000; color: #fff; border: 1px solid #333; }
     </style>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-<body onload="setTimeout(()=>document.getElementById('loader').style.display='none', 1500)">
+<body onload="initSecurity()">
 
-    <div id="loader"><div class="spinner"></div><p style="margin-top:20px; color:var(--primary); font-weight:bold;">DAKU YT 1M LOADING...</p></div>
+    <div id="loader"><div class="spinner"></div><p style="margin-top:20px; color:var(--primary); font-weight:bold;">DAKU YT 1M SECURITY CHECK...</p></div>
 
-    <div id="auth-box">
-        <div class="auth-container" style="max-width:350px; margin:100px auto; padding:30px; background:var(--card); border-radius:20px; text-align:center; border:1px solid #333;">
-            <h2 style="color:var(--primary)">DAKU YT 1M</h2>
-            <input type="email" id="loginEmail" placeholder="Email" style="width:100%; padding:12px; margin:10px 0; background:#000; color:#fff; border:1px solid #333; border-radius:10px;">
-            <input type="password" id="loginPass" placeholder="Password" style="width:100%; padding:12px; margin:10px 0; background:#000; color:#fff; border:1px solid #333; border-radius:10px;">
-            <button onclick="loginUser()" class="buy-btn">LOGIN TO STORE</button>
+    <div id="m-screen">
+        <i class="fas fa-tools" style="font-size:60px; color:var(--primary); margin-bottom:20px;"></i>
+        <h1>STORE CLOSED</h1>
+        <p>Updating stocks, check Telegram!</p>
+    </div>
+
+    <div id="auth-screen" class="auth-overlay">
+        <div class="auth-card">
+            <h2 style="color:var(--primary)">DAKU YT 1M LOGIN</h2>
+            <input type="email" id="logEmail" placeholder="Email Address">
+            <input type="password" id="logPass" placeholder="Password">
+            <div id="cf-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO" style="margin:10px 0"></div>
+            <button onclick="loginUser()" class="buy-btn">SECURE LOGIN</button>
+            <p onclick="registerUser()" style="margin-top:15px; cursor:pointer; color:var(--accent); font-size:12px;">New User? Create Account</p>
         </div>
     </div>
 
     <div id="main-interface" style="display:none">
         <header>
-            <div class="top-profile bounce-click" onclick="toggleProfile()">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
-                <span id="uNameDisp" style="color:var(--accent); font-size:12px; margin-left:5px;">USER</span>
+            <div style="display:flex; align-items:center; gap:10px">
+                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:35px; border-radius:50%; border:2px solid var(--primary)">
+                <span id="uNameTop" style="font-size:12px; color:var(--accent)">USER</span>
             </div>
             <div style="font-weight:900; color:var(--primary);">DAKU STORE</div>
-            <a href="https://t.me/DAKU_YT_1M1" style="color:#0088cc; font-size:20px;"><i class="fab fa-telegram-plane"></i></a>
+            <i class="fas fa-sign-out-alt" onclick="logout()" style="color:red; cursor:pointer"></i>
         </header>
 
         <div class="nav-tabs">
-            <div class="tab-btn active" onclick="switchSection('likes', this)">LIKES 👍</div>
-            <div class="tab-btn" onclick="switchSection('glory', this)">GLORY 🏆</div>
-            <div class="tab-btn" onclick="switchSection('topup', this)">TOP UP 💎</div>
-            <div class="tab-btn" onclick="switchSection('war', this)">GUILD WAR ⚔️</div>
+            <div class="tab-btn active" onclick="switchTab('glory', this)">GLORY 🏆</div>
+            <div class="tab-btn" onclick="switchTab('war', this)">GUILD WAR ⚔️</div>
+            <div class="tab-btn" onclick="switchTab('likes', this)">LIKES 👍</div>
+            <div class="tab-btn" onclick="switchTab('topup', this)">TOP UP 💎</div>
         </div>
 
-        <div id="likes" class="section-container active">
-            <div class="store-grid">
-                <div class="card bounce-click"><h3>Weekly Likes</h3><div class="price">₹100</div><button class="buy-btn" onclick="openPay('Weekly Likes','100')">ORDER NOW</button></div>
-                <div class="card bounce-click"><h3>Grandmaster</h3><div class="price">₹800</div><button class="buy-btn" onclick="openPay('Grandmaster','800')">ORDER NOW</button></div>
-            </div>
-        </div>
+        <div id="glory" class="section-container active"><div class="store-grid">
+            <div class="card"><h3>Mini Glory</h3><div class="price">₹200</div><span>200k Glory Boost</span><button class="buy-btn" onclick="openPay('Mini Glory','200')">ORDER NOW</button></div>
+            <div class="card"><h3>Starter Glory</h3><div class="price">₹800</div><span>500k Glory Boost</span><button class="buy-btn" onclick="openPay('Starter Glory','800')">ORDER NOW</button></div>
+            <div class="card"><h3>Mega Glory</h3><div class="price">₹1000</div><span>1M Glory Boost</span><button class="buy-btn" onclick="openPay('Mega Glory','1000')">ORDER NOW</button></div>
+            <div class="card"><h3>Full Match</h3><div class="price">₹1500</div><span>Full Guild Glory</span><button class="buy-btn" onclick="openPay('Full Match','1500')">ORDER NOW</button></div>
+        </div></div>
 
-        <div id="glory" class="section-container">
-            <div class="store-grid">
-                <div class="card bounce-click"><h3>Mini Glory</h3><div class="price">₹200</div><button class="buy-btn" onclick="openPay('Mini Glory','200')">ORDER NOW</button></div>
-            </div>
-        </div>
+        <div id="war" class="section-container"><div class="store-grid">
+            <div class="card"><h3>War Points Boost</h3><div class="price">₹350</div><span>Guild War Special Pack</span><button class="buy-btn" onclick="openPay('War Points','350')">ORDER NOW</button></div>
+        </div></div>
 
-        <div id="topup" class="section-container">
-            <div class="store-grid">
-                <div class="card bounce-click"><h3>100 Diamonds</h3><div class="price">₹80</div><button class="buy-btn" onclick="openPay('100 Diamonds','80')">ORDER NOW</button></div>
-            </div>
-        </div>
+        <div id="likes" class="section-container"><div class="store-grid">
+            <div class="card"><h3>Weekly Starter</h3><div class="price">₹100</div><span>1540 Likes</span><button class="buy-btn" onclick="openPay('Weekly Starter','100')">ORDER NOW</button></div>
+            <div class="card"><h3>Pro Booster</h3><div class="price">₹170</div><span>3300 Likes</span><button class="buy-btn" onclick="openPay('Pro Booster','170')">ORDER NOW</button></div>
+            <div class="card"><h3>Elite Monthly</h3><div class="price">₹300</div><span>6600 Likes</span><button class="buy-btn" onclick="openPay('Elite Monthly','300')">ORDER NOW</button></div>
+            <div class="card"><h3>Grandmaster</h3><div class="price">₹800</div><span>19800 Likes</span><button class="buy-btn" onclick="openPay('Grandmaster','800')">ORDER NOW</button></div>
+        </div></div>
 
-        <div id="support" class="section-container">
-            <h2 style="text-align:center">CUSTOMER SUPPORT</h2>
-            <div class="card bounce-click" style="margin-bottom:15px" onclick="window.location.href='https://wa.me/60126014273'">
-                <i class="fab fa-whatsapp" style="font-size:40px; color:#25D366"></i><h3>Chat WhatsApp</h3>
-            </div>
-        </div>
+        <div id="topup" class="section-container"><div class="store-grid">
+            <div class="card"><h3>100 Diamonds</h3><div class="price">₹80</div><button class="buy-btn" onclick="openPay('100 Diamonds','80')">ORDER NOW</button></div>
+            <div class="card"><h3>520 Diamonds</h3><div class="price">₹400</div><button class="buy-btn" onclick="openPay('520 Diamonds','400')">ORDER NOW</button></div>
+            <div class="card"><h3>1060 Diamonds</h3><div class="price">₹800</div><button class="buy-btn" onclick="openPay('1060 Diamonds','800')">ORDER NOW</button></div>
+        </div></div>
 
         <div class="bottom-nav">
-            <div class="nav-item active bounce-click" onclick="navTo('home', this)"><i class="fas fa-home"></i><span>HOME</span></div>
-            <div class="nav-item bounce-click" onclick="navTo('support', this)"><i class="fas fa-headset"></i><span>SUPPORT</span></div>
-            <div class="nav-item bounce-click" onclick="toggleProfile()"><i class="fas fa-user-circle"></i><span>PROFILE</span></div>
-        </div>
-
-        <div id="sideProfile" class="side-panel">
-            <i class="fas fa-times" onclick="toggleProfile()" style="font-size:24px; cursor:pointer"></i>
-            <div style="text-align:center; margin-top:40px;">
-                <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" style="width:80px; border:3px solid var(--primary); border-radius:50%">
-                <h3 id="uEmailDisp">user@mail.com</h3>
-                <button class="buy-btn" style="background:red" onclick="auth.signOut().then(()=>location.reload())">LOGOUT</button>
-            </div>
+            <div class="nav-item active" onclick="navTo('home', this)"><i class="fas fa-home"></i><span>Home</span></div>
+            <div class="nav-item" onclick="window.location.href='https://wa.me/60126014273'"><i class="fas fa-headset"></i><span>Support</span></div>
+            <div class="nav-item" onclick="logout()"><i class="fas fa-sign-out-alt"></i><span>Logout</span></div>
         </div>
     </div>
 
-    <div id="paymentModal" class="modal">
+    <div id="payModal" class="modal">
         <div class="modal-content">
-            <span onclick="closePay()" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
-            <h3 id="pName" style="color:var(--primary)"></h3><p id="pPrice"></p>
-            <input type="number" id="uUID" placeholder="Enter Player UID" required style="width:100%; padding:10px; margin:10px 0; border-radius:8px; border:none; background:#000; color:#fff;">
+            <span onclick="document.getElementById('payModal').style.display='none'" style="float:right; cursor:pointer; font-size:24px;">&times;</span>
+            <h3 id="pn" style="color:var(--primary)"></h3><p id="pp"></p>
+            <input type="number" id="uid_in" placeholder="Enter Player UID">
             
             <div class="server-box">
-                <input type="text" id="srvSearch" class="server-search" placeholder="🔍 Search All Servers..." onkeyup="filterSrv()">
-                <div class="server-list" id="srvList">
-                    <div class="server-item" onclick="pkSrv('India 🇮🇳', this)">India 🇮🇳</div>
-                    <div class="server-item" onclick="pkSrv('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩</div>
-                    <div class="server-item" onclick="pkSrv('Pakistan 🇵🇰', this)">Pakistan 🇵🇰</div>
-                    <div class="server-item" onclick="pkSrv('Brazil 🇧🇷', this)">Brazil 🇧🇷</div>
-                    <div class="server-item" onclick="pkSrv('Singapore 🇸🇬', this)">Singapore 🇸🇬</div>
-                    <div class="server-item" onclick="pkSrv('Indonesia 🇮🇩', this)">Indonesia 🇮🇩</div>
-                    <div class="server-item" onclick="pkSrv('Thailand 🇹🇭', this)">Thailand 🇹🇭</div>
-                    <div class="server-item" onclick="pkSrv('Middle East 🌍', this)">Middle East 🌍</div>
-                    <div class="server-item" onclick="pkSrv('Europe 🇪🇺', this)">Europe 🇪🇺</div>
+                <input type="text" id="srv_sch" class="server-search" placeholder="🔍 Search All Servers..." onkeyup="filterSrv()">
+                <div class="server-list" id="sl">
+                    <div class="server-item" onclick="pkS('India 🇮🇳', this)">India 🇮🇳</div>
+                    <div class="server-item" onclick="pkS('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩</div>
+                    <div class="server-item" onclick="pkS('Pakistan 🇵🇰', this)">Pakistan 🇵🇰</div>
+                    <div class="server-item" onclick="pkS('Brazil 🇧🇷', this)">Brazil 🇧🇷</div>
+                    <div class="server-item" onclick="pkS('Singapore 🇸🇬', this)">Singapore 🇸🇬</div>
+                    <div class="server-item" onclick="pkS('Indonesia 🇮🇩', this)">Indonesia 🇮🇩</div>
+                    <div class="server-item" onclick="pkS('Thailand 🇹🇭', this)">Thailand 🇹🇭</div>
+                    <div class="server-item" onclick="pkS('Vietnam 🇻🇳', this)">Vietnam 🇻🇳</div>
+                    <div class="server-item" onclick="pkS('Europe 🇪🇺', this)">Europe 🇪🇺</div>
+                    <div class="server-item" onclick="pkS('Middle East 🌍', this)">Middle East 🌍</div>
                 </div>
             </div>
 
-            <select id="pMethod" style="width:100%; padding:10px; margin-bottom:10px; border-radius:8px;"><option value="upi">UPI (PhonePe/GPay)</option><option value="binance">Binance Pay</option></select>
-            <div id="uImg" style="text-align:center;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=priyanshdaku@fam&pn=Priyansh%20Gupta&cu=INR" style="width:140px; background:#fff; padding:5px; border-radius:10px;"></div>
-            <input type="file" id="ssInput" accept="image/*" style="margin-top:10px">
-            <button class="buy-btn" style="margin-top:15px" onclick="sbOrder()" id="finalBtn">CONFIRM ORDER</button>
+            <div style="text-align:center;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=upi://pay?pa=priyanshdaku@fam&pn=Priyansh%20Gupta&cu=INR" style="width:140px; background:#fff; padding:5px; border-radius:10px;"></div>
+            <input type="file" id="ss_file" accept="image/*" style="margin-top:10px">
+            <button class="buy-btn" style="margin-top:15px" onclick="sbO()" id="sb_btn">CONFIRM ORDER</button>
         </div>
     </div>
 
@@ -146,42 +154,68 @@
         const firebaseConfig = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore();
-        let uEmail = "", srvS = "";
+        let selectedSrv = "";
 
-        // DAKU SPECIAL CREDENTIALS
-        const botToken = "8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY"; 
-        const chatId = "6829395007";
+        const bt = "8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY";
+        const ci = "6829395007";
 
-        function switchSection(id, el) { document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); document.getElementById(id).classList.add('active'); el.classList.add('active'); }
-        function navTo(id, el) { if(id==='home') { switchSection('likes', document.querySelector('.tab-btn')); } else { document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active')); document.getElementById(id).classList.add('active'); } document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active')); el.classList.add('active'); }
-        function filterSrv() { let input = document.getElementById('srvSearch').value.toLowerCase(); document.querySelectorAll('.server-item').forEach(o => { o.style.display = o.innerText.toLowerCase().includes(input) ? "" : "none"; }); }
-        function pkSrv(v, e) { srvS = v; document.querySelectorAll('.server-item').forEach(o=>o.classList.remove('active')); e.classList.add('active'); }
-        function toggleProfile() { document.getElementById('sideProfile').classList.toggle('open'); }
-        function openPay(n, p) { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText="Price: ₹"+p; document.getElementById('paymentModal').style.display='flex'; }
-        function closePay() { document.getElementById('paymentModal').style.display='none'; }
-        function loginUser() { auth.signInWithEmailAndPassword(document.getElementById('loginEmail').value, document.getElementById('loginPass').value).catch(e=>alert(e.message)); }
-        
-        auth.onAuthStateChanged(user => { if(user) { uEmail=user.email; document.getElementById('auth-box').style.display='none'; document.getElementById('main-interface').style.display='block'; document.getElementById('uEmailDisp').innerText=user.email; } });
-        
-        async function sbOrder() {
-            const uid=document.getElementById('uUID').value, file=document.getElementById('ssInput').files[0];
-            if(!uid || !srvS || !file) return alert("Bhai, Details bhariye!");
-            document.getElementById('finalBtn').innerText="Processing...";
-            try {
-                const fd=new FormData(); fd.append('image', file); fd.append('key', 'A1037b6cc94b8ad73b08a4d2e9bd529f');
-                const res=await fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd});
-                const data=await res.json();
-                if(data.success) {
-                    const ssUrl = data.data.url;
-                    await db.collection("orders").add({ email: uEmail, uid: uid, server: srvS, plan: document.getElementById('pName').innerText, price: document.getElementById('pPrice').innerText, screenshot: ssUrl, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                    
-                    const msg = `🚀 *NEW ORDER DAKU YT 1M*%0A%0A📧 *User:* ${uEmail}%0A🆔 *UID:* ${uid}%0A🌍 *Server:* ${srvS}%0A📦 *Item:* ${document.getElementById('pName').innerText}%0A🖼️ *SS:* ${ssUrl}`;
-                    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${msg}&parse_mode=Markdown`);
-                    
-                    alert("Order Placed! Aapko Telegram pe alert mil gaya hoga."); 
-                    closePay();
+        function initSecurity() {
+            db.collection("settings").doc("store").onSnapshot(doc => {
+                if(doc.data()?.closed) {
+                    document.getElementById('m-screen').style.display='flex';
+                    document.getElementById('auth-screen').style.display='none';
+                    document.getElementById('loader').style.display='none';
+                } else {
+                    document.getElementById('m-screen').style.display='none';
+                    auth.onAuthStateChanged(user => {
+                        document.getElementById('loader').style.display='none';
+                        if(user) {
+                            document.getElementById('auth-screen').style.display='none';
+                            document.getElementById('main-interface').style.display='block';
+                            document.getElementById('uNameTop').innerText = user.email.split('@')[0].toUpperCase();
+                        } else {
+                            document.getElementById('auth-screen').style.display='flex';
+                            document.getElementById('main-interface').style.display='none';
+                        }
+                    });
                 }
-            } catch(e) { alert("Error!"); } finally { document.getElementById('finalBtn').innerText="CONFIRM ORDER"; }
+            });
+        }
+
+        function loginUser() {
+            if(!turnstile.getResponse()) return alert("Security Check Required!");
+            auth.signInWithEmailAndPassword(document.getElementById('logEmail').value, document.getElementById('logPass').value).catch(e=>alert(e.message));
+        }
+
+        function registerUser() {
+            const email = prompt("Enter Email:");
+            const pass = prompt("Create Password:");
+            if(email && pass) auth.createUserWithEmailAndPassword(email, pass).then(()=>alert("Success!")).catch(e=>alert(e.message));
+        }
+
+        function logout() { auth.signOut().then(()=>location.reload()); }
+        function switchTab(id, el) { document.querySelectorAll('.section-container').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active')); document.getElementById(id).classList.add('active'); el.classList.add('active'); }
+        function filterSrv() { let input = document.getElementById('srv_sch').value.toLowerCase(); document.querySelectorAll('.server-item').forEach(o => { o.style.display = o.innerText.toLowerCase().includes(input) ? "" : "none"; }); }
+        function pkS(v, e) { selectedSrv = v; document.querySelectorAll('.server-item').forEach(o=>o.classList.remove('active')); e.classList.add('active'); }
+        function openPay(n, p) { document.getElementById('pn').innerText=n; document.getElementById('pp').innerText="Price: ₹"+p; document.getElementById('payModal').style.display='flex'; }
+
+        async function sbO() {
+            const uid = document.getElementById('uid_in').value, file = document.getElementById('ss_file').files[0];
+            if(!uid || !selectedSrv || !file) return alert("Fill all details!");
+            document.getElementById('sb_btn').innerText = "Uploading...";
+            try {
+                const fd = new FormData(); fd.append('image', file); fd.append('key', 'A1037b6cc94b8ad73b08a4d2e9bd529f');
+                const res = await fetch('https://api.imgbb.com/1/upload', {method:'POST', body:fd});
+                const data = await res.json();
+                if(data.success) {
+                    const ss = data.data.url;
+                    await db.collection("orders").add({ email: auth.currentUser.email, uid: uid, server: selectedSrv, plan: document.getElementById('pn').innerText, price: document.getElementById('pp').innerText, screenshot: ss, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    const msg = `🚀 *NEW ORDER*%0AUser: ${auth.currentUser.email}%0AUID: ${uid}%0AItem: ${document.getElementById('pn').innerText}%0AServer: ${selectedSrv}%0ASS: ${ss}`;
+                    fetch(`https://api.telegram.org/bot${bt}/sendMessage?chat_id=${ci}&text=${msg}&parse_mode=Markdown`);
+                    alert("Order Placed! Check Telegram notification."); 
+                    location.reload();
+                }
+            } catch(e) { alert("Error!"); }
         }
     </script>
 </body>
