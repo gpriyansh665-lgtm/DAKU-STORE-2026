@@ -26,7 +26,7 @@
             overflow-x: hidden; 
         }
         
-        /* 🚀 BULLETPROOF LOADER */
+        /* LOADER SCREEN */
         #loader { 
             position: fixed; 
             top: 0; 
@@ -39,7 +39,7 @@
             align-items: center; 
             justify-content: center; 
             z-index: 50000; 
-            animation: hideLoader 0.5s ease 1s forwards; 
+            transition: opacity 0.5s ease;
         }
         
         .spinner { 
@@ -53,10 +53,6 @@
         
         @keyframes spin { 
             100% { transform: rotate(360deg); } 
-        }
-        
-        @keyframes hideLoader { 
-            to { opacity: 0; visibility: hidden; z-index: -10; } 
         }
         
         /* MAINTENANCE SCREEN */
@@ -117,7 +113,12 @@
             font-weight: bold; 
             cursor: pointer; 
             font-family: 'Orbitron'; 
-            transition: 0.3s; 
+            transition: background 0.3s; 
+        }
+
+        .btn-main:disabled {
+            background: #555;
+            cursor: not-allowed;
         }
         
         header { 
@@ -378,27 +379,87 @@
         </div>
 
         <div id="likes" class="section-container active">
-            <div class="card"><div class="card-title">Weekly Starter</div><div class="card-price">₹100</div><div class="card-subtitle">1540 Total Likes</div><button class="order-now-btn" onclick="openPay('Weekly Starter','100','player')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Pro Booster</div><div class="card-price">₹170</div><div class="card-subtitle">3300 Total Likes</div><button class="order-now-btn" onclick="openPay('Pro Booster','170','player')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Elite Monthly</div><div class="card-price">₹300</div><div class="card-subtitle">6600 Total Likes</div><button class="order-now-btn" onclick="openPay('Elite Monthly','300','player')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Grandmaster</div><div class="card-price">₹800</div><div class="card-subtitle">19800 Total Likes</div><button class="order-now-btn" onclick="openPay('Grandmaster','800','player')">ORDER DM</button></div>
+            <div class="card">
+                <div class="card-title">Weekly Starter</div>
+                <div class="card-price">₹100</div>
+                <div class="card-subtitle">1540 Total Likes</div>
+                <button class="order-now-btn" onclick="openPay('Weekly Starter','100','player')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Pro Booster</div>
+                <div class="card-price">₹170</div>
+                <div class="card-subtitle">3300 Total Likes</div>
+                <button class="order-now-btn" onclick="openPay('Pro Booster','170','player')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Elite Monthly</div>
+                <div class="card-price">₹300</div>
+                <div class="card-subtitle">6600 Total Likes</div>
+                <button class="order-now-btn" onclick="openPay('Elite Monthly','300','player')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Grandmaster</div>
+                <div class="card-price">₹800</div>
+                <div class="card-subtitle">19800 Total Likes</div>
+                <button class="order-now-btn" onclick="openPay('Grandmaster','800','player')">ORDER DM</button>
+            </div>
         </div>
 
         <div id="glory" class="section-container">
-            <div class="card"><div class="card-title">Mini Glory</div><div class="card-price">₹200</div><div class="card-subtitle">200k Glory Boost</div><button class="order-now-btn" onclick="openPay('Mini Glory','200','guild')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Starter Glory</div><div class="card-price">₹800</div><div class="card-subtitle">500k Glory Boost</div><button class="order-now-btn" onclick="openPay('Starter Glory','800','guild')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Mega Glory</div><div class="card-price">₹1000</div><div class="card-subtitle">1M Glory Boost</div><button class="order-now-btn" onclick="openPay('Mega Glory','1000','guild')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Full Match</div><div class="card-price">₹1500</div><div class="card-subtitle">Full Guild Glory</div><button class="order-now-btn" onclick="openPay('Full Match','1500','guild')">ORDER DM</button></div>
+            <div class="card">
+                <div class="card-title">Mini Glory</div>
+                <div class="card-price">₹200</div>
+                <div class="card-subtitle">200k Glory Boost</div>
+                <button class="order-now-btn" onclick="openPay('Mini Glory','200','guild')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Starter Glory</div>
+                <div class="card-price">₹800</div>
+                <div class="card-subtitle">500k Glory Boost</div>
+                <button class="order-now-btn" onclick="openPay('Starter Glory','800','guild')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Mega Glory</div>
+                <div class="card-price">₹1000</div>
+                <div class="card-subtitle">1M Glory Boost</div>
+                <button class="order-now-btn" onclick="openPay('Mega Glory','1000','guild')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Full Match</div>
+                <div class="card-price">₹1500</div>
+                <div class="card-subtitle">Full Guild Glory</div>
+                <button class="order-now-btn" onclick="openPay('Full Match','1500','guild')">ORDER DM</button>
+            </div>
         </div>
 
         <div id="war" class="section-container">
-            <div class="card"><div class="card-title">Starter War</div><div class="card-price">₹2000</div><div class="card-subtitle">10,000 War Points</div><button class="order-now-btn" onclick="openPay('Starter War','2000','guild')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">Pro War</div><div class="card-price">₹5000</div><div class="card-subtitle">20,000 War Points</div><button class="order-now-btn" onclick="openPay('Pro War','5000','guild')">ORDER DM</button></div>
+            <div class="card">
+                <div class="card-title">Starter War</div>
+                <div class="card-price">₹2000</div>
+                <div class="card-subtitle">10,000 War Points</div>
+                <button class="order-now-btn" onclick="openPay('Starter War','2000','guild')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">Pro War</div>
+                <div class="card-price">₹5000</div>
+                <div class="card-subtitle">20,000 War Points</div>
+                <button class="order-now-btn" onclick="openPay('Pro War','5000','guild')">ORDER DM</button>
+            </div>
         </div>
 
         <div id="diamonds" class="section-container">
-            <div class="card"><div class="card-title">100 Diamonds</div><div class="card-price">₹80</div><div class="card-subtitle">Direct Topup</div><button class="order-now-btn" onclick="openPay('100 Diamonds','80','player')">ORDER DM</button></div>
-            <div class="card"><div class="card-title">1060 Diamonds</div><div class="card-price">₹800</div><div class="card-subtitle">Direct Topup</div><button class="order-now-btn" onclick="openPay('1060 Diamonds','800','player')">ORDER DM</button></div>
+            <div class="card">
+                <div class="card-title">100 Diamonds</div>
+                <div class="card-price">₹80</div>
+                <div class="card-subtitle">Direct Topup</div>
+                <button class="order-now-btn" onclick="openPay('100 Diamonds','80','player')">ORDER DM</button>
+            </div>
+            <div class="card">
+                <div class="card-title">1060 Diamonds</div>
+                <div class="card-price">₹800</div>
+                <div class="card-subtitle">Direct Topup</div>
+                <button class="order-now-btn" onclick="openPay('1060 Diamonds','800','player')">ORDER DM</button>
+            </div>
         </div>
 
         <a href="https://t.me/DAKU_YT_1M" class="tg-float" target="_blank"><i class="fab fa-telegram-plane"></i></a>
@@ -422,6 +483,7 @@
             <p id="pPrice" style="color:var(--accent); font-weight:bold;"></p>
             
             <input type="number" id="uid" placeholder="Player UID">
+            
             <div id="guild-field" style="display:none;">
                 <input type="number" id="gid" placeholder="Guild ID">
             </div>
@@ -473,32 +535,9 @@
         <div class="modal-content">
             <h3 style="color:var(--primary); font-family:'Orbitron';">MY ACCOUNT</h3>
             <p id="userEmailDisplay" style="font-size:12px; color:var(--accent); margin-bottom:20px;"></p>
-            <button class="btn-main" onclick="auth.signOut(); location.reload();" style="background:red;">LOGOUT</button>
+            <button class="btn-main" onclick="logoutUser()" style="background:red;">LOGOUT</button>
             <p onclick="closeModal('profModal')" style="cursor:pointer; color:#555; font-size:12px; margin-top:15px;">CLOSE</p>
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
-    <script>
-        // 1. FIREBASE SETUP
-        const firebaseConfig = { 
-            apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", 
-            authDomain: "daku-store-f2f40.firebaseapp.com", 
-            projectId: "daku-store-f2f40", 
-            storageBucket: "daku-store-f2f40.firebasestorage.app", 
-            messagingSenderId: "556695942867", 
-            appId: "1:556695942867:web:e7ca38cd63e788cee80626" 
-        };
-        
-        firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-        
-        let method = "";
-        let srv = "";
-        let isUserLoggedIn = false;
-        let isMaintenanceOn = false;
-    
+    <script src="https://www.gs
