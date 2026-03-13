@@ -22,10 +22,23 @@
         #admin-dashboard { display: none; max-width: 800px; margin: 0 auto; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
         
+        /* 🛠️ MAINTENANCE PANEL */
+        .maintenance-box { background: #161a26; padding: 15px; border-radius: 15px; border: 1px solid var(--primary); text-align: center; margin-bottom: 20px; box-shadow: 0 0 10px rgba(255, 75, 43, 0.1); }
+        .maintenance-box h3 { color: var(--primary); font-family: 'Orbitron'; margin: 0 0 5px 0; font-size: 16px; }
+        .m-btn-group { display: flex; gap: 10px; justify-content: center; margin-top: 15px; }
+        .m-btn { padding: 8px 15px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; font-size: 12px; font-family: 'Orbitron'; }
+        
+        /* 📂 CATEGORY TABS */
+        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; margin-bottom: 20px; scrollbar-width: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { padding: 8px 15px; background: #1a1e2e; border: 1px solid #333; border-radius: 10px; color: #888; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; font-weight: bold; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+        /* 📦 ORDER CARDS */
         .order-card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; border-left: 5px solid var(--primary); position: relative; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .status-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 5px; font-size: 10px; font-weight: bold; font-family: 'Orbitron'; }
+        .status-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 5px; font-size: 10px; font-weight: bold; font-family: 'Orbitron'; text-transform: uppercase; }
         .pending { background: #ffcc00; color: #000; }
         .success { background: #00ffcc; color: #000; }
         
@@ -58,8 +71,28 @@
             <button onclick="logoutAdmin()" style="background:red; border: none; color:white; padding:5px 12px; border-radius:5px; cursor:pointer; font-size: 10px;">LOGOUT</button>
         </div>
 
+        <div class="maintenance-box">
+            <h3>🛠️ STORE MAINTENANCE</h3>
+            <p style="color: #bbb; font-size: 11px; margin: 0;">Yahan se poori site ko band ya chalu karein</p>
+            
+            <p id="m-status" style="margin-top: 10px; font-weight: bold; font-size: 12px; background: #000; padding: 8px; border-radius: 5px; display: inline-block;">Checking status...</p>
+            
+            <div class="m-btn-group">
+                <button class="m-btn" onclick="setMaintenance(true)" style="background: #ff4b2b; color: white;">🛑 TURN ON (BAND)</button>
+                <button class="m-btn" onclick="setMaintenance(false)" style="background: #00ffcc; color: black;">✅ TURN OFF (LIVE)</button>
+            </div>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="filterOrders('all', this)">ALL ORDERS</button>
+            <button class="tab-btn" onclick="filterOrders('likes', this)">LIKES 👍</button>
+            <button class="tab-btn" onclick="filterOrders('glory', this)">GUILD GLORY 🏆</button>
+            <button class="tab-btn" onclick="filterOrders('war', this)">GUILD WAR ⚔️</button>
+            <button class="tab-btn" onclick="filterOrders('diamonds', this)">DIAMONDS 💎</button>
+        </div>
+
         <div id="orders-container">
-            <p style="text-align:center; color:#444;">Bhai, orders aa rahe hain...</p>
+            <p style="text-align:center; color:#444;">Bhai, orders load ho rahe hain...</p>
         </div>
     </div>
 
@@ -79,9 +112,11 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 🛡️ ADMIN DETAILS
+        // 🛡️ ADMIN DETAILS (Yehi teri fix details hain)
         const ADMIN_USER = "teamcobra665@gmail.com";
         const ADMIN_PASS = "dakuyt1m";
+
+        let currentFilter = 'all'; 
 
         function loginAdmin() {
             const e = document.getElementById('admEmail').value;
@@ -90,7 +125,7 @@
                 localStorage.setItem("isDakuAdmin", "true");
                 showDashboard();
             } else {
-                alert("DHOKHA DIYA LAUDE 🔥!");
+                alert("Galat Email ya Password! 🔥");
             }
         }
 
@@ -98,6 +133,7 @@
             document.getElementById('admin-auth').style.display = 'none';
             document.getElementById('admin-dashboard').style.display = 'block';
             fetchOrders();
+            listenMaintenance(); 
         }
 
         function logoutAdmin() {
@@ -109,23 +145,84 @@
             showDashboard();
         }
 
+        // 🛠️ MAINTENANCE LOGIC
+        function listenMaintenance() {
+            db.collection("settings").doc("config").onSnapshot((doc) => {
+                const statusText = document.getElementById('m-status');
+                if (doc.exists && doc.data().maintenance === true) {
+                    statusText.innerText = "Current Status: 🔴 MAINTENANCE IS ON";
+                    statusText.style.color = "#ff4b2b";
+                } else {
+                    statusText.innerText = "Current Status: 🟢 MAINTENANCE IS OFF (LIVE)";
+                    statusText.style.color = "#00ffcc";
+                }
+            });
+        }
+
+        async function setMaintenance(isMaintenanceOn) {
+            try {
+                await db.collection("settings").doc("config").set({
+                    maintenance: isMaintenanceOn
+                }, { merge: true }); 
+                
+                if(isMaintenanceOn) alert("🛑 Maintenance Mode ON!");
+                else alert("✅ Maintenance Mode OFF!");
+            } catch (error) {
+                alert("❌ Error: Firebase update nahi hua. Reason: " + error.message);
+            }
+        }
+
+        // 📂 CATEGORY FILTER LOGIC
+        function filterOrders(category, btnElement) {
+            currentFilter = category; 
+
+            if (btnElement) {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                btnElement.classList.add('active');
+            }
+
+            const cards = document.querySelectorAll('.order-card');
+            cards.forEach(card => {
+                if (category === 'all' || card.classList.contains('cat-' + category)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function getCategoryFromPlan(planName) {
+            const p = planName.toLowerCase();
+            if(p.includes('diamond')) return 'diamonds';
+            if(p.includes('war')) return 'war';
+            if(p.includes('glory') || p.includes('match')) return 'glory';
+            return 'likes'; 
+        }
+
+        // 📦 FETCH REAL-TIME ORDERS
         function fetchOrders() {
             db.collection("orders").orderBy("timestamp", "desc").onSnapshot(snapshot => {
                 const container = document.getElementById('orders-container');
                 container.innerHTML = "";
                 
+                if (snapshot.empty) {
+                    container.innerHTML = "<p style='text-align:center; color:#888;'>No orders found.</p>";
+                    return;
+                }
+
                 snapshot.forEach(doc => {
                     const order = doc.data();
                     const orderId = doc.id;
                     const statusClass = order.status === "Pending" ? "pending" : "success";
+                    const orderCategory = getCategoryFromPlan(order.plan);
 
                     container.innerHTML += `
-                        <div class="order-card">
+                        <div class="order-card cat-${orderCategory}">
                             <span class="status-badge ${statusClass}">${order.status}</span>
                             <div class="order-info">
-                                <p><b>User:</b> ${order.email}</p>
+                                <p><b>User Email:</b> ${order.email}</p>
                                 <p><b>Plan:</b> ${order.plan}</p>
-                                <p><b>UID:</b> ${order.uid}</p>
+                                <p><b>UID/Guild ID:</b> ${order.uid}</p>
                                 <p><b>Server:</b> ${order.server}</p>
                                 
                                 <a href="${order.screenshot}" target="_blank" class="proof-btn">
@@ -135,23 +232,32 @@
                             
                             <div class="action-btns">
                                 <button class="act-btn btn-done" onclick="markDone('${orderId}')">MARK SUCCESS</button>
-                                <button class="act-btn btn-delete" onclick="deleteOrder('${orderId}')">DELETE</button>
+                                <button class="act-btn btn-delete" onclick="deleteOrder('${orderId}')">DELETE ORDER</button>
                             </div>
                         </div>
                     `;
                 });
+
+                filterOrders(currentFilter, null);
             });
         }
 
+        // ✅ MARK ORDER AS SUCCESS
         function markDone(id) {
-            db.collection("orders").doc(id).update({ status: "Success" });
+            db.collection("orders").doc(id).update({ status: "Success" })
+            .then(() => console.log("Order marked as success!"))
+            .catch((error) => alert("Error: " + error.message));
         }
 
+        // ❌ DELETE ORDER
         function deleteOrder(id) {
-            if(confirm("Bhai, delete karna hai?")) {
-                db.collection("orders").doc(id).delete();
+            if(confirm("Kasam se? Ye order hamesha ke liye delete ho jayega!")) {
+                db.collection("orders").doc(id).delete()
+                .then(() => console.log("Order deleted!"))
+                .catch((error) => alert("Error: " + error.message));
             }
         }
     </script>
 </body>
 </html>
+
