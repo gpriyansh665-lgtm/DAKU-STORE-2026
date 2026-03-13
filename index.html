@@ -179,15 +179,15 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // 1. FAIL-SAFE LOADER LOGIC (Ab kabhi nahi atkega)
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                var loader = document.getElementById('loader');
+        // ✅ 1. LOADER HIDE LOGIC (Perfected)
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
                 if(loader) {
                     loader.style.opacity = '0';
-                    setTimeout(function() { loader.style.display = 'none'; }, 500);
+                    setTimeout(() => loader.style.display = 'none', 500);
                 }
-            }, 1000); // 1 Second ke baad loader gayab
+            }, 1000); 
         });
 
         // 2. TURNSTILE CLOUDFLARE
@@ -252,4 +252,5 @@
         function switchTab(id,b) { document.querySelectorAll('.section-container').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); b.classList.add('active'); }
         function openPay(n,p,t) { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText="Price: ₹"+p; document.getElementById('guild-field').style.display=t==='guild'?'block':'none'; document.getElementById('payModal').style.display='flex'; }
         function selOwl(v, e) { srv=v; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); e.classList.add('active'); }
-        function setPay(m) { method=m; document.getElementById('payDetails').style.display='block'; document.getElementById('upiQR').style.display=m==='UPI'?'block':'none'; document.getElementById('binID').style.display=m==='Binance'?'blo
+        function setPay(m) { method=m; document.getElementById('payDetails').style.display='block'; document.getElementById('upiQR').style.display=m==='UPI'?'block':'none'; document.getElementById('binID').style.display=m==='Binance'?'block':'none'; }
+        function closeModal(id) { docu
