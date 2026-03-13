@@ -11,16 +11,18 @@
         :root { --primary: #ff4b2b; --bg: #05070a; --card: #161a26; --accent: #0081c9; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
         
-        /* LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 50000; transition: opacity 0.5s; }
-        .spinner { width: 40px; height: 40px; border: 4px solid #111; border-top: 4px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        /* 🛡️ FAKE CLOUDFLARE SCREEN (Tumhari pasand wali) */
+        #cf-interstitial { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #ffffff; color: #333; z-index: 99999; display: flex; flex-direction: column; justify-content: center; padding: 20px; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        .cf-box { max-width: 600px; width: 100%; margin: 0 auto; text-align: left; }
+        .cf-box h1 { font-size: 26px; margin-bottom: 5px; display: flex; align-items: center; gap: 10px; color: #333; }
+        .cf-box h2 { font-size: 20px; margin-bottom: 15px; font-weight: 600; color: #333; }
+        .cf-box p { font-size: 15px; color: #555; line-height: 1.5; margin-bottom: 20px; }
         
         /* MAINTENANCE SCREEN */
         #maintenance-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 40000; text-align: center; }
         
         #security-wall { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; }
-        #auth-screen { display: none; width: 85%; max-width: 350px; text-align: center; }
+        #auth-screen { width: 85%; max-width: 350px; text-align: center; }
         input { width: 100%; padding: 12px; margin: 8px 0; background: #0f121d; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
         .btn-main { width: 100%; padding: 12px; background: var(--primary); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
         header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
@@ -54,9 +56,16 @@
 </head>
 <body>
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <p style="font-family:'Orbitron'; margin-top:10px;">DAKU STORE</p>
+    <div id="cf-interstitial">
+        <div class="cf-box">
+            <h1>
+                <svg width="30" height="30" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M43.6 22.8c-1.8-8.5-9.3-14.8-18.1-14.8-6.6 0-12.4 3.5-15.6 8.8C4.3 17.5 0 22.3 0 28.1c0 6.6 5.4 11.9 12 11.9h27c5 0 9-4 9-9 0-4.6-3.4-8.3-7.8-8.8l3.4.6z" fill="#F38020"/></svg>
+                daku-store.vip
+            </h1>
+            <h2>Performing security verification</h2>
+            <p>This website uses a security service to protect against malicious bots. This page is displayed while the website verifies you are not a bot.</p>
+            <div id="turnstile-widget"></div>
+        </div>
     </div>
 
     <div id="maintenance-screen">
@@ -67,7 +76,6 @@
 
     <div id="security-wall">
         <div class="logo" style="font-family:'Orbitron'; font-size: 30px; color:var(--primary); margin-bottom:20px;">DAKU STORE</div>
-        <div id="cf-container"><div id="turnstile-widget"></div></div>
         <div id="auth-screen">
             <h3 id="auth-title" style="font-family:'Orbitron'; font-size:14px;">REGISTER ACCOUNT</h3>
             <input type="email" id="email" placeholder="Email Address">
@@ -179,29 +187,20 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // ✅ 1. LOADER HIDE LOGIC (Perfected)
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                const loader = document.getElementById('loader');
-                if(loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }
-            }, 1000); 
-        });
-
-        // 2. TURNSTILE CLOUDFLARE
+        // ✅ 1. CLOUDFLARE SCRIPT & UI (Tumhari Screenshot wali screen)
         window.onloadTurnstileCallback = () => { 
             turnstile.render('#turnstile-widget', { 
                 sitekey: '1x00000000000000000000AA', 
                 callback: () => { 
-                    document.getElementById('cf-container').style.display='none'; 
-                    document.getElementById('auth-screen').style.display='block'; 
+                    // Verify hote hi white screen gayab
+                    document.getElementById('cf-interstitial').style.display='none'; 
+                    // Phir check karega ki login dikhana hai ya main store
+                    checkAuthStatus();
                 } 
             }); 
         };
 
-        // 3. FIREBASE SETUP
+        // 2. FIREBASE SETUP
         const firebaseConfig = { 
             apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", 
             authDomain: "daku-store-f2f40.firebaseapp.com", 
@@ -215,7 +214,7 @@
         const db = firebase.firestore();
         let method = "", srv = "";
 
-        // 4. MAINTENANCE LOGIC
+        // 3. MAINTENANCE LOGIC
         db.collection("settings").doc("config").onSnapshot((doc) => {
             if (doc.exists && doc.data().maintenance === true) {
                 document.getElementById('maintenance-screen').style.display = 'flex';
@@ -223,34 +222,36 @@
                 document.getElementById('security-wall').style.display = 'none';
             } else {
                 document.getElementById('maintenance-screen').style.display = 'none';
-                if(auth.currentUser) {
-                    document.getElementById('main-store').style.display = 'block';
+                // Agar Cloudflare screen hat chuki hai tabhi inko show karna
+                if(document.getElementById('cf-interstitial').style.display === 'none') {
+                    checkAuthStatus();
                 }
             }
         });
 
-        // 5. AUTH LOGIC
+        // 4. AUTH LOGIC
         function toggleAuth() { const t=document.getElementById('auth-title'); t.innerText=t.innerText==="REGISTER ACCOUNT"?"LOGIN ACCOUNT":"REGISTER ACCOUNT"; }
         function handleAuth() { const e=document.getElementById('email').value, p=document.getElementById('pass').value; if(document.getElementById('auth-title').innerText==="LOGIN ACCOUNT") auth.signInWithEmailAndPassword(e,p).catch(a=>alert(a.message)); else auth.createUserWithEmailAndPassword(e,p).catch(a=>alert(a.message)); }
         
-        auth.onAuthStateChanged(user => { 
-            if(user) { 
-                document.getElementById('security-wall').style.display='none'; 
-                if (document.getElementById('maintenance-screen').style.display !== 'flex') {
-                    document.getElementById('main-store').style.display='block'; 
-                }
-                document.getElementById('userEmailDisplay').innerText = user.email; 
-            } 
-            else { 
-                if (document.getElementById('maintenance-screen').style.display !== 'flex') {
-                    document.getElementById('security-wall').style.display='flex'; 
-                }
-            } 
-        });
+        function checkAuthStatus() {
+            auth.onAuthStateChanged(user => { 
+                if(user) { 
+                    document.getElementById('security-wall').style.display='none'; 
+                    if (document.getElementById('maintenance-screen').style.display !== 'flex') {
+                        document.getElementById('main-store').style.display='block'; 
+                    }
+                    document.getElementById('userEmailDisplay').innerText = user.email; 
+                } 
+                else { 
+                    if (document.getElementById('maintenance-screen').style.display !== 'flex') {
+                        document.getElementById('security-wall').style.display='flex'; 
+                    }
+                } 
+            });
+        }
 
-        // 6. UI FUNCTIONS
-        function switchTab(id,b) { document.querySelectorAll('.section-container').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); b.classList.add('active'); }
-        function openPay(n,p,t) { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText="Price: ₹"+p; document.getElementById('guild-field').style.display=t==='guild'?'block':'none'; document.getElementById('payModal').style.display='flex'; }
-        function selOwl(v, e) { srv=v; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); e.classList.add('active'); }
-        function setPay(m) { method=m; document.getElementById('payDetails').style.display='block'; document.getElementById('upiQR').style.display=m==='UPI'?'block':'none'; document.getElementById('binID').style.display=m==='Binance'?'block':'none'; }
-        function closeModal(id) { docu
+        // Run auth check if someone is already logged in and CF resolves fast
+        auth.onAuthStateChanged(user => { if(user) document.getElementById('userEmailDisplay').innerText = user.email; });
+
+        // 5. UI FUNCTIONS
+        function switchTab(id,b) { document.querySelectorAll('.section-container').forEach(s=>s.classLis
