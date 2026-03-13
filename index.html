@@ -18,8 +18,8 @@
         /* MAINTENANCE SCREEN */
         #maintenance-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 40000; text-align: center; }
         
-        /* SECURITY WALL (Login) */
-        #security-wall { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index: 20000; display: none; flex-direction: column; align-items: center; justify-content: center; }
+        /* ✅ FIX: Yahan 'display: none' ko 'display: flex' kar diya hai taaki black screen na aaye */
+        #security-wall { position: fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); z-index: 20000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         #auth-screen { width: 85%; max-width: 350px; text-align: center; }
         
         input { width: 100%; padding: 12px; margin: 8px 0; background: #0f121d; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
@@ -59,13 +59,6 @@
         <div class="spinner"></div>
         <p style="font-family:'Orbitron'; margin-top:10px;">DAKU STORE</p>
     </div>
-
-    <script>
-        setTimeout(function() {
-            var l = document.getElementById('loader');
-            if(l) l.style.display = 'none';
-        }, 1000); 
-    </script>
 
     <div id="maintenance-screen">
         <i class="fas fa-tools" style="font-size:60px; color:var(--primary); margin-bottom:20px;"></i>
@@ -186,7 +179,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 
     <script>
-        // 1. FIREBASE SETUP
+        // 1. LOADER HATAO 1 SECOND BAAD
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if(loader) loader.style.display = 'none';
+        }, 1000);
+
+        // 2. FIREBASE SETUP
         const firebaseConfig = { 
             apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", 
             authDomain: "daku-store-f2f40.firebaseapp.com", 
@@ -200,41 +199,40 @@
         const db = firebase.firestore();
         let method = "", srv = "";
 
-        // 2. AUTHENTICATION & UI LOGIC (Fixing the Black Screen)
+        // 3. AUTHENTICATION LOGIC
         auth.onAuthStateChanged(user => { 
             if(user) { 
+                document.getElementById('security-wall').style.display = 'none'; 
+                document.getElementById('main-store').style.display = 'block'; 
                 document.getElementById('userEmailDisplay').innerText = user.email; 
-                checkMaintenance(true); // Logged in
             } 
             else { 
-                checkMaintenance(false); // Not logged in
+                document.getElementById('main-store').style.display = 'none'; 
+                document.getElementById('security-wall').style.display = 'flex'; 
             } 
         });
 
-        function checkMaintenance(isLoggedIn) {
-            db.collection("settings").doc("config").onSnapshot((doc) => {
-                if (doc.exists && doc.data().maintenance === true) {
-                    document.getElementById('maintenance-screen').style.display = 'flex';
-                    document.getElementById('main-store').style.display = 'none';
-                    document.getElementById('security-wall').style.display = 'none';
+        // 4. MAINTENANCE LOGIC
+        db.collection("settings").doc("config").onSnapshot((doc) => {
+            if (doc.exists && doc.data().maintenance === true) {
+                document.getElementById('maintenance-screen').style.display = 'flex';
+                document.getElementById('main-store').style.display = 'none';
+                document.getElementById('security-wall').style.display = 'none';
+            } else {
+                document.getElementById('maintenance-screen').style.display = 'none';
+                if(auth.currentUser) {
+                    document.getElementById('main-store').style.display = 'block';
                 } else {
-                    document.getElementById('maintenance-screen').style.display = 'none';
-                    if(isLoggedIn) {
-                        document.getElementById('security-wall').style.display = 'none';
-                        document.getElementById('main-store').style.display = 'block';
-                    } else {
-                        document.getElementById('main-store').style.display = 'none';
-                        document.getElementById('security-wall').style.display = 'flex';
-                    }
+                    document.getElementById('security-wall').style.display = 'flex';
                 }
-            });
-        }
+            }
+        });
 
-        // 3. LOGIN/REGISTER FUNCTIONS
+        // 5. LOGIN/REGISTER FUNCTIONS
         function toggleAuth() { const t=document.getElementById('auth-title'); t.innerText=t.innerText==="REGISTER ACCOUNT"?"LOGIN ACCOUNT":"REGISTER ACCOUNT"; }
         function handleAuth() { const e=document.getElementById('email').value, p=document.getElementById('pass').value; if(document.getElementById('auth-title').innerText==="LOGIN ACCOUNT") auth.signInWithEmailAndPassword(e,p).catch(a=>alert(a.message)); else auth.createUserWithEmailAndPassword(e,p).catch(a=>alert(a.message)); }
 
-        // 4. UI FUNCTIONS
+        // 6. UI FUNCTIONS
         function switchTab(id,b) { document.querySelectorAll('.section-container').forEach(s=>s.classList.remove('active')); document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active')); document.getElementById(id).classList.add('active'); b.classList.add('active'); }
         function openPay(n,p,t) { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText="Price: ₹"+p; document.getElementById('guild-field').style.display=t==='guild'?'block':'none'; document.getElementById('payModal').style.display='flex'; }
         function selOwl(v, e) { srv=v; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); e.classList.add('active'); }
@@ -242,7 +240,7 @@
         function closeModal(id) { document.getElementById(id).style.display='none'; }
         function openProfile() { document.getElementById('profModal').style.display = 'flex'; }
         
-        // 5. HISTORY FUNCTION
+        // 7. HISTORY FUNCTION
         async function openHistory() {
             document.getElementById('historyModal').style.display = 'flex';
             const list = document.getElementById('historyItems');
@@ -253,4 +251,4 @@
                 list.innerHTML = snap.empty ? "Koi order history nahi hai bhai." : "";
                 
                 snap.forEach(doc => {
-                    const d =
+        
