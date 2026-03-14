@@ -11,12 +11,12 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; padding-bottom: 90px; overflow-x: hidden; min-height: 100vh; }
 
-        /* 🔥 SMOOTH LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        /* 🔥 PREMIUM LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); pointer-events: none; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 🛠️ MAINTENANCE LOCK (High Priority) */
+        /* 🛠️ MAINTENANCE */
         #maintenance-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999998; flex-direction: column; align-items: center; justify-content: center; text-align: center; animation: fadeIn 0.5s ease; }
 
         #auth-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle, #1a0505 0%, #05070a 100%); animation: fadeIn 0.8s ease; }
@@ -25,23 +25,20 @@
         header { padding: 15px 20px; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: var(--primary); text-shadow: 0 0 10px rgba(255, 75, 43, 0.5); }
         
-        /* 🔵 BOUNCE TABS */
         .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: rgba(255,255,255,0.02); scrollbar-width: none; }
         .tab-btn { padding: 10px 22px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 11px; font-family: 'Orbitron'; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         .tab-btn:active { transform: scale(0.85); }
         .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 5px 15px rgba(255, 75, 43, 0.4); transform: translateY(-3px); }
         
-        /* 🚀 TRANSITIONS */
         .section-container { display: none; padding: 5px; }
         .section-container.active { display: block; animation: slideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
         @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; margin: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); transition: 0.3s; }
+        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; margin: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); transition: all 0.3s ease; }
         .card:hover { transform: scale(1.02); }
         .amt { font-size: 18px; font-weight: 900; font-family: 'Orbitron'; color: var(--accent); }
 
-        /* 📦 MODAL BOUNCE BACK */
         .modal { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
         .modal-content { background: #0b0e16; width: 95%; max-width: 400px; padding: 25px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; animation: modalBounce 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
         @keyframes modalBounce { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -53,10 +50,10 @@
 
         .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid var(--primary); z-index: 10000; }
         .b-item { text-align: center; color: #555; font-size: 10px; font-weight: bold; flex: 1; cursor: pointer; transition: 0.3s; }
-        .b-item.active { color: var(--primary); transform: translateY(-3px); }
+        .b-item.active { color: var(--primary); transform: translateY(-5px); }
         .b-item i { font-size: 20px; display: block; margin-bottom: 3px; }
+
         .btn-buy { background: linear-gradient(45deg, #0088cc, #00c2ff); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 12px; transition: 0.3s; }
-        .btn-buy:active { transform: scale(0.9); }
     </style>
 </head>
 <body onload="initApp()">
@@ -66,17 +63,16 @@
     <div id="maintenance-screen">
         <i class="fas fa-tools" style="font-size:70px; color:var(--primary); margin-bottom:20px;"></i>
         <h1 style="font-family:'Orbitron';">STORE UPDATING</h1>
-        <p style="color:#888; margin-top:10px;">Bhai, Admin panel se update chal raha hai.</p>
         <button onclick="location.reload()" class="btn-buy" style="margin-top:20px;">REFRESH</button>
     </div>
 
     <div id="auth-view">
-        <div class="auth-card" style="background:var(--card); padding:30px; border-radius:25px; border:1px solid #333; width:100%; max-width:380px; text-align:center;">
-            <div style="font-family:'Orbitron'; font-size:24px; color:var(--primary); margin-bottom:20px;">DAKU LOGIN</div>
+        <div class="auth-card" style="background:var(--card); padding:35px; border-radius:30px; border:1px solid #333; width:100%; max-width:380px; text-align:center;">
+            <div style="font-family:'Orbitron'; font-size:26px; color:var(--primary); margin-bottom:25px;">DAKU LOGIN</div>
             <input type="email" id="auth-email" placeholder="Email">
             <input type="password" id="auth-pass" placeholder="Password">
-            <button onclick="handleAuth()" style="width:100%; padding:15px; background:linear-gradient(45deg, var(--primary), var(--secondary)); border:none; border-radius:12px; color:white; font-weight:bold; font-family:'Orbitron'; cursor:pointer;">CONTINUE</button>
-            <div style="margin-top:15px; font-size:12px; color:#888; cursor:pointer;" onclick="toggleAuth()">Don't have an account? <span id="toggle-span" style="color:var(--primary);">SIGNUP</span></div>
+            <button onclick="handleAuth()" style="width:100%; padding:16px; background:linear-gradient(45deg, var(--primary), var(--secondary)); border:none; border-radius:15px; color:white; font-weight:bold; font-family:'Orbitron'; cursor:pointer;">CONTINUE</button>
+            <div style="margin-top:20px; font-size:12px; color:#888; cursor:pointer;" onclick="toggleAuth()">New member? <span id="toggle-span" style="color:var(--primary); font-weight:bold;">SIGNUP</span></div>
         </div>
     </div>
 
@@ -84,8 +80,8 @@
         <header>
             <div class="logo">DAKU STORE</div>
             <div class="header-icons">
-                <i class="fab fa-telegram" style="color:#0088cc; font-size:20px;" onclick="window.open('https://t.me/+NeNB5UzyGJI3OTk1')"></i>
-                <i class="fas fa-user-circle" style="font-size:20px; margin-left:15px;" onclick="openProfile()"></i>
+                <i class="fab fa-telegram" style="color:#0088cc; font-size: 22px;" onclick="window.open('https://t.me/+NeNB5UzyGJI3OTk1')"></i>
+                <i class="fas fa-user-circle" style="font-size: 22px; margin-left: 18px;" onclick="openProfile()"></i>
             </div>
         </header>
 
@@ -136,8 +132,8 @@
         </nav>
     </div>
 
-    <div id="mModal" class="modal"><div class="modal-content"><h2 id="mName" style="font-family:'Orbitron';"></h2><p id="mPrice" style="color:var(--accent); font-weight:bold;"></p><input type="number" id="uid" placeholder="Enter UID"><div class="owl-box" id="ol"></div><div id="u_info" style="display:none; padding:10px; background:white; border-radius:15px; margin:10px 0;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=priyanshdaku@gmail.com" width="100"></div><input type="file" id="file" accept="image/*"><button class="btn-buy" id="subBtn" onclick="submitOrder()" style="width:100%; padding:15px; margin-top:10px;">SUBMIT ORDER</button><p onclick="closeModal('mModal')" style="cursor:pointer; margin-top:15px; font-size:12px;">CANCEL</p></div></div>
-    <div id="profModal" class="modal"><div class="modal-content"><h2>PROFILE</h2><p id="p-email" style="margin:20px 0; color:#ccc;"></p><button class="btn-buy" style="background:red; width:100%;" onclick="auth.signOut(); location.reload();">LOGOUT</button><p onclick="closeModal('profModal')" style="margin-top:15px; cursor:pointer;">CLOSE</p></div></div>
+    <div id="mModal" class="modal"><div class="modal-content"><h2 id="mName"></h2><p id="mPrice" style="color:var(--accent); font-weight:bold;"></p><input type="number" id="uid" placeholder="Enter UID"><div class="owl-box" id="ol"></div><div id="u_info" style="display:none; padding:10px; background:white; border-radius:15px; margin:10px 0;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=priyanshdaku@gmail.com" width="100"></div><input type="file" id="file" accept="image/*"><button class="btn-buy" id="subBtn" onclick="submitOrder()" style="width:100%; padding:15px; margin-top:10px;">SUBMIT ORDER</button><p onclick="closeModal('mModal')" style="cursor:pointer; margin-top:15px; font-size:12px; color:#555;">CANCEL</p></div></div>
+    <div id="profModal" class="modal"><div class="modal-content"><h2>PROFILE</h2><p id="p-email" style="margin:15px 0; color:#ccc;"></p><button class="btn-buy" style="background:red; width:100%;" onclick="auth.signOut(); location.reload();">LOGOUT</button><p onclick="closeModal('profModal')" style="margin-top:15px; cursor:pointer;">CLOSE</p></div></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -152,9 +148,14 @@
         const servers = [{n:"India 🇮🇳",p:"20ms"},{n:"Bangladesh 🇧🇩",p:"32ms"},{n:"Pakistan 🇵🇰",p:"45ms"},{n:"Nepal 🇳🇵",p:"28ms"},{n:"Singapore 🇸🇬",p:"15ms"},{n:"Brazil 🇧🇷",p:"160ms"},{n:"Indonesia 🇮🇩",p:"50ms"},{n:"Mina 🏜️",p:"55ms"},{n:"Europe 🇪🇺",p:"85ms"},{n:"Thailand 🇹🇭",p:"38ms"},{n:"Vietnam 🇻🇳",p:"40ms"},{n:"Taiwan 🇹🇼",p:"62ms"}];
 
         function initApp() {
-            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(()=>document.getElementById('loader').style.display='none', 800); }, 2000);
+            // 🔥 FORCE LOADER KILLER (1.5s)
+            setTimeout(() => { 
+                const ldr = document.getElementById('loader');
+                ldr.style.opacity = '0';
+                setTimeout(() => ldr.style.display = 'none', 600);
+            }, 1500);
 
-            // 🔥 MAINTENANCE LOGIC (Solid Fix)
+            // 🔥 MAINTENANCE BLOCK LOGIC
             db.collection("settings").doc("maintenance").onSnapshot(doc => {
                 const isMaint = doc.data()?.status;
                 if(isMaint === true) {
@@ -163,13 +164,12 @@
                     document.getElementById('main-store-view').style.display = 'none';
                 } else {
                     document.getElementById('maintenance-screen').style.display = 'none';
-                    // Re-check Auth when maintenance goes OFF
-                    startAuthListener();
+                    checkAuth();
                 }
             });
         }
 
-        function startAuthListener() {
+        function checkAuth() {
             auth.onAuthStateChanged(user => {
                 if(user) {
                     uE = user.email; document.getElementById('p-email').innerText = uE;
@@ -183,15 +183,26 @@
             });
         }
 
+        // 🔥 DETAILED LIVE HISTORY (Admin Panel Style)
         function loadOrders() {
             db.collection("orders").where("email", "==", uE).orderBy("timestamp", "desc").onSnapshot(snap => {
                 const list = document.getElementById('history-list'); list.innerHTML = "";
+                if(snap.empty) { list.innerHTML = "<p style='text-align:center; color:#555;'>No orders found.</p>"; return; }
                 snap.forEach(doc => {
                     const o = doc.data(); 
                     const statusColor = o.status === "Pending" ? "orange" : "#00ffcc";
-                    list.innerHTML += `<div class="card" style="border-left: 5px solid ${statusColor}">
-                            <div><b>${o.plan}</b><br><small style="color:#666;">UID: ${o.uid}</small></div>
-                            <div style="text-align:right;"><span style="color:${statusColor}; font-weight:bold;">${o.status}</span></div>
+                    const statusBg = o.status === "Pending" ? "rgba(255, 165, 0, 0.1)" : "rgba(0, 255, 204, 0.1)";
+                    list.innerHTML += `
+                        <div class="card" style="border-left: 5px solid ${statusColor}; background: ${statusBg}; flex-direction: column; align-items: flex-start; gap: 8px;">
+                            <div style="width:100%; display:flex; justify-content:space-between;">
+                                <b style="font-size:15px; color:#fff;">${o.plan}</b>
+                                <span style="color:${statusColor}; font-weight:bold; font-size:10px; border:1px solid ${statusColor}; padding:2px 8px; border-radius:50px;">${o.status}</span>
+                            </div>
+                            <div style="font-size:12px; color:#aaa; line-height:1.6; width:100%;">
+                                <div style="display:flex; justify-content:space-between;"><span>🆔 UID:</span> <b style="color:#fff;">${o.uid}</b></div>
+                                <div style="display:flex; justify-content:space-between;"><span>🌍 Server:</span> <b style="color:#fff;">${o.server}</b></div>
+                                <div style="display:flex; justify-content:space-between;"><span>💰 Price:</span> <b style="color:var(--accent);">${o.price || 'Verified'}</b></div>
+                            </div>
                         </div>`;
                 });
             });
@@ -200,7 +211,7 @@
         async function submitOrder() {
             const uid = document.getElementById('uid').value, file = document.getElementById('file').files[0], btn = document.getElementById('subBtn');
             const pName = document.getElementById('mName').innerText, pPrice = document.getElementById('mPrice').innerText;
-            if(!uid || !srv || !file) return alert("Bhai, sari details dalo!");
+            if(!uid || !srv || !file) return alert("Fill data!");
             btn.disabled = true; btn.innerText = "UPLOADING...";
             const fd = new FormData(); fd.append('image', file);
             try {
@@ -208,7 +219,7 @@
                 const data = await res.json();
                 if(data.success) {
                     const url = data.data.url;
-                    await db.collection("orders").add({ email:uE, uid:uid, plan:pName, server:srv, screenshot:url, status:"Pending", timestamp:firebase.firestore.FieldValue.serverTimestamp() });
+                    await db.collection("orders").add({ email:uE, uid:uid, plan:pName, price:pPrice, server:srv, screenshot:url, status:"Pending", timestamp:firebase.firestore.FieldValue.serverTimestamp() });
                     const msg = `🚨 *NEW ORDER* %0A👤 User: ${uE} %0A🆔 UID: ${uid} %0A🌍 Server: ${srv} %0A📦 Plan: ${pName} %0A💰 Price: ${pPrice} %0A📸 [PROOF](${url})`;
                     fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage?chat_id=6829395007&parse_mode=Markdown&text=${msg}`);
                     alert("Order Placed!"); closeModal('mModal');
@@ -222,19 +233,5 @@
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById(id).classList.add('active'); btn.classList.add('active');
         }
-
         function showView(v) {
-            document.getElementById('home-view').style.display = v==='home' ? 'block' : 'none';
-            document.getElementById('orders-view').style.display = v==='orders' ? 'block' : 'none';
-            document.getElementById('home-icon').classList.toggle('active', v==='home');
-            document.getElementById('order-icon').classList.toggle('active', v==='orders');
-        }
-
-        function openPay(n, p) {
-            document.getElementById('mName').innerText = n; document.getElementById('mPrice').innerText = p;
-            document.getElementById('mModal').style.display = 'flex';
-            const box = document.getElementById('ol'); box.innerHTML = "";
-            servers.forEach(s => {
-                const d = document.createElement('div'); d.className = "owl-item";
-                d.innerHTML = `<span>${s.n}</span><small style="color:var(--pink); font-weight:bold;">${s.p}</small>`;
-                d.onclick = () => { srv = s.n; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove(
+            document.getElementById('home-view').style.d
