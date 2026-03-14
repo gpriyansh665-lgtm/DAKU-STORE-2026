@@ -13,41 +13,44 @@
         :root { --primary: #ff4b2b; --secondary: #ff416c; --bg: #05070a; --card: #0f121d; --accent: #00ffcc; --pink: #ff00ff; --binance: #f3ba2f; }
         body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
 
-        /* 🔥 LOADING SCREEN FIXED LOGIC */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.3s; }
+        /* 🔥 LOADER FIX */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.4s; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* 🔐 AUTH VIEW */
         #auth-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle, #1a0505 0%, #05070a 100%); }
         .auth-card { background: var(--card); padding: 30px; border-radius: 25px; border: 1px solid #333; width: 100%; max-width: 380px; text-align: center; }
+        .auth-logo { font-family: 'Orbitron'; font-size: 24px; color: var(--primary); margin-bottom: 25px; text-shadow: 0 0 15px var(--primary); }
         .auth-card input { width: 100%; padding: 15px; margin: 10px 0; background: #05070a; border: 1px solid #333; border-radius: 12px; color: white; outline: none; box-sizing: border-box; }
-        .auth-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
+        .auth-btn { width: 100%; padding: 15px; background: linear-gradient(45deg, var(--primary), var(--secondary)); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; margin-top: 10px; font-family: 'Orbitron'; }
 
-        /* 🛠️ MAINTENANCE */
-        #maintenance-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 999999; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        /* 🛠️ MAINTENANCE SCREEN */
+        #maintenance-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999999; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 
         header { padding: 15px 20px; background: linear-gradient(to right, #000, #111); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: var(--primary); }
         .header-icons { display: flex; gap: 15px; align-items: center; }
-        .header-icons i { font-size: 20px; cursor: pointer; }
+        .header-icons i { font-size: 20px; cursor: pointer; transition: 0.3s; }
 
         .nav-tabs { display: flex; overflow-x: auto; gap: 15px; padding: 15px; background: rgba(255,255,255,0.05); scrollbar-width: none; }
-        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; }
+        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 11px; font-family: 'Orbitron'; }
         .tab-btn.active { background: var(--primary); color: white; }
 
         .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; margin: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
         .amt { font-size: 18px; font-weight: 900; font-family: 'Orbitron'; }
 
+        /* 📜 ORDER HISTORY SECTION */
         #orders-view { display: none; padding: 15px; }
         .history-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 12px; border: 1px solid #333; display: flex; justify-content: space-between; align-items: center; cursor: pointer; border-right: 4px solid var(--primary); }
         .status-pill { padding: 4px 10px; border-radius: 50px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .status-pending { background: #ffd700; color: #000; }
         .status-success { background: #00ffcc; color: #000; }
 
-        .modal { display: none; position: fixed; z-index: 9999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); justify-content: center; align-items: center; }
+        /* MODALS */
+        .modal { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); justify-content: center; align-items: center; }
         .modal-content { background: #0b0e16; width: 90%; max-width: 400px; padding: 25px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
-        .owl-box { background: #0d1117; border-radius: 15px; border: 1px solid #333; margin: 10px 0; max-height: 200px; overflow-y: auto; text-align: left; }
+        .owl-box { background: #0d1117; border-radius: 15px; border: 1px solid #333; margin: 10px 0; max-height: 180px; overflow-y: auto; text-align: left; }
         .owl-item { padding: 12px 15px; border-bottom: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
         .owl-item.active { background: var(--primary); color: white; }
         .status-dot { height: 7px; width: 7px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 8px; animation: blink 1s infinite; }
@@ -62,14 +65,11 @@
 </head>
 <body onload="init()">
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <div style="margin-top:15px; font-family:'Orbitron'; color:var(--primary);">DAKU STORE</div>
-    </div>
+    <div id="loader"><div class="spinner"></div><div style="margin-top:15px; font-family:'Orbitron'; color:var(--primary);">DAKU STORE</div></div>
 
     <div id="auth-view">
         <div class="auth-card">
-            <div class="auth-logo" id="auth-title">DAKU LOGIN</div>
+            <div class="auth-logo" id="auth-title">LOGIN</div>
             <input type="email" id="auth-email" placeholder="Email">
             <input type="password" id="auth-pass" placeholder="Password">
             <button class="auth-btn" onclick="handleAuth()">CONTINUE</button>
@@ -103,25 +103,33 @@
             
             <div id="topup" class="section-container active">
                 <div class="card"><div><h3>100 Diamonds</h3><p>Instant Topup</p></div><div><span class="amt">₹80</span><br><button class="btn-buy" onclick="openPay('100💎','₹80')">BUY</button></div></div>
-                <div class="card"><div><h3>520 Diamonds</h3><p>Popular Pack</p></div><div><span class="amt">₹400</span><br><button class="btn-buy" onclick="openPay('520💎','₹400')">BUY</button></div></div>
+                <div class="card"><div><h3>520 Diamonds</h3><p>Direct Topup</p></div><div><span class="amt">₹400</span><br><button class="btn-buy" onclick="openPay('520💎','₹400')">BUY</button></div></div>
+                <div class="card"><div><h3>1060 Diamonds</h3><p>VIP Value Pack</p></div><div><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('1060💎','₹800')">BUY</button></div></div>
+                <div class="card"><div><h3>4000 Diamonds</h3><p>Mega Booster</p></div><div><span class="amt">₹2000</span><br><button class="btn-buy" onclick="openPay('4000💎','₹2000')">BUY</button></div></div>
             </div>
 
             <div id="likes" class="section-container" style="display:none;">
-                <div class="card"><div><h3>Weekly Starter</h3><p>1540 Likes</p></div><div><span class="amt">₹100</span><br><button class="btn-buy" onclick="openPay('Weekly Starter','₹100')">BUY</button></div></div>
-                <div class="card"><div><h3>Pro Booster</h3><p>3300 Likes</p></div><div><span class="amt">₹170</span><br><button class="btn-buy" onclick="openPay('Pro Booster','₹170')">BUY</button></div></div>
+                <div class="card"><div><h3>Weekly Starter</h3><p>1540 Total Likes</p></div><div><span class="amt">₹100</span><br><button class="btn-buy" onclick="openPay('Weekly Starter','₹100')">BUY</button></div></div>
+                <div class="card"><div><h3>Pro Booster</h3><p>3300 Total Likes</p></div><div><span class="amt">₹170</span><br><button class="btn-buy" onclick="openPay('Pro Booster','₹170')">BUY</button></div></div>
+                <div class="card"><div><h3>Elite Monthly</h3><p>6600 Total Likes</p></div><div><span class="amt">₹300</span><br><button class="btn-buy" onclick="openPay('Elite Monthly','₹300')">BUY</button></div></div>
+                <div class="card"><div><h3>Grandmaster</h3><p>19800 Total Likes</p></div><div><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('Grandmaster','₹800')">BUY</button></div></div>
             </div>
 
             <div id="glory" class="section-container" style="display:none;">
-                <div class="card"><div><h3>Mini Glory</h3><p>200k Boost</p></div><div><span class="amt">₹200</span><br><button class="btn-buy" onclick="openPay('Mini Glory','₹200')">ORDER</button></div></div>
+                <div class="card"><div><h3>Mini Glory</h3><p>200k Glory Boost</p></div><div><span class="amt">₹200</span><br><button class="btn-buy" onclick="openPay('Mini Glory','₹200')">ORDER</button></div></div>
+                <div class="card"><div><h3>Starter Glory</h3><p>500k Glory Boost</p></div><div><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('Starter Glory','₹800')">ORDER</button></div></div>
+                <div class="card"><div><h3>Mega Glory</h3><p>1M Glory Boost</p></div><div><span class="amt">₹1000</span><br><button class="btn-buy" onclick="openPay('Mega Glory','₹1000')">ORDER</button></div></div>
+                <div class="card"><div><h3>Full Match</h3><p>Full Guild Glory</p></div><div><span class="amt">₹1500</span><br><button class="btn-buy" onclick="openPay('Full Match','₹1500')">ORDER</button></div></div>
             </div>
 
             <div id="guild-war" class="section-container" style="display:none;">
-                <div class="card"><div><h3>Guild War (10k)</h3><p>War Points</p></div><div><span class="amt">₹2000</span><br><button class="btn-buy" onclick="openPay('Mini War','₹2000')">ORDER</button></div></div>
+                <div class="card"><div><h3>Mini Guild War</h3><p>10,000 Points</p></div><div><span class="amt">₹2000</span><br><button class="btn-buy" onclick="openPay('Mini War','₹2000')">ORDER</button></div></div>
+                <div class="card"><div><h3>Mega Guild War</h3><p>20,000 Points</p></div><div><span class="amt">₹5000</span><br><button class="btn-buy" onclick="openPay('Mega War','₹5000')">ORDER</button></div></div>
             </div>
         </div>
 
         <div id="orders-view">
-            <h2 style="font-family:'Orbitron'; text-align:center; color:var(--primary);">MY HISTORY</h2>
+            <h2 style="font-family:'Orbitron'; text-align:center; color:var(--primary);">MY ORDERS</h2>
             <div id="history-list"></div>
         </div>
 
@@ -132,7 +140,7 @@
         </nav>
     </div>
 
-    <div id="profModal" class="modal"><div class="modal-content"><h2 style="font-family:'Orbitron';">USER PROFILE</h2><p id="prof-email" style="margin:15px 0; font-weight:bold;"></p><button class="btn-buy" style="background:red; width:100%;" onclick="auth.signOut(); location.reload();">LOGOUT</button><p onclick="document.getElementById('profModal').style.display='none'" style="margin-top:15px; cursor:pointer;">CLOSE</p></div></div>
+    <div id="profModal" class="modal"><div class="modal-content"><h2 style="font-family:'Orbitron';">PROFILE</h2><p id="prof-email" style="margin:15px 0; font-weight:bold;"></p><button class="btn-buy" style="background:red; width:100%;" onclick="auth.signOut(); location.reload();">LOGOUT</button><p onclick="document.getElementById('profModal').style.display='none'" style="margin-top:15px; cursor:pointer;">CLOSE</p></div></div>
     <div id="detailModal" class="modal"><div class="modal-content" id="detail-cont"></div></div>
     <div id="mModal" class="modal"><div class="modal-content"><h2 id="mName"></h2><p id="mPrice" style="color:var(--accent); font-weight:bold;"></p><input type="number" id="uid" placeholder="Enter Player UID"><p style="text-align:left; font-size:11px; color:#666; margin-top:10px;">SELECT OWL SERVER:</p><div class="owl-box" id="ol"></div><div style="display:flex; gap:10px; margin:15px 0;"><button onclick="setM('UPI')" style="flex:1; padding:10px; background:#222; color:white; border:none; border-radius:8px;">UPI</button><button onclick="setM('Binance')" style="flex:1; padding:10px; background:#222; color:white; border:none; border-radius:8px;">BINANCE</button></div><div id="u_info" style="display:none; padding:10px; background:white; color:black; border-radius:10px; margin-bottom:10px;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=upi://pay?pa=priyanshdaku@gmail.com" width="100"></div><input type="file" id="file" accept="image/*"><button class="btn-buy" id="subBtn" onclick="submitOrder()" style="width:100%; padding:15px; margin-top:10px;">SUBMIT ORDER</button><p onclick="document.getElementById('mModal').style.display='none'" style="font-size:12px; color:#555; cursor:pointer; margin-top:10px;">CANCEL</p></div></div>
 
@@ -153,12 +161,11 @@
             { n: "Thailand 🇹🇭", p: "38ms" }, { n: "Vietnam 🇻🇳", p: "40ms" }, { n: "Taiwan 🇹🇼", p: "62ms" }
         ];
 
-        // 🔥 FORCE HIDE LOADER AFTER 5 SECONDS
-        setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(()=> { document.getElementById('loader').style.display = 'none'; }, 300); }, 5000);
+        // Force hide loader after 5s
+        setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 5000);
 
         function init() {
             auth.onAuthStateChanged(user => {
-                // Hide Loader as soon as Firebase responds
                 document.getElementById('loader').style.display = 'none';
                 if(user) {
                     uE = user.email; document.getElementById('prof-email').innerText = uE;
@@ -175,7 +182,7 @@
             });
         }
 
-        function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "DAKU LOGIN" : "DAKU SIGNUP"; document.getElementById('toggle-span').innerText = isLogin ? "SIGNUP" : "LOGIN"; }
+        function toggleAuth() { isLogin = !isLogin; document.getElementById('auth-title').innerText = isLogin ? "LOGIN" : "SIGNUP"; document.getElementById('toggle-span').innerText = isLogin ? "SIGNUP" : "LOGIN"; }
         async function handleAuth() {
             const email = document.getElementById('auth-email').value, pass = document.getElementById('auth-pass').value;
             if(!email || !pass) return alert("Fill data!");
@@ -183,7 +190,7 @@
         }
 
         function openProfile() { document.getElementById('profModal').style.display = 'flex'; }
-        function showView(v) { document.getElementById('home-view').style.display = v==='home' ? 'block' : 'none'; document.getElementById('orders-view').style.display = v==='orders' ? 'block' : 'none'; document.getElementById('home-icon').classList.toggle('active', v==='home'); document.getElementById('order-icon').classList.toggle('active', v==='orders'); }
+        function showView(v) { document.getElementById('home-view').style.display = v==='home' ? 'block' : 'none'; document.getElementById('orders-view').style.display = v==='orders' ? 'block' : 'none'; document.getElementById('home-icon').classList.toggle('active', v==='home'); document.getElementById('order-icon').classList.toggle('active', v==='orders'); if(v==='orders') loadOrders(); }
 
         function openPay(n, p) {
             document.getElementById('mName').innerText = n; document.getElementById('mPrice').innerText = p;
@@ -220,18 +227,4 @@
                 const list = document.getElementById('history-list'); list.innerHTML = "";
                 snap.forEach(doc => {
                     const o = doc.data(); const sCls = o.status === "Pending" ? "status-pending" : "status-success";
-                    list.innerHTML += `<div class="history-card" onclick="viewOrder('${doc.id}')"><div style="padding:15px;"><b>${o.plan}</b><br><small>UID: ${o.uid}</small></div><span class="status-pill ${sCls}" style="margin-right:15px;">${o.status}</span></div>`;
-                });
-            });
-        }
-
-        async function viewOrder(id) {
-            const doc = await db.collection("orders").doc(id).get(); const o = doc.data();
-            document.getElementById('detail-cont').innerHTML = `<h3 style="color:var(--primary); font-family:'Orbitron';">ORDER DETAILS</h3><div style="text-align:left; font-size:13px; line-height:1.8;"><b>PLAN:</b> ${o.plan}<br><b>UID:</b> ${o.uid}<br><b>SERVER:</b> ${o.server}<br><b>STATUS:</b> <span style="color:var(--accent)">${o.status}</span><br><b>TIME:</b> ${o.timestamp.toDate().toLocaleString()}<br></div><a href="${o.screenshot}" target="_blank" style="color:var(--pink); display:block; margin-top:10px;">Payment Proof</a><button class="btn-buy" style="margin-top:15px; width:100%;" onclick="document.getElementById('detailModal').style.display='none'">CLOSE</button>`;
-            document.getElementById('detailModal').style.display = 'flex';
-        }
-
-        function switchTab(id, b) { document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('.section-container').forEach(s => s.style.display='none'); document.getElementById(id).style.display='block'; }
-    </script>
-</body>
-</html>
+                    list.innerHTML += `<div class="history-card" onclick="viewOrder('${doc.id}')"><div style="padding:15px;"><b>${o.plan}</b><br><sm
