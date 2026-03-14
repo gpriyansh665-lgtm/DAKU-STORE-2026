@@ -18,34 +18,38 @@
         #admin-dashboard { display: none; max-width: 800px; margin: 0 auto; }
         .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 10px; margin-bottom: 20px; position: sticky; top: 0; background: var(--bg); z-index: 100; }
         
-        /* 💰 PRICE MANAGER BOX */
-        .admin-box { background: #161a26; padding: 20px; border-radius: 15px; border: 1px solid #333; margin-bottom: 20px; }
-        .admin-box h3 { color: var(--gold); font-family: 'Orbitron'; margin-top: 0; font-size: 16px; border-bottom: 1px solid #222; padding-bottom: 10px; }
-        .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .price-group { text-align: left; }
-        .price-group label { font-size: 10px; color: #888; display: block; margin-bottom: 5px; }
-        .update-btn { background: var(--accent); color: #000; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; margin-top: 15px; width: 100%; }
+        .maintenance-box { background: #161a26; padding: 20px; border-radius: 15px; border: 1px solid var(--primary); text-align: center; margin-bottom: 25px; }
+        .maintenance-box h3 { color: var(--gold); font-family: 'Orbitron'; margin-top: 0; font-size: 16px; }
 
-        .maintenance-box { background: #161a26; padding: 15px; border-radius: 15px; border: 1px solid var(--primary); text-align: center; margin-bottom: 20px; }
-        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; margin-bottom: 20px; }
-        .tab-btn { padding: 8px 15px; background: #1a1e2e; border: 1px solid #333; border-radius: 10px; color: #888; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 10px 0; margin-bottom: 20px; scrollbar-width: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 10px; color: #888; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 0 10px rgba(255, 75, 43, 0.3); }
 
-        .order-card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; border-left: 5px solid var(--primary); position: relative; }
-        .status-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 5px; font-size: 10px; font-weight: bold; }
+        .order-card { background: var(--card); border-radius: 15px; padding: 20px; margin-bottom: 20px; border: 1px solid #222; border-left: 5px solid var(--primary); position: relative; animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .status-badge { position: absolute; top: 20px; right: 20px; padding: 5px 12px; border-radius: 5px; font-size: 10px; font-weight: bold; text-transform: uppercase; }
         .pending { background: #ffcc00; color: #000; }
         .success { background: #00ffcc; color: #000; }
+
+        .order-info p { margin: 5px 0; font-size: 13px; color: #ccc; }
+        .order-info b { color: white; }
+
         .action-btns { display: flex; gap: 10px; margin-top: 20px; }
-        .act-btn { flex: 1; padding: 10px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 11px; }
+        .act-btn { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 11px; font-family: 'Orbitron'; transition: 0.2s; }
         .btn-done { background: #00ffcc; color: #000; }
+        .btn-done:hover { background: #00e6b8; transform: scale(1.02); }
         .btn-delete { background: #ff4b2b; color: white; }
+        .btn-delete:hover { background: #ff3510; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
     <div id="admin-auth">
         <div class="auth-box">
-            <h2 style="font-family:'Orbitron'; color:var(--primary);">DAKU ADMIN</h2>
+            <i class="fas fa-user-shield" style="font-size: 50px; color: var(--primary); margin-bottom: 15px;"></i>
+            <h2 style="font-family:'Orbitron'; color:var(--primary); margin: 0 0 20px 0;">DAKU ADMIN</h2>
             <input type="email" id="admEmail" placeholder="teamcobra665@gmail.com">
             <input type="password" id="admPass" placeholder="dakuyt1m">
             <button class="btn-login" onclick="loginAdmin()">ENTER PANEL</button>
@@ -54,51 +58,30 @@
 
     <div id="admin-dashboard">
         <div class="header">
-            <h2 style="font-family:'Orbitron'; font-size: 18px; color: var(--primary);">DAKU VIP DASHBOARD</h2>
-            <button onclick="logoutAdmin()" style="background:red; border: none; color:white; padding:5px 12px; border-radius:5px; font-size: 10px;">LOGOUT</button>
-        </div>
-
-        <div class="admin-box">
-            <h3><i class="fas fa-tags"></i> PRICE MANAGER</h3>
-            <div class="price-grid">
-                <div class="price-group">
-                    <label>WEEKLY STARTER (LIKES)</label>
-                    <input type="number" id="rate-weekly" placeholder="Rate">
-                </div>
-                <div class="price-group">
-                    <label>PRO BOOSTER (LIKES)</label>
-                    <input type="number" id="rate-pro" placeholder="Rate">
-                </div>
-                <div class="price-group">
-                    <label>MINI GLORY</label>
-                    <input type="number" id="rate-mini" placeholder="Rate">
-                </div>
-                <div class="price-group">
-                    <label>WAR STARTER</label>
-                    <input type="number" id="rate-war" placeholder="Rate">
-                </div>
-            </div>
-            <button class="update-btn" onclick="updateAllPrices()">UPDATE ALL RATES 🔥</button>
+            <h2 style="font-family:'Orbitron'; font-size: 18px; color: var(--primary); margin: 0;">DAKU VIP DASHBOARD</h2>
+            <button onclick="logoutAdmin()" style="background:#ff4b2b; border: none; color:white; padding:8px 15px; border-radius:8px; font-size: 11px; font-weight: bold; cursor:pointer;">LOGOUT</button>
         </div>
 
         <div class="maintenance-box">
-            <h3>🛠️ STORE MAINTENANCE</h3>
-            <p id="m-status" style="margin: 10px 0; font-weight: bold; font-size: 12px;">Checking...</p>
-            <div style="display:flex; gap:10px; justify-content:center;">
-                <button onclick="setMaintenance(true)" style="background:red; color:white; border-radius:8px; border:none; padding:8px 15px; font-family:'Orbitron';">OFFLINE (BAND)</button>
-                <button onclick="setMaintenance(false)" style="background:var(--accent); color:black; border-radius:8px; border:none; padding:8px 15px; font-family:'Orbitron';">ONLINE (LIVE)</button>
+            <h3><i class="fas fa-tools"></i> MAINTENANCE CONTROL</h3>
+            <p id="m-status" style="margin: 15px 0; font-weight: bold; font-size: 14px; letter-spacing: 1px;">Checking...</p>
+            <div style="display:flex; gap:12px; justify-content:center;">
+                <button onclick="setMaintenance(true)" style="background:#ff4b2b; color:white; border-radius:10px; border:none; padding:12px 20px; font-family:'Orbitron'; cursor:pointer; font-size: 12px;">GO OFFLINE</button>
+                <button onclick="setMaintenance(false)" style="background:var(--accent); color:black; border-radius:10px; border:none; padding:12px 20px; font-family:'Orbitron'; cursor:pointer; font-size: 12px;">GO ONLINE</button>
             </div>
         </div>
 
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="filterOrders('all', this)">ALL ORDERS</button>
-            <button class="tab-btn" onclick="filterOrders('likes', this)">LIKES</button>
-            <button class="tab-btn" onclick="filterOrders('glory', this)">GLORY</button>
-            <button class="tab-btn" onclick="filterOrders('war', this)">WAR</button>
-            <button class="tab-btn" onclick="filterOrders('diamonds', this)">DIAMONDS</button>
+            <button class="tab-btn" onclick="filterOrders('LIKES', this)">LIKES</button>
+            <button class="tab-btn" onclick="filterOrders('GLORY', this)">GLORY</button>
+            <button class="tab-btn" onclick="filterOrders('WAR', this)">WAR</button>
+            <button class="tab-btn" onclick="filterOrders('DIAMONDS', this)">DIAMONDS</button>
         </div>
 
-        <div id="orders-container"></div>
+        <div id="orders-container">
+            <p style="text-align:center; color:#555;">Loading orders...</p>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -111,6 +94,7 @@
 
         const ADMIN_USER = "teamcobra665@gmail.com";
         const ADMIN_PASS = "dakuyt1m";
+        let currentFilter = 'all';
 
         function loginAdmin() {
             const e = document.getElementById('admEmail').value;
@@ -124,40 +108,8 @@
         function showDashboard() {
             document.getElementById('admin-auth').style.display = 'none';
             document.getElementById('admin-dashboard').style.display = 'block';
-            fetchOrders();
+            listenOrders();
             listenMaintenance();
-            loadCurrentPrices();
-        }
-
-        // 💰 LOAD PRICES FROM FIREBASE
-        function loadCurrentPrices() {
-            db.collection("products").doc("likes").get().then(doc => {
-                if(doc.exists) {
-                    document.getElementById('rate-weekly').value = doc.data().weekly;
-                    document.getElementById('rate-pro').value = doc.data().pro;
-                }
-            });
-            db.collection("products").doc("glory").get().then(doc => {
-                if(doc.exists) document.getElementById('rate-mini').value = doc.data().mini;
-            });
-            db.collection("products").doc("war").get().then(doc => {
-                if(doc.exists) document.getElementById('rate-war').value = doc.data().war_s;
-            });
-        }
-
-        // 💰 UPDATE ALL PRICES AT ONCE
-        async function updateAllPrices() {
-            const w = document.getElementById('rate-weekly').value;
-            const p = document.getElementById('rate-pro').value;
-            const m = document.getElementById('rate-mini').value;
-            const wr = document.getElementById('rate-war').value;
-
-            try {
-                await db.collection("products").doc("likes").set({ weekly: w, pro: p }, { merge: true });
-                await db.collection("products").doc("glory").set({ mini: m }, { merge: true });
-                await db.collection("products").doc("war").set({ war_s: wr }, { merge: true });
-                alert("✅ Saare Rates Update Ho Gaye!");
-            } catch(e) { alert("Error: " + e.message); }
         }
 
         function logoutAdmin() { localStorage.removeItem("isDakuAdmin"); location.reload(); }
@@ -166,8 +118,11 @@
         function listenMaintenance() {
             db.collection("settings").doc("config").onSnapshot((doc) => {
                 const s = document.getElementById('m-status');
-                if (doc.exists && doc.data().maintenance === true) { s.innerText = "🔴 STORE IS OFFLINE"; s.style.color = "red"; }
-                else { s.innerText = "🟢 STORE IS ONLINE"; s.style.color = "lime"; }
+                if (doc.exists && doc.data().maintenance === true) { 
+                    s.innerText = "🔴 STORE IS OFFLINE"; s.style.color = "#ff4b2b"; 
+                } else { 
+                    s.innerText = "🟢 STORE IS ONLINE"; s.style.color = "#00ffcc"; 
+                }
             });
         }
 
@@ -175,31 +130,59 @@
             await db.collection("settings").doc("config").set({ maintenance: val }, { merge: true });
         }
 
-        function fetchOrders() {
-            db.collection("orders").orderBy("timestamp", "desc").onSnapshot(snap => {
+        function filterOrders(type, btn) {
+            currentFilter = type;
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            listenOrders();
+        }
+
+        function listenOrders() {
+            let query = db.collection("orders").orderBy("timestamp", "desc");
+            
+            query.onSnapshot(snap => {
                 const container = document.getElementById('orders-container');
                 container.innerHTML = "";
+                
+                let count = 0;
                 snap.forEach(doc => {
                     const o = doc.data();
+                    // Basic keyword filtering
+                    if(currentFilter !== 'all') {
+                        const plan = o.plan.toUpperCase();
+                        if(!plan.includes(currentFilter)) return;
+                    }
+
+                    count++;
                     const sClass = o.status === "Pending" ? "pending" : "success";
                     container.innerHTML += `
                         <div class="order-card">
                             <span class="status-badge ${sClass}">${o.status}</span>
-                            <p><b>User:</b> ${o.email}</p>
-                            <p><b>Plan:</b> ${o.plan} | 🆔 ${o.uid}</p>
-                            <a href="${o.screenshot}" target="_blank" style="color:cyan; font-size:12px;">VIEW PAYMENT SS</a>
+                            <div class="order-info">
+                                <p><b>User:</b> ${o.email}</p>
+                                <p><b>Plan:</b> ${o.plan}</p>
+                                <p><b>UID:</b> ${o.uid}</p>
+                                <p><b>Server:</b> ${o.server || 'N/A'}</p>
+                            </div>
+                            <div style="margin-top:10px;">
+                                <a href="${o.screenshot}" target="_blank" style="color:var(--accent); font-size:12px; text-decoration:none;">
+                                    <i class="fas fa-image"></i> VIEW PAYMENT SCREENSHOT
+                                </a>
+                            </div>
                             <div class="action-btns">
-                                <button class="act-btn btn-done" onclick="markDone('${doc.id}')">SUCCESS</button>
+                                <button class="act-btn btn-done" onclick="markDone('${doc.id}')">MARK SUCCESS</button>
                                 <button class="act-btn btn-delete" onclick="deleteOrder('${doc.id}')">DELETE</button>
                             </div>
                         </div>
                     `;
                 });
+                
+                if(count === 0) container.innerHTML = "<p style='text-align:center; color:#555; margin-top:20px;'>No orders found in this category.</p>";
             });
         }
 
         function markDone(id) { db.collection("orders").doc(id).update({ status: "Success" }); }
-        function deleteOrder(id) { if(confirm("Hamesha ke liye delete?")) db.collection("orders").doc(id).delete(); }
+        function deleteOrder(id) { if(confirm("Kya aap is order ko hamesha ke liye delete karna chahte hain?")) db.collection("orders").doc(id).delete(); }
     </script>
 </body>
 </html>
