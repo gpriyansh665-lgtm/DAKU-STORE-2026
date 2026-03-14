@@ -10,155 +10,159 @@
     
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap');
-        :root { --primary: #ff4b2b; --bg: #05070a; --card: #161a26; --accent: #0081c9; }
+        :root { --primary: #ff4b2b; --bg: #05070a; --card: #161a26; --accent: #0081c9; --tg: #0088cc; --wa: #25D366; }
         
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; }
-        .spin { width: 50px; height: 50px; border: 5px solid #111; border-top: 5px solid var(--primary); border-radius: 50%; animation: s 1s linear infinite; }
-        @keyframes s { 100% { transform: rotate(360deg); } }
-
-        /* SCREENS */
-        #security-wall, #main-store, #maintenance-screen { display: none; }
-        #security-wall { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 20000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        /* 📸 LAYOUT SECTIONS (As per your Photos) */
+        .layout-section { min-height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover; background-position: center; text-align: center; padding: 40px 20px; box-sizing: border-box; border-bottom: 1px solid #111; }
         
-        .box { width: 85%; max-width: 380px; background: #0b0e16; padding: 25px; border-radius: 20px; border: 1px solid #222; text-align: center; }
-        input { width: 100%; padding: 13px; margin: 10px 0; background: #0f121d; border: 1px solid #333; border-radius: 10px; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 13px; background: var(--primary); border: none; border-radius: 10px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; }
+        #s1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('1000009232.png'); }
+        #s2 { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('1000009226.png'); }
+        #s3 { background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)), url('1000009228.png'); }
 
-        /* STORE UI */
-        header { padding: 15px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .logo { font-family: 'Orbitron'; color: var(--primary); font-weight: 900; font-size: 18px; }
-        .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: #0a0c14; scrollbar-width: none; }
-        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 12px; color: #888; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; }
+        .hero-title { font-family: 'Orbitron'; font-weight: 900; font-size: 3rem; color: var(--primary); margin: 0; text-shadow: 0 0 20px rgba(255,75,43,0.5); }
+        .promo-box { background: rgba(22, 26, 38, 0.95); border: 2.5px solid var(--primary); border-radius: 25px; padding: 30px; width: 90%; max-width: 420px; margin-top: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.6); }
+
+        /* 🏪 STORE SYSTEM */
+        #site-content { min-height: 100vh; background: var(--bg); }
+        #security-wall { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; }
+        #main-store { display: none; padding-bottom: 120px; }
+
+        .box { width: 85%; max-width: 380px; background: #0b0e16; padding: 35px; border-radius: 25px; border: 1px solid #222; text-align: center; }
+        input { width: 100%; padding: 15px; margin: 12px 0; background: #0f121d; border: 1px solid #333; border-radius: 12px; color: white; box-sizing: border-box; }
+        .btn { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
+
+        /* TABS & CARDS */
+        header { padding: 18px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .nav-tabs { display: flex; overflow-x: auto; gap: 12px; padding: 15px; background: #0a0c14; scrollbar-width: none; }
+        .tab-btn { padding: 12px 25px; background: #1a1e2e; border: 1px solid #333; border-radius: 15px; color: #777; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; }
         .tab-btn.active { background: var(--primary); color: white; }
 
-        .card { background: var(--card); border-radius: 20px; padding: 20px; margin: 15px; border: 1px solid #222; position: relative; }
-        .card-title { font-weight: 700; font-size: 18px; color: #fff; margin-bottom: 5px; }
-        .card-desc { font-size: 13px; color: #888; margin-bottom: 15px; }
-        .price { position: absolute; top: 20px; right: 20px; color: #fff; font-family: 'Orbitron'; font-weight: bold; font-size: 18px; }
-        .buy-btn { width: 100%; padding: 12px; background: var(--accent); border: none; border-radius: 10px; color: white; font-family: 'Orbitron'; margin-top: 10px; font-weight: bold; }
+        .card { background: var(--card); border-radius: 25px; padding: 25px; margin: 15px; border: 1px solid #222; position: relative; }
+        .price { position: absolute; top: 25px; right: 25px; color: #fff; font-family: 'Orbitron'; font-weight: bold; font-size: 20px; }
+        .buy-btn { width: 100%; padding: 14px; background: var(--accent); border: none; border-radius: 12px; color: white; font-family: 'Orbitron'; margin-top: 15px; font-weight: bold; }
 
-        /* PING STATUS */
-        .status-dot { height: 8px; width: 8px; background-color: #00ff00; border-radius: 50%; display: inline-block; margin-right: 8px; box-shadow: 0 0 8px #00ff00; animation: blink 1.5s infinite; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-
-        /* MODALS */
-        .modal { display: none; position: fixed; z-index: 50000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); justify-content: center; align-items: center; }
-        .m-cont { background: #0b0e16; width: 90%; max-width: 400px; padding: 25px; border-radius: 20px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
-        .owl-box { background: #0f121d; border-radius: 10px; border: 1px solid #333; margin: 10px 0; max-height: 220px; overflow-y: auto; text-align: left; }
-        .owl-item { display: flex; align-items: center; justify-content: space-between; padding: 12px; border-bottom: 1px solid #222; cursor: pointer; color: #ddd; font-size: 13px; }
-        .owl-item.active { background: var(--primary); color: white; }
-        .owl-item small { font-family: 'Orbitron'; font-size: 10px; }
-
-        .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1.5px solid var(--primary); z-index: 1000; }
+        /* NAV & MODALS */
+        .tg-float { position: fixed; bottom: 110px; right: 20px; background: var(--tg); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 999; }
+        .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid var(--primary); z-index: 1000; }
         .b-item { text-align: center; color: #555; font-size: 10px; cursor: pointer; text-decoration: none; }
         .b-item.active { color: var(--primary); }
 
-        #maintenance-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 40000; text-align: center; }
-        .tg-float { position: fixed; bottom: 85px; right: 20px; background: #0088cc; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 25px; z-index: 999; }
+        .modal { display: none; position: fixed; z-index: 50000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); justify-content: center; align-items: center; }
+        .m-cont { background: #0b0e16; width: 90%; max-width: 420px; padding: 30px; border-radius: 25px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
+        .owl-box { background: #0f121d; border-radius: 12px; border: 1px solid #333; margin: 15px 0; text-align: left; max-height: 250px; overflow-y: auto; }
+        .owl-item { display: flex; align-items: center; justify-content: space-between; padding: 14px; border-bottom: 1px solid #222; cursor: pointer; color: #ccc; font-size: 13px; }
+        .owl-item.active { background: var(--primary); color: white; }
     </style>
 </head>
 <body>
 
-    <div id="loader"><div class="spin"></div><p style="font-family:'Orbitron'; margin-top:10px;">DAKU SYSTEM</p></div>
+    <section class="layout-section" id="s1">
+        <h1 class="hero-title">DAKU STORE</h1>
+        <p style="color:#888; letter-spacing: 2px;">PREMIUM FF AUTOMATION</p>
+        <div style="margin-top: 80px; font-size: 2rem; animation: bounce 2s infinite; color: var(--primary);"><i class="fas fa-chevron-down"></i></div>
+    </section>
 
-    <div id="maintenance-screen">
-        <i class="fas fa-tools" style="font-size:60px; color:var(--primary); margin-bottom:20px;"></i>
-        <h2 style="font-family:'Orbitron';">OFFLINE</h2>
-        <p>Admin is updating. Please wait!</p>
-    </div>
+    <section class="layout-section" id="s2">
+        <h2 class="hero-title" style="font-size: 2.2rem;">SIMPLE UPI PRICING</h2>
+        <div class="promo-box">
+            <h3 style="font-family:'Orbitron'; margin: 10px 0;">PRO SYSTEM</h3>
+            <div style="font-size:3.5rem; font-family:'Orbitron'; color: #fff;">₹300</div>
+            <ul style="text-align:left; padding:0; list-style:none; font-size:14px; margin: 25px 0; line-height: 2;">
+                <li><i class="fas fa-check-circle" style="color:#0f0;"></i> Instant 6600+ Likes</li>
+                <li><i class="fas fa-check-circle" style="color:#0f0;"></i> Full Dashboard Access</li>
+                <li><i class="fas fa-check-circle" style="color:#0f0;"></i> VIP Support</li>
+            </ul>
+            <button class="btn" onclick="document.getElementById('security-wall').scrollIntoView()">GET STARTED NOW</button>
+        </div>
+    </section>
 
-    <div id="security-wall">
-        <div class="box">
-            <h2 class="logo" style="font-size:28px; margin-bottom:20px;">DAKU STORE</h2>
-            <div id="cf-box" style="margin-bottom:15px; min-height: 65px;">
-                <div class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO" data-callback="unlockForm"></div>
+    <section class="layout-section" id="s3">
+        <h2 class="hero-title" style="font-size: 2.2rem;">READY TO DOMINATE?</h2>
+        <p style="color:#ccc; margin-bottom: 40px;">Trusted by 1000+ Clan Leaders.</p>
+        <button class="btn" style="width:auto; padding:18px 70px;" onclick="document.getElementById('security-wall').scrollIntoView()">LOGIN TO STORE</button>
+    </section>
+
+    <div id="site-content">
+        <div id="security-wall">
+            <div class="box">
+                <h2 class="logo" style="margin-bottom:25px;">DAKU LOGIN</h2>
+                <div id="cf-box" style="margin-bottom:20px; min-height: 65px;">
+                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO" data-callback="unlockForm"></div>
+                </div>
+                <div id="auth-form" style="display:none;">
+                    <input type="email" id="email" placeholder="Email Address">
+                    <input type="password" id="pass" placeholder="Password">
+                    <button class="btn" onclick="handleAuth()">PROCEED TO SYSTEM</button>
+                </div>
             </div>
-            <div id="auth-form" style="display:none;">
-                <h3 id="auth-title" style="font-size:12px; color:#666; font-family:'Orbitron';">LOGIN / REGISTER</h3>
-                <input type="email" id="email" placeholder="Email">
-                <input type="password" id="pass" placeholder="Password">
-                <button class="btn" id="authBtn" onclick="handleAuth()">PROCEED</button>
+        </div>
+
+        <div id="main-store">
+            <header><div class="logo">DAKU VIP STORE</div><i class="fas fa-user-circle" style="font-size:24px; cursor: pointer;" onclick="openModal('profModal')"></i></header>
+            
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('likes', this)">LIKES 👍</button>
+                <button class="tab-btn" onclick="switchTab('glory', this)">GLORY 🏆</button>
+                <button class="tab-btn" onclick="switchTab('war', this)">WAR ⚔️</button>
+                <button class="tab-btn" onclick="switchTab('diamonds', this)">DIAMONDS 💎</button>
             </div>
-        </div>
-    </div>
 
-    <div id="main-store">
-        <header><div class="logo">DAKU STORE VIP</div><i class="fas fa-user-circle" style="font-size:22px;" onclick="openModal('profModal')"></i></header>
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('likes', this)">LIKES 👍</button>
-            <button class="tab-btn" onclick="switchTab('glory', this)">GUILD GLORY 🏆</button>
-            <button class="tab-btn" onclick="switchTab('war', this)">WAR ⚔️</button>
-            <button class="tab-btn" onclick="switchTab('diamonds', this)">DIAMONDS 💎</button>
-        </div>
+            <div id="likes" class="section-container" style="display:block; padding:10px;">
+                <div class="card"><h3>Weekly Starter</h3><div class="price" id="p-weekly">...</div><button class="buy-btn" onclick="openPay('Weekly Starter', document.getElementById('p-weekly').innerText, 'player')">ORDER NOW</button></div>
+                <div class="card"><h3>Pro Booster</h3><div class="price" id="p-pro">...</div><button class="buy-btn" onclick="openPay('Pro Booster', document.getElementById('p-pro').innerText, 'player')">ORDER NOW</button></div>
+            </div>
 
-        <div id="likes" class="section-container" style="display:block;">
-            <div class="card"><div class="card-title">Weekly Starter</div><div class="card-desc">1540 Total Likes</div><div class="price">₹100</div><button class="buy-btn" onclick="openPay('Weekly Starter','100','player')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Pro Booster</div><div class="card-desc">3300 Total Likes</div><div class="price">₹170</div><button class="buy-btn" onclick="openPay('Pro Booster','170','player')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Elite Monthly</div><div class="card-desc">6600 Total Likes</div><div class="price">₹300</div><button class="buy-btn" onclick="openPay('Elite Monthly','300','player')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Grandmaster</div><div class="card-desc">19800 Total Likes</div><div class="price">₹800</div><button class="buy-btn" onclick="openPay('Grandmaster','800','player')">ORDER NOW</button></div>
-        </div>
+            <div id="glory" class="section-container" style="display:none; padding:10px;">
+                <div class="card"><h3>Mini Glory</h3><div class="price" id="p-mini">...</div><button class="buy-btn" onclick="openPay('Mini Glory', document.getElementById('p-mini').innerText, 'guild')">ORDER NOW</button></div>
+                <div class="card"><h3>Full Match</h3><div class="price" id="p-full">...</div><button class="buy-btn" onclick="openPay('Full Match', document.getElementById('p-full').innerText, 'guild')">ORDER NOW</button></div>
+            </div>
 
-        <div id="glory" class="section-container">
-            <div class="card"><div class="card-title">Mini Glory</div><div class="card-desc">200k Glory Boost</div><div class="price">₹200</div><button class="buy-btn" onclick="openPay('Mini Glory','200','guild')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Starter Glory</div><div class="card-desc">500k Glory Boost</div><div class="price">₹800</div><button class="buy-btn" onclick="openPay('Starter Glory','800','guild')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Mega Glory</div><div class="card-desc">1M Glory Boost</div><div class="price">₹1000</div><button class="buy-btn" onclick="openPay('Mega Glory','1000','guild')">ORDER NOW</button></div>
-            <div class="card"><div class="card-title">Full Match</div><div class="card-desc">Full Guild Glory</div><div class="price">₹1500</div><button class="buy-btn" onclick="openPay('Full Match','1500','guild')">ORDER NOW</button></div>
-        </div>
+            <div id="war" class="section-container" style="display:none; padding:10px;">
+                <div class="card"><h3>Starter War</h3><div class="price" id="p-war-s">...</div><button class="buy-btn" onclick="openPay('Starter War', document.getElementById('p-war-s').innerText, 'guild')">ORDER NOW</button></div>
+            </div>
 
-        <div id="war" class="section-container">
-            <div class="card"><h3>Starter War</h3><div class="price">₹2000</div><button class="buy-btn" onclick="openPay('Starter War','2000','guild')">ORDER NOW</button></div>
-            <div class="card"><h3>Pro War</h3><div class="price">₹5000</div><button class="buy-btn" onclick="openPay('Pro War','5000','guild')">ORDER NOW</button></div>
-        </div>
+            <div id="diamonds" class="section-container" style="display:none; padding:10px;">
+                <div class="card"><h3>100 Diamonds</h3><div class="price" id="p-d100">...</div><button class="buy-btn" onclick="openPay('100 Diamonds', document.getElementById('p-d100').innerText, 'player')">ORDER NOW</button></div>
+            </div>
 
-        <div id="diamonds" class="section-container">
-            <div class="card"><h3>100 Diamonds</h3><div class="price">₹80</div><button class="buy-btn" onclick="openPay('100 Diamonds','80','player')">ORDER NOW</button></div>
-            <div class="card"><h3>1060 Diamonds</h3><div class="price">₹780</div><button class="buy-btn" onclick="openPay('1060 Diamonds','780','player')">ORDER NOW</button></div>
+            <a href="https://t.me/+NeNB5UzyGJI3OTk1" class="tg-float" target="_blank"><i class="fab fa-telegram-plane"></i></a>
+            <nav class="b-nav">
+                <div class="b-item active" onclick="location.reload()"><i class="fas fa-home"></i><br>HOME</div>
+                <div class="b-item" onclick="openHistory()"><i class="fas fa-history"></i><br>HISTORY</div>
+                <a href="https://wa.me/60126014273" class="b-item" style="color:var(--wa); text-decoration:none;"><i class="fab fa-whatsapp"></i><br>HELP</a>
+            </nav>
         </div>
-
-        <a href="https://t.me/DAKU_YT_1M" class="tg-float" target="_blank"><i class="fab fa-telegram-plane"></i></a>
-        <nav class="b-nav">
-            <div class="b-item active" onclick="location.reload()"><i class="fas fa-home"></i><br>HOME</div>
-            <div class="b-item" onclick="openHistory()"><i class="fas fa-history"></i><br>HISTORY</div>
-            <a href="https://wa.me/60126014273" class="b-item" style="color:#25D366;"><i class="fab fa-whatsapp"></i><br>HELP</a>
-        </nav>
     </div>
 
     <div id="payModal" class="modal"><div class="m-cont">
-        <h3 id="pName"></h3><p id="pPrice" style="color:var(--primary); font-weight:bold;"></p>
+        <h3 id="pName"></h3><p id="pPrice" style="color:var(--primary); font-weight:bold; font-size: 20px;"></p>
         <input type="number" id="uid" placeholder="Player UID">
         <div id="gField" style="display:none;"><input type="number" id="gid" placeholder="Guild ID"></div>
-        
-        <p style="text-align:left; font-size:11px; color:#666;">OWL GLOBAL SERVERS:</p>
         <div class="owl-box">
-            <div class="owl-item" onclick="selSrv('India 🇮🇳', this)"><div><span class="status-dot"></span> India 🇮🇳</div><small style="color:#00ff00;">22ms</small></div>
-            <div class="owl-item" onclick="selSrv('Bangladesh 🇧🇩', this)"><div><span class="status-dot"></span> Bangladesh 🇧🇩</div><small style="color:#00ff00;">35ms</small></div>
-            <div class="owl-item" onclick="selSrv('Pakistan 🇵🇰', this)"><div><span class="status-dot"></span> Pakistan 🇵🇰</div><small style="color:#00ff00;">48ms</small></div>
-            <div class="owl-item" onclick="selSrv('Nepal 🇳🇵', this)"><div><span class="status-dot"></span> Nepal 🇳🇵</div><small style="color:#00ff00;">30ms</small></div>
-            <div class="owl-item" onclick="selSrv('Brazil 🇧🇷', this)"><div><span class="status-dot" style="background:#ffcc00; box-shadow:0 0 8px #ffcc00;"></span> Brazil 🇧🇷</div><small style="color:#ffcc00;">140ms</small></div>
-            <div class="owl-item" onclick="selSrv('Indonesia 🇮🇩', this)"><div><span class="status-dot"></span> Indonesia 🇮🇩</div><small style="color:#00ff00;">55ms</small></div>
-            <div class="owl-item" onclick="selSrv('Mina 🏜️', this)"><div><span class="status-dot"></span> Mina 🏜️</div><small style="color:#00ff00;">60ms</small></div>
-            <div class="owl-item" onclick="selSrv('Europe 🇪🇺', this)"><div><span class="status-dot"></span> Europe 🇪🇺</div><small style="color:#00ff00;">90ms</small></div>
-            <div class="owl-item" onclick="selSrv('Thailand 🇹🇭', this)"><div><span class="status-dot"></span> Thailand 🇹🇭</div><small style="color:#00ff00;">40ms</small></div>
-            <div class="owl-item" onclick="selSrv('Vietnam 🇻🇳', this)"><div><span class="status-dot"></span> Vietnam 🇻🇳</div><small style="color:#00ff00;">42ms</small></div>
-            <div class="owl-item" onclick="selSrv('Taiwan 🇹🇼', this)"><div><span class="status-dot"></span> Taiwan 🇹🇼</div><small style="color:#00ff00;">65ms</small></div>
-            <div class="owl-item" onclick="selSrv('Singapore 🇸🇬', this)"><div><span class="status-dot"></span> Singapore 🇸🇬</div><small style="color:#00ff00;">18ms</small></div>
+            <div class="owl-item" onclick="selSrv('India 🇮🇳', this)">India 🇮🇳 <small>22ms</small></div>
+            <div class="owl-item" onclick="selSrv('Bangladesh 🇧🇩', this)">Bangladesh 🇧🇩 <small>35ms</small></div>
+            <div class="owl-item" onclick="selSrv('Pakistan 🇵🇰', this)">Pakistan 🇵🇰 <small>48ms</small></div>
+            <div class="owl-item" onclick="selSrv('Nepal 🇳🇵', this)">Nepal 🇳🇵 <small>30ms</small></div>
+            <div class="owl-item" onclick="selSrv('Brazil 🇧🇷', this)">Brazil 🇧🇷 <small>140ms</small></div>
+            <div class="owl-item" onclick="selSrv('Indonesia 🇮🇩', this)">Indonesia 🇮🇩 <small>55ms</small></div>
+            <div class="owl-item" onclick="selSrv('Mina 🏜️', this)">Mina 🏜️ <small>60ms</small></div>
+            <div class="owl-item" onclick="selSrv('Europe 🇪🇺', this)">Europe 🇪🇺 <small>90ms</small></div>
+            <div class="owl-item" onclick="selSrv('Thailand 🇹🇭', this)">Thailand 🇹🇭 <small>40ms</small></div>
+            <div class="owl-item" onclick="selSrv('Vietnam 🇻🇳', this)">Vietnam 🇻🇳 <small>42ms</small></div>
+            <div class="owl-item" onclick="selSrv('Taiwan 🇹🇼', this)">Taiwan 🇹🇼 <small>65ms</small></div>
+            <div class="owl-item" onclick="selSrv('Singapore 🇸🇬', this)">Singapore 🇸🇬 <small>18ms</small></div>
         </div>
-
-        <div style="display:flex; gap:10px; margin:10px 0;"><button class="btn" style="background:#222" onclick="setMth('UPI')">UPI QR</button><button class="btn" style="background:#222" onclick="setMth('Binance')">BINANCE</button></div>
-        <div id="pDet" style="display:none; background:#fff; padding:10px; border-radius:10px; color:#000;">
-            <div id="upiQR" style="display:none;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=priyanshdaku@gmail.com" width="120"><br>priyanshdaku@gmail.com</div>
-            <div id="binID" style="display:none;">Binance ID: 556695942</div>
+        <div style="display:flex; gap:10px; margin:15px 0;"><button class="btn" style="background:#222" onclick="setMth('UPI')">UPI</button><button class="btn" style="background:#222" onclick="setMth('Binance')">BINANCE</button></div>
+        <div id="pDet" style="display:none; background:#fff; padding:15px; border-radius:15px; color:#000;">
+            <div id="upiQR" style="display:none;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=priyanshdaku@gmail.com" width="120"></div>
+            <div id="binID" style="display:none; font-weight: bold;">BINANCE ID: 556695942</div>
         </div>
-        <input type="file" id="ss" style="margin-top:10px;">
-        <button class="btn" id="subBtn" onclick="submitOrder()" style="margin-top:10px;">SUBMIT ORDER</button>
-        <p onclick="closeModal('payModal')" style="cursor:pointer; margin-top:10px; font-size:12px;">CANCEL</p>
+        <input type="file" id="ss" style="margin-top:15px;">
+        <button class="btn" id="subBtn" onclick="submitOrder()" style="margin-top:15px;">SUBMIT ORDER</button>
+        <p onclick="closeModal('payModal')" style="cursor:pointer; margin-top:20px; font-size:13px; color: #888;">CANCEL ORDER</p>
     </div></div>
-
-    <div id="profModal" class="modal"><div class="m-cont"><h3>ACCOUNT</h3><p id="uEm"></p><button class="btn" onclick="auth.signOut(); location.reload();" style="background:red;">LOGOUT</button><p onclick="closeModal('profModal')" style="margin-top:15px;">CLOSE</p></div></div>
-    <div id="histModal" class="modal"><div class="m-cont"><h3>HISTORY</h3><div id="hItems"></div><button class="btn" onclick="closeModal('histModal')" style="margin-top:15px;">CLOSE</button></div></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -168,39 +172,30 @@
         const fbConf = { apiKey: "AIzaSyAqEHz5yvkDjud1W1acYjgZ_OkuMtC8WuU", authDomain: "daku-store-f2f40.firebaseapp.com", projectId: "daku-store-f2f40", storageBucket: "daku-store-f2f40.firebasestorage.app", messagingSenderId: "556695942867", appId: "1:556695942867:web:e7ca38cd63e788cee80626" };
         firebase.initializeApp(fbConf);
         const auth = firebase.auth(), db = firebase.firestore();
-        let mth = "", srv = "", cfDone = false;
+        let mth = "", srv = "";
 
-        window.onload = () => {
-            setTimeout(() => { if(document.getElementById('loader')) document.getElementById('loader').remove(); }, 1200);
-            setTimeout(() => { if(!cfDone) unlockForm(); }, 3500); 
-        };
-
-        window.unlockForm = () => {
-            cfDone = true;
-            document.getElementById('cf-box').style.display = 'none';
-            document.getElementById('auth-form').style.display = 'block';
-        };
-
+        window.unlockForm = () => { document.getElementById('cf-box').style.display = 'none'; document.getElementById('auth-form').style.display = 'block'; };
         window.handleAuth = () => {
             const e = document.getElementById('email').value, p = document.getElementById('pass').value;
-            if(!e || !p) return alert("Details dalo!");
+            if(!e || !p) return alert("Bhai details bharo!");
             auth.signInWithEmailAndPassword(e,p).catch(() => auth.createUserWithEmailAndPassword(e,p));
         };
 
         auth.onAuthStateChanged(user => {
             if(user) {
-                document.getElementById('uEm').innerText = user.email;
-                db.collection("settings").doc("config").onSnapshot(doc => {
-                    if(doc.exists && doc.data().maintenance === true) {
-                        document.getElementById('maintenance-screen').style.display = 'flex';
-                        document.getElementById('security-wall').style.display = 'none';
-                    } else {
-                        document.getElementById('security-wall').style.display = 'none';
-                        document.getElementById('main-store').style.display = 'block';
-                    }
-                });
+                document.getElementById('security-wall').style.display = 'none';
+                document.getElementById('main-store').style.display = 'block';
+                startPriceSync();
             } else { document.getElementById('security-wall').style.display = 'flex'; }
         });
+
+        function startPriceSync() {
+            const pColl = db.collection("products");
+            pColl.doc("likes").onSnapshot(d => { if(d.exists) { const v = d.data(); document.getElementById('p-weekly').innerText="₹"+v.weekly; document.getElementById('p-pro').innerText="₹"+v.pro; }});
+            pColl.doc("glory").onSnapshot(d => { if(d.exists) { const v = d.data(); document.getElementById('p-mini').innerText="₹"+v.mini; document.getElementById('p-full').innerText="₹"+v.full; }});
+            pColl.doc("war").onSnapshot(d => { if(d.exists) { const v = d.data(); document.getElementById('p-war-s').innerText="₹"+v.war_s; }});
+            pColl.doc("diamonds").onSnapshot(d => { if(d.exists) { const v = d.data(); document.getElementById('p-d100').innerText="₹"+v.d100; }});
+        }
 
         window.switchTab = (id, b) => {
             document.querySelectorAll('.section-container').forEach(s => s.style.display = 'none');
@@ -208,41 +203,27 @@
             document.getElementById(id).style.display = 'block'; b.classList.add('active');
         };
 
-        window.openPay = (n, p, t) => {
-            document.getElementById('pName').innerText = n;
-            document.getElementById('pPrice').innerText = "Price: ₹" + p;
-            document.getElementById('gField').style.display = t === 'guild' ? 'block' : 'none';
-            openModal('payModal');
-        };
-
-        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
+        window.openPay = (n, p, t) => { document.getElementById('pName').innerText = n; document.getElementById('pPrice').innerText = "Price: " + p; document.getElementById('payModal').style.display = 'flex'; };
         window.closeModal = (id) => document.getElementById(id).style.display = 'none';
         window.selSrv = (v, el) => { srv = v; document.querySelectorAll('.owl-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); };
         window.setMth = (m) => { mth = m; document.getElementById('pDet').style.display = 'block'; document.getElementById('upiQR').style.display = m==='UPI'?'block':'none'; document.getElementById('binID').style.display = m==='Binance'?'block':'none'; };
 
-        // ✅ MULTI-KEY UPLOAD SYSTEM WITH NEW KEYS
         window.submitOrder = async () => {
             const u = document.getElementById('uid').value, f = document.getElementById('ss').files[0], btn = document.getElementById('subBtn');
-            if(!u || !f || !mth || !srv) return alert("Details missing!");
+            if(!u || !f || !mth || !srv) return alert("Sab kuch bharo bhai!");
             btn.innerText = "UPLOADING..."; btn.disabled = true;
-            
-            // 🆕 TERI DONO NAYI API KEYS YAHAN HAIN
-            const keys = ["78923d40e6ec332df5f35ccc57f05aa6", "acd88e9cc5da989e1e35a47d2ede12bb"];
-            let imgUrl = "";
+            const fd = new FormData(); fd.append('image', f);
+            const res = await fetch('https://api.imgbb.com/1/upload?key=78923d40e6ec332df5f35ccc57f05aa6', { method: 'POST', body: fd });
+            const r = await res.json();
+            if(r.success) {
+                const imgUrl = r.data.url;
+                await db.collection("orders").add({ email: auth.currentUser.email, uid: u, server: srv, plan: document.getElementById('pName').innerText, screenshot: imgUrl, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                const msg = `🚨 *NEW ORDER* 🚨\n👤: ${auth.currentUser.email}\n📦: ${document.getElementById('pName').innerText}\n🆔: ${u}\n🌍: ${srv}\n💰: ${mth}\n[SS](${imgUrl})`;
+                await fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ chat_id: "6829395007", text: msg, parse_mode: "Markdown" }) });
+                alert("Order Placed!"); location.reload();
+            } else { alert("Image Upload Fail!"); btn.disabled = false; }
+        };
+    </script>
+</body>
+</html>
 
-            for (let key of keys) {
-                try {
-                    const fd = new FormData(); fd.append('image', f);
-                    const res = await fetch('https://api.imgbb.com/1/upload?key=' + key, { method: 'POST', body: fd });
-                    const r = await res.json();
-                    if(r.success) { imgUrl = r.data.url; break; }
-                } catch (e) { console.log("Key failed, trying next..."); }
-            }
-
-            if(!imgUrl) { alert("Upload Fail! Check Internet or Photo size."); btn.disabled = false; btn.innerText="SUBMIT ORDER"; return; }
-
-            try {
-                await db.collection("orders").add({
-                    email: auth.currentUser.email, uid: u, server: srv, plan: document.getElementById('pName').innerText, screenshot: imgUrl, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                const msg = `🚨 *NEW ORDER* 🚨\n👤: ${auth.currentUser.email}\n📦: ${document.getElementById('pName').innerText}\n🆔: ${u}\n🌍: ${srv}\n💰: ${mth}\
