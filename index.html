@@ -12,117 +12,107 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap');
         :root { --primary: #ff4b2b; --bg: #05070a; --card: #161a26; --accent: #0081c9; --tg: #0088cc; --wa: #25D366; --pink: #ff00ff; --gold: #ffd700; }
         
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; overflow-x: hidden; scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding: 0; overflow: hidden; }
 
-        /* 📸 VIP SECTIONS */
-        .layout-section { min-height: 100vh; width: 100vw; display: flex; flex-direction: column; align-items: center; justify-content: center; background-size: cover; background-position: center; text-align: center; padding: 40px 20px; box-sizing: border-box; border-bottom: 2px solid #111; }
-        #s1 { background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), url('1000009232.png'); }
-        #s2 { background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url('1000009226.png'); }
+        /* 🌀 VIP LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 99999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .loading-logo { font-family: 'Orbitron'; font-size: 3.5rem; color: var(--primary); font-weight: 900; text-shadow: 0 0 30px var(--primary); animation: logo-glow 1s infinite alternate; }
+        @keyframes logo-glow { from { text-shadow: 0 0 10px var(--primary); } to { text-shadow: 0 0 40px var(--primary); } }
+        .progress-bar { width: 220px; height: 5px; background: #111; border-radius: 10px; margin-top: 25px; overflow: hidden; }
+        .progress-fill { width: 0%; height: 100%; background: var(--primary); transition: 0.1s; }
 
-        .hero-title { font-family: 'Orbitron'; font-weight: 900; font-size: 3rem; color: var(--primary); margin: 0; text-shadow: 0 0 20px rgba(255,75,43,0.5); }
-        .promo-box { background: rgba(22, 26, 38, 0.95); border: 2.5px solid var(--primary); border-radius: 25px; padding: 30px; width: 95%; max-width: 450px; margin-top: 30px; }
+        /* 🔒 LOGIN SCREEN */
+        #security-wall { height: 100vh; display: none; align-items: center; justify-content: center; background: radial-gradient(circle, #1a1e2e 0%, #000 100%); }
+        .login-box { width: 85%; max-width: 380px; background: rgba(11, 14, 22, 0.95); padding: 40px 30px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; }
 
-        /* 🏪 STORE CORE */
-        #site-content { min-height: 100vh; background: var(--bg); }
-        #security-wall { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: #000; }
-        #main-store { display: none; padding-bottom: 120px; }
-
-        .box { width: 85%; max-width: 380px; background: #0b0e16; padding: 35px; border-radius: 25px; border: 1px solid #222; text-align: center; }
-        input { width: 100%; padding: 15px; margin: 12px 0; background: #0f121d; border: 1px solid #333; border-radius: 12px; color: white; box-sizing: border-box; }
-        .btn { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: bold; cursor: pointer; font-family: 'Orbitron'; transition: 0.3s; }
-
+        /* 🏪 STORE MAIN */
+        #main-store { display: none; height: 100vh; overflow-y: auto; background: var(--bg); padding-bottom: 120px; }
         header { padding: 18px 20px; background: #000; border-bottom: 2px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .logo { font-family: 'Orbitron'; color: var(--primary); font-weight: 900; font-size: 20px; }
+
+        /* 💥 BOUNCE BACK */
+        .bounce-back { animation: bounceEffect 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+        @keyframes bounceEffect { 0% { transform: scale(0.7); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
         .nav-tabs { display: flex; overflow-x: auto; gap: 12px; padding: 15px; background: #0a0c14; scrollbar-width: none; }
         .tab-btn { padding: 12px 25px; background: #1a1e2e; border: 1px solid #333; border-radius: 15px; color: #777; white-space: nowrap; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; }
-        .tab-btn.active { background: var(--primary); color: white; }
+        .tab-btn.active { background: var(--primary); color: white; transform: scale(1.1); box-shadow: 0 0 15px var(--primary); }
 
-        /* 📦 CARDS */
-        .card { background: var(--card); border-radius: 25px; padding: 25px; margin: 15px; border: 1px solid #222; position: relative; text-align: left; }
+        .card { background: var(--card); border-radius: 25px; padding: 25px; margin: 15px; border: 1px solid #222; position: relative; }
         .price { position: absolute; top: 25px; right: 25px; color: var(--gold); font-family: 'Orbitron'; font-weight: bold; font-size: 20px; }
         .buy-btn { width: 100%; padding: 14px; background: var(--accent); border: none; border-radius: 12px; color: white; font-family: 'Orbitron'; margin-top: 15px; font-weight: bold; cursor: pointer; }
 
-        /* 🎨 MODALS */
-        .modal { display: none; position: fixed; z-index: 50000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.96); justify-content: center; align-items: center; }
-        .m-cont { background: #0b0e16; width: 90%; max-width: 420px; padding: 30px; border-radius: 25px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
+        /* 📱 BOTTOM NAV (PERFECT) */
+        .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; align-items: center; padding: 12px 0; border-top: 2px solid var(--primary); z-index: 1000; }
+        .b-item { text-align: center; color: #666; font-size: 11px; cursor: pointer; text-decoration: none; flex: 1; }
+        .b-item i { font-size: 22px; margin-bottom: 4px; display: block; }
+        .b-item.active { color: var(--primary); transform: translateY(-5px); text-shadow: 0 0 10px var(--primary); }
+
+        /* 🏢 MODAL, SERVER LIST & UPI */
+        .modal { display: none; position: fixed; z-index: 50000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); justify-content: center; align-items: center; }
+        .m-cont { background: #0b0e16; width: 90%; max-width: 420px; padding: 30px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; max-height: 85vh; overflow-y: auto; }
         .owl-box { background: #0f121d; border-radius: 12px; border: 1px solid #333; margin: 15px 0; text-align: left; max-height: 250px; overflow-y: auto; }
         .owl-item { display: flex; align-items: center; justify-content: space-between; padding: 14px; border-bottom: 1px solid #222; cursor: pointer; color: #ccc; font-size: 13px; }
-        .owl-item.active { background: var(--primary); color: white; }
+        .owl-item.active { background: var(--primary); color: white; border-radius: 8px; }
         .status-dot { height: 7px; width: 7px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 5px; animation: blink 1.5s infinite; }
         @keyframes blink { 50% { opacity: 0.3; } }
-
-        /* 📱 FLOATS */
-        .tg-float { position: fixed; bottom: 110px; right: 20px; background: var(--tg); color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 999; box-shadow: 0 0 15px var(--tg); }
-        .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 15px 0; border-top: 2px solid var(--primary); z-index: 1000; }
-        .b-item { text-align: center; color: #555; font-size: 10px; cursor: pointer; text-decoration: none; }
-        .b-item.active { color: var(--primary); }
+        .upi-copy-box { background: #f1f1f1; color: #000; padding: 12px; border-radius: 10px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 13px; }
     </style>
 </head>
 <body>
 
-    <section class="layout-section" id="s1">
-        <h1 class="hero-title">DAKU STORE</h1>
-        <p style="color:#888;">PREMIUM FF AUTOMATION</p>
-        <div style="margin-top: 50px; font-size: 2rem; animation: bounce 2s infinite; color: var(--primary);"><i class="fas fa-chevron-down"></i></div>
-    </section>
+    <div id="loader">
+        <div class="loading-logo">DAKU STORE</div>
+        <div class="progress-container"><div class="progress-fill" id="fill"></div></div>
+    </div>
 
-    <div id="site-content">
-        <div id="security-wall">
-            <div class="box">
-                <h2 style="font-family:'Orbitron'; color:var(--primary); margin-bottom:20px;">DAKU LOGIN</h2>
-                <div id="cf-box" style="margin-bottom:20px; min-height: 65px;">
-                    <div class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO" data-callback="unlockForm"></div>
-                </div>
-                <div id="auth-form" style="display:none;">
-                    <input type="email" id="email" placeholder="Email Address">
-                    <input type="password" id="pass" placeholder="Password">
-                    <button class="btn" onclick="handleAuth()">ENTER STORE</button>
-                </div>
+    <div id="security-wall">
+        <div class="login-box">
+            <h2 style="font-family:'Orbitron'; color:var(--primary); margin:0 0 20px 0;">SYSTEM LOGIN</h2>
+            <div id="cf-box"><div class="cf-turnstile" data-sitekey="0x4AAAAAACpg8DOhPlrB0GpO" data-callback="unlockForm"></div></div>
+            <div id="auth-form" style="display:none;">
+                <input type="email" id="email" placeholder="Email Address" style="width:100%; padding:15px; margin:10px 0; background:#0f121d; border:1px solid #333; border-radius:12px; color:white;">
+                <input type="password" id="pass" placeholder="Password" style="width:100%; padding:15px; margin:10px 0; background:#0f121d; border:1px solid #333; border-radius:12px; color:white;">
+                <button class="buy-btn" onclick="handleAuth()" style="background:var(--primary); width:100%;">ENTER STORE</button>
             </div>
         </div>
+    </div>
 
-        <div id="main-store">
-            <header><div class="logo">DAKU VIP STORE</div><i class="fas fa-user-circle" style="font-size:24px; cursor: pointer;" onclick="openModal('profModal')"></i></header>
-            
-            <div class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('likes', this)">LIKES 👍</button>
-                <button class="tab-btn" onclick="switchTab('glory', this)">GLORY 🏆</button>
-                <button class="tab-btn" onclick="switchTab('war', this)">WAR ⚔️</button>
-                <button class="tab-btn" onclick="switchTab('diamonds', this)">DIAMONDS 💎</button>
-            </div>
-
-            <div id="likes" class="section-container" style="display:block; padding:10px;">
-                <div class="card"><h3>Weekly Starter</h3><div class="price" id="p-weekly">₹...</div><button class="buy-btn" onclick="openPay('Weekly Starter', document.getElementById('p-weekly').innerText, 'player')">ORDER NOW</button></div>
-                <div class="card"><h3>Pro Booster</h3><div class="price" id="p-pro">₹...</div><button class="buy-btn" onclick="openPay('Pro Booster', document.getElementById('p-pro').innerText, 'player')">ORDER NOW</button></div>
-            </div>
-
-            <div id="glory" class="section-container" style="display:none; padding:10px;">
-                <div class="card"><h3>Mini Glory</h3><div class="price" id="p-mini">₹...</div><button class="buy-btn" onclick="openPay('Mini Glory', document.getElementById('p-mini').innerText, 'guild')">ORDER NOW</button></div>
-                <div class="card"><h3>Full Match</h3><div class="price" id="p-full">₹...</div><button class="buy-btn" onclick="openPay('Full Match', document.getElementById('p-full').innerText, 'guild')">ORDER NOW</button></div>
-            </div>
-
-            <div id="war" class="section-container" style="display:none; padding:10px;">
-                <div class="card"><h3>War Starter</h3><div class="price" id="p-war-s">₹...</div><button class="buy-btn" onclick="openPay('War Starter', document.getElementById('p-war-s').innerText, 'guild')">ORDER NOW</button></div>
-            </div>
-
-            <div id="diamonds" class="section-container" style="display:none; padding:10px;">
-                <div class="card"><h3>100 Diamonds</h3><div class="price" id="p-d100">₹...</div><button class="buy-btn" onclick="openPay('100 Diamonds', document.getElementById('p-d100').innerText, 'player')">ORDER NOW</button></div>
-            </div>
-
-            <a href="https://t.me/DAKU_YT_1M1" class="tg-float" target="_blank"><i class="fab fa-telegram-plane"></i></a>
-            
-            <nav class="b-nav">
-                <div class="b-item active" onclick="location.reload()"><i class="fas fa-home"></i><br>HOME</div>
-                <div class="b-item" onclick="openHistory()"><i class="fas fa-history"></i><br>HISTORY</div>
-                <a href="https://wa.me/60126014273" class="b-item" style="color:var(--wa); text-decoration:none;"><i class="fab fa-whatsapp"></i><br>HELP</a>
-            </nav>
+    <div id="main-store">
+        <header><div class="logo">DAKU STORE VIP</div><i class="fas fa-user-circle" style="font-size:24px; color:var(--primary); cursor:pointer;" onclick="openModal('profModal')"></i></header>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('likes', this)">LIKES 👍</button>
+            <button class="tab-btn" onclick="switchTab('glory', this)">GLORY 🏆</button>
+            <button class="tab-btn" onclick="switchTab('diamonds', this)">DIAMONDS 💎</button>
         </div>
+
+        <div id="likes" class="section-container bounce-back" style="display:block; padding:10px;">
+            <div class="card"><h3>Weekly Starter</h3><div class="price" id="p-weekly">₹...</div><button class="buy-btn" onclick="openPay('Weekly Starter', document.getElementById('p-weekly').innerText, 'player')">ORDER NOW</button></div>
+            <div class="card"><h3>Pro Booster</h3><div class="price" id="p-pro">₹...</div><button class="buy-btn" onclick="openPay('Pro Booster', document.getElementById('p-pro').innerText, 'player')">ORDER NOW</button></div>
+        </div>
+
+        <div id="glory" class="section-container bounce-back" style="display:none; padding:10px;">
+            <div class="card"><h3>Mini Glory</h3><div class="price" id="p-mini">₹...</div><button class="buy-btn" onclick="openPay('Mini Glory', document.getElementById('p-mini').innerText, 'guild')">ORDER NOW</button></div>
+        </div>
+
+        <div id="diamonds" class="section-container bounce-back" style="display:none; padding:10px;">
+            <div class="card"><h3>100 Diamonds</h3><div class="price" id="p-d100">₹...</div><button class="buy-btn" onclick="openPay('100 Diamonds', document.getElementById('p-d100').innerText, 'player')">ORDER NOW</button></div>
+        </div>
+
+        <nav class="b-nav">
+            <div class="b-item active" onclick="location.reload()"><i class="fas fa-home"></i><span>HOME</span></div>
+            <div class="b-item" onclick="openHistory()"><i class="fas fa-file-invoice"></i><span>ORDERS</span></div>
+            <a href="https://wa.me/60126014273" class="b-item" style="color:#666;" target="_blank"><i class="fab fa-whatsapp"></i><span>HELP</span></a>
+        </nav>
     </div>
 
     <div id="payModal" class="modal"><div class="m-cont">
         <h3 id="pName"></h3><p id="pPrice" style="color:var(--gold); font-weight:bold;"></p>
-        <input type="number" id="uid" placeholder="Enter Player UID">
-        <div id="gField" style="display:none;"><input type="number" id="gid" placeholder="Guild ID"></div>
-        <p style="text-align:left; font-size:11px; color:#666;">SELECT SERVER:</p>
+        <input type="number" id="uid" placeholder="Enter Player UID" style="width:100%; padding:15px; margin:10px 0; background:#0f121d; border:1px solid #333; border-radius:12px; color:white;">
+        <div id="gField" style="display:none;"><input type="number" id="gid" placeholder="Guild ID" style="width:100%; padding:15px; margin:10px 0; background:#0f121d; border:1px solid #333; border-radius:12px; color:white;"></div>
+        
+        <p style="text-align:left; font-size:11px; color:#666; margin-top:10px;">SELECT SERVER:</p>
         <div class="owl-box">
             <div class="owl-item" onclick="selSrv('India 🇮🇳', this)"><div><span class="status-dot"></span> India 🇮🇳</div><small style="color:var(--pink);">22ms</small></div>
             <div class="owl-item" onclick="selSrv('Bangladesh 🇧🇩', this)"><div><span class="status-dot"></span> Bangladesh 🇧🇩</div><small style="color:var(--pink);">35ms</small></div>
@@ -130,20 +120,28 @@
             <div class="owl-item" onclick="selSrv('Nepal 🇳🇵', this)"><div><span class="status-dot"></span> Nepal 🇳🇵</div><small style="color:var(--pink);">30ms</small></div>
             <div class="owl-item" onclick="selSrv('Brazil 🇧🇷', this)"><div><span class="status-dot" style="background:orange;"></span> Brazil 🇧🇷</div><small style="color:orange;">140ms</small></div>
             <div class="owl-item" onclick="selSrv('Indonesia 🇮🇩', this)"><div><span class="status-dot"></span> Indonesia 🇮🇩</div><small style="color:var(--pink);">55ms</small></div>
+            <div class="owl-item" onclick="selSrv('Mina 🏜️', this)"><div><span class="status-dot"></span> Mina 🏜️</div><small style="color:var(--pink);">60ms</small></div>
+            <div class="owl-item" onclick="selSrv('Europe 🇪🇺', this)"><div><span class="status-dot"></span> Europe 🇪🇺</div><small style="color:var(--pink);">90ms</small></div>
+            <div class="owl-item" onclick="selSrv('Thailand 🇹🇭', this)"><div><span class="status-dot"></span> Thailand 🇹🇭</div><small style="color:var(--pink);">40ms</small></div>
+            <div class="owl-item" onclick="selSrv('Vietnam 🇻🇳', this)"><div><span class="status-dot"></span> Vietnam 🇻🇳</div><small style="color:var(--pink);">42ms</small></div>
+            <div class="owl-item" onclick="selSrv('Taiwan 🇹🇼', this)"><div><span class="status-dot"></span> Taiwan 🇹🇼</div><small style="color:var(--pink);">65ms</small></div>
             <div class="owl-item" onclick="selSrv('Singapore 🇸🇬', this)"><div><span class="status-dot"></span> Singapore 🇸🇬</div><small style="color:var(--pink);">18ms</small></div>
         </div>
-        <div style="display:flex; gap:10px; margin:15px 0;"><button class="btn" style="background:#222" onclick="setMth('UPI')">UPI</button><button class="btn" style="background:#222" onclick="setMth('Binance')">BINANCE</button></div>
+
+        <div style="display:flex; gap:10px; margin:15px 0;"><button class="buy-btn" style="background:#222; flex:1;" onclick="setMth('UPI')">UPI</button><button class="buy-btn" style="background:#222; flex:1;" onclick="setMth('Binance')">BINANCE</button></div>
+        
         <div id="pDet" style="display:none; background:#fff; padding:15px; border-radius:15px; color:#000;">
-            <div id="upiQR" style="display:none;"><img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=priyanshdaku@gmail.com" width="120"></div>
+            <div id="upiQR" style="display:none;">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=upi://pay?pa=priyanshdaku@gmail.com" width="120">
+                <div class="upi-copy-box"><span id="upiId">priyanshdaku@gmail.com</span><button onclick="copyUPI()" style="background:var(--primary); color:white; border:none; padding:5px 10px; border-radius:5px; cursor:pointer;">COPY</button></div>
+            </div>
             <div id="binID" style="display:none; font-weight:bold;">ID: 556695942</div>
         </div>
-        <input type="file" id="ss" style="margin-top:15px;">
-        <button class="btn" id="subBtn" onclick="submitOrder()" style="margin-top:15px;">SUBMIT ORDER</button>
-        <p onclick="closeModal('payModal')" style="cursor:pointer; margin-top:20px; color:#888;">CANCEL</p>
+        
+        <input type="file" id="ss" style="margin-top:15px; color:#888;">
+        <button class="buy-btn" id="subBtn" onclick="submitOrder()" style="margin-top:15px; width:100%;">SUBMIT ORDER</button>
+        <p onclick="closeModal('payModal')" style="cursor:pointer; margin-top:15px; color:#888; font-size:12px;">CANCEL</p>
     </div></div>
-
-    <div id="profModal" class="modal"><div class="m-cont"><h3>ACCOUNT</h3><p id="uEm"></p><button class="btn" onclick="auth.signOut(); location.reload();" style="background:red;">LOGOUT</button><p onclick="closeModal('profModal')" style="margin-top:15px;">CLOSE</p></div></div>
-    <div id="histModal" class="modal"><div class="m-cont"><h3>HISTORY</h3><div id="hItems"></div><button class="btn" onclick="closeModal('histModal')" style="margin-top:15px;">CLOSE</button></div></div>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
@@ -155,49 +153,24 @@
         const auth = firebase.auth(), db = firebase.firestore();
         let mth = "", srv = "";
 
-        // 🔥 BYPASS CLOUDFLARE
-        window.unlockForm = () => { document.getElementById('cf-box').style.display = 'none'; document.getElementById('auth-form').style.display = 'block'; };
+        let prog = 0; let fill = document.getElementById('fill');
+        let loadInt = setInterval(() => { prog += 10; fill.style.width = prog + "%"; if(prog >= 100){ clearInterval(loadInt); document.getElementById('loader').style.display='none'; checkAuth(); }}, 100);
+
+        function checkAuth() { auth.onAuthStateChanged(user => { if(user){ document.getElementById('security-wall').style.display='none'; document.getElementById('main-store').style.display='block'; startSync(); } else { document.getElementById('security-wall').style.display='flex'; }}); }
+        window.unlockForm = () => { document.getElementById('cf-box').style.display='none'; document.getElementById('auth-form').style.display='block'; };
         setTimeout(() => { if (document.getElementById('auth-form').style.display !== 'block') unlockForm(); }, 4500);
 
-        function startPriceSync() {
-            const pColl = db.collection("products");
-            pColl.doc("likes").onSnapshot(d => { if(d.exists) { const v=d.data(); document.getElementById('p-weekly').innerText="₹"+v.weekly; document.getElementById('p-pro').innerText="₹"+v.pro; }});
-            pColl.doc("glory").onSnapshot(d => { if(d.exists) { const v=d.data(); document.getElementById('p-mini').innerText="₹"+v.mini; document.getElementById('p-full').innerText="₹"+v.full; }});
-            pColl.doc("war").onSnapshot(d => { if(d.exists) { const v=d.data(); document.getElementById('p-war-s').innerText="₹"+v.war_s; }});
-            pColl.doc("diamonds").onSnapshot(d => { if(d.exists) { const v=d.data(); document.getElementById('p-d100').innerText="₹"+v.d100; }});
+        function startSync() {
+            const p = db.collection("products");
+            p.doc("likes").onSnapshot(d => { if(d.exists){ const v=d.data(); document.getElementById('p-weekly').innerText="₹"+v.weekly; document.getElementById('p-pro').innerText="₹"+v.pro; }});
+            p.doc("glory").onSnapshot(d => { if(d.exists){ const v=d.data(); document.getElementById('p-mini').innerText="₹"+v.mini; }});
+            p.doc("diamonds").onSnapshot(d => { if(d.exists){ const v=d.data(); document.getElementById('p-d100').innerText="₹"+v.d100; }});
         }
 
-        auth.onAuthStateChanged(user => {
-            if(user) {
-                document.getElementById('security-wall').style.display = 'none';
-                document.getElementById('main-store').style.display = 'block';
-                document.getElementById('uEm').innerText = user.email;
-                startPriceSync();
-            } else { document.getElementById('security-wall').style.display = 'flex'; }
-        });
-
-        window.handleAuth = () => {
-            const e = document.getElementById('email').value, p = document.getElementById('pass').value;
-            if(!e || !p) return alert("Fill details!");
-            auth.signInWithEmailAndPassword(e,p).catch(() => auth.createUserWithEmailAndPassword(e,p));
-        };
-
-        window.switchTab = (id, b) => {
-            document.querySelectorAll('.section-container').forEach(s => s.style.display = 'none');
-            document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
-            document.getElementById(id).style.display = 'block'; b.classList.add('active');
-        };
-
-        window.openPay = (n, p, t) => { document.getElementById('pName').innerText = n; document.getElementById('pPrice').innerText = p; document.getElementById('gField').style.display = t === 'guild' ? 'block' : 'none'; document.getElementById('payModal').style.display = 'flex'; };
-        window.closeModal = (id) => document.getElementById(id).style.display = 'none';
-        window.openModal = (id) => document.getElementById(id).style.display = 'flex';
-        window.selSrv = (v, el) => { srv = v; document.querySelectorAll('.owl-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); };
-        window.setMth = (m) => { mth = m; document.getElementById('pDet').style.display = 'block'; document.getElementById('upiQR').style.display = m==='UPI'?'block':'none'; document.getElementById('binID').style.display = m==='Binance'?'block':'none'; };
-
         window.submitOrder = async () => {
-            const u = document.getElementById('uid').value, f = document.getElementById('ss').files[0], btn = document.getElementById('subBtn');
-            if(!u || !f || !mth || !srv) return alert("Complete details!");
-            btn.innerText = "UPLOADING..."; btn.disabled = true;
+            const u=document.getElementById('uid').value, f=document.getElementById('ss').files[0], btn=document.getElementById('subBtn');
+            if(!u || !f || !mth || !srv) return alert("Bhai sab details bharo!");
+            btn.innerText="UPLOADING..."; btn.disabled=true;
             const fd = new FormData(); fd.append('image', f);
             try {
                 const res = await fetch('https://api.imgbb.com/1/upload?key=78923d40e6ec332df5f35ccc57f05aa6', { method: 'POST', body: fd });
@@ -205,20 +178,24 @@
                 if(r.success) {
                     const imgUrl = r.data.url;
                     await db.collection("orders").add({ email: auth.currentUser.email, uid: u, server: srv, plan: document.getElementById('pName').innerText, screenshot: imgUrl, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                    const msg = `🚨 *NEW ORDER* 🚨\n👤: ${auth.currentUser.email}\n📦: ${document.getElementById('pName').innerText}\n🆔: ${u}\n🌍: ${srv}\n💰: ${mth}\n[SS](${imgUrl})`;
+                    
+                    const msg = `🚨 *DAKU STORE - NEW ORDER* 🚨\n\n👤 *User:* ${auth.currentUser.email}\n📦 *Plan:* ${document.getElementById('pName').innerText}\n🆔 *UID:* ${u}\n🌍 *Server:* ${srv}\n💰 *Method:* ${mth}\n\n📸 [VIEW PAYMENT PROOF](${imgUrl})`;
                     await fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage`, { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ chat_id: "6829395007", text: msg, parse_mode: "Markdown" }) });
-                    alert("Order Placed!"); location.reload();
-                } else { throw new Error(); }
-            } catch(e) { alert("Upload Fail!"); btn.disabled = false; }
+                    
+                    alert("Order Placed Successfully!"); location.reload();
+                }
+            } catch(e) { alert("Fail ho gaya!"); btn.disabled=false; }
         };
 
-        window.openHistory = async () => {
-            document.getElementById('histModal').style.display = 'flex';
-            const h = document.getElementById('hItems'); h.innerHTML = "Loading...";
-            const snap = await db.collection("orders").where("email", "==", auth.currentUser.email).orderBy("timestamp", "desc").get();
-            if(snap.empty) return h.innerHTML = "No orders."; h.innerHTML = "";
-            snap.forEach(doc => { const d = doc.data(); h.innerHTML += `<div style="background:#1a1e2e; padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid #333; text-align:left;"><b>${d.plan}</b><br><small>Status: <span style="color:yellow">${d.status}</span></small></div>`; });
-        };
+        window.selSrv = (v, el) => { srv = v; document.querySelectorAll('.owl-item').forEach(i => i.classList.remove('active')); el.classList.add('active'); };
+        window.copyUPI = () => { navigator.clipboard.writeText("priyanshdaku@gmail.com"); alert("UPI Copied!"); };
+        window.handleAuth = () => { const e=document.getElementById('email').value, p=document.getElementById('pass').value; auth.signInWithEmailAndPassword(e,p).catch(()=>auth.createUserWithEmailAndPassword(e,p)); };
+        window.switchTab = (id, b) => { document.querySelectorAll('.section-container').forEach(s=>s.style.display='none'); document.querySelectorAll('.tab-btn').forEach(t=>t.classList.remove('active')); document.getElementById(id).style.display='block'; b.classList.add('active'); };
+        window.openPay = (n, p, t) => { document.getElementById('pName').innerText=n; document.getElementById('pPrice').innerText=p; document.getElementById('gField').style.display=t==='guild'?'block':'none'; document.getElementById('payModal').style.display='flex'; };
+        window.closeModal = (id) => document.getElementById(id).style.display='none';
+        window.openModal = (id) => document.getElementById(id).style.display='flex';
+        window.setMth = (m) => { mth=m; document.getElementById('pDet').style.display='block'; document.getElementById('upiQR').style.display=m==='UPI'?'block':'none'; document.getElementById('binID').style.display=m==='Binance'?'block':'none'; };
+        window.openHistory = async () => { document.getElementById('histModal').style.display='flex'; const h=document.getElementById('hItems'); h.innerHTML="Loading..."; const snap=await db.collection("orders").where("email","==",auth.currentUser.email).get(); if(snap.empty){ h.innerHTML="No orders."; return; } h.innerHTML=""; snap.forEach(doc=>{ const d=doc.data(); h.innerHTML+=`<div style="background:#1a1e2e; padding:15px; border-radius:12px; margin-bottom:10px; border:1px solid #333; text-align:left;"><b>${d.plan}</b><br><small>UID: ${d.uid} | <span style="color:yellow">${d.status}</span></small></div>`; }); };
     </script>
 </body>
 </html>
