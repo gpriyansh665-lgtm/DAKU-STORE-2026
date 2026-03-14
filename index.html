@@ -12,46 +12,45 @@
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@300;400;600&display=swap');
         :root { --primary: #ff4b2b; --secondary: #ff416c; --bg: #05070a; --card: #0f121d; --accent: #00ffcc; --pink: #ff00ff; }
         
-        * { box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; margin: 0; padding-bottom: 90px; overflow-x: hidden; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Poppins', sans-serif; background: var(--bg); color: white; padding-bottom: 90px; overflow-x: hidden; min-height: 100vh; }
 
-        /* 🔄 REFRESH LOADER */
-        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 9999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.5s; }
+        /* 🔥 LOADER */
+        #loader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg); z-index: 99999999; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: 0.5s; pointer-events: none; }
         .spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 75, 43, 0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* 🔐 VIEWS Control */
-        #auth-view, #main-store-view { display: none; }
+        /* VIEWS */
+        #auth-view { display: none; min-height: 100vh; flex-direction: column; align-items: center; justify-content: center; padding: 20px; background: radial-gradient(circle, #1a0505 0%, #05070a 100%); }
+        #main-store-view { display: none; }
 
         /* HEADER */
         header { padding: 15px 20px; background: linear-gradient(to right, #000, #111); border-bottom: 3px solid var(--primary); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .logo { font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 18px; color: var(--primary); }
         .header-icons { display: flex; gap: 15px; align-items: center; }
-        .header-icons i { font-size: 20px; cursor: pointer; }
+        .header-icons i { font-size: 20px; cursor: pointer; transition: 0.3s; }
 
         /* TABS */
         .nav-tabs { display: flex; overflow-x: auto; gap: 10px; padding: 15px; background: rgba(255,255,255,0.05); scrollbar-width: none; }
-        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 11px; font-family: 'Orbitron'; transition: 0.3s; }
+        .tab-btn { padding: 10px 20px; background: #1a1e2e; border: 1px solid #333; border-radius: 50px; color: #888; font-weight: bold; cursor: pointer; white-space: nowrap; font-size: 11px; font-family: 'Orbitron'; }
         .tab-btn.active { background: var(--primary); color: white; box-shadow: 0 0 10px var(--primary); }
 
-        /* CARDS */
+        /* SECTIONS */
         .section-container { display: none; }
         .section-container.active { display: block; animation: fadeIn 0.4s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; margin: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
-        .amt { font-size: 18px; font-weight: 900; font-family: 'Orbitron'; color: white; }
 
-        /* OWL SERVERS */
-        .owl-box { background: #0d1117; border-radius: 15px; border: 1px solid #333; margin: 10px 0; max-height: 200px; overflow-y: auto; text-align: left; }
-        .owl-item { padding: 12px 15px; border-bottom: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #ccc; }
-        .owl-item.active { background: var(--primary); color: white; }
-        .status-dot { height: 7px; width: 7px; background: #00ff00; border-radius: 50%; display: inline-block; margin-right: 8px; animation: blink 1.5s infinite; }
-        @keyframes blink { 50% { opacity: 0.3; } }
+        .card { background: var(--card); border-radius: 20px; padding: 20px; border: 1px solid #222; margin: 15px; display: flex; justify-content: space-between; align-items: center; border-left: 5px solid var(--primary); }
+        .amt { font-size: 18px; font-weight: 900; font-family: 'Orbitron'; }
 
         /* MODALS */
         .modal { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); justify-content: center; align-items: center; padding: 20px; }
-        .modal-content { background: #0b0e16; width: 90%; max-width: 400px; padding: 25px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; }
-        input { width: 100%; padding: 15px; margin: 10px 0; background: #161a26; border: 1px solid #333; border-radius: 15px; color: white; outline: none; }
+        .modal-content { background: #0b0e16; width: 100%; max-width: 400px; padding: 25px; border-radius: 30px; border: 2px solid var(--primary); text-align: center; }
+        input, select { width: 100%; padding: 15px; margin: 10px 0; background: #161a26; border: 1px solid #333; border-radius: 15px; color: white; outline: none; }
+        
+        .owl-box { background: #0d1117; border-radius: 15px; border: 1px solid #333; margin: 10px 0; max-height: 180px; overflow-y: auto; text-align: left; }
+        .owl-item { padding: 12px 15px; border-bottom: 1px solid #222; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 13px; }
+        .owl-item.active { background: var(--primary); color: white; }
 
         /* FOOTER */
         .b-nav { position: fixed; bottom: 0; left: 0; width: 100%; background: #0b0e16; display: flex; justify-content: space-around; padding: 12px 0; border-top: 2px solid var(--primary); z-index: 10000; }
@@ -65,10 +64,7 @@
 </head>
 <body onload="startApp()">
 
-    <div id="loader">
-        <div class="spinner"></div>
-        <div style="margin-top:15px; font-family:'Orbitron'; color:var(--primary);">DAKU STORE</div>
-    </div>
+    <div id="loader"><div class="spinner"></div><div style="margin-top:15px; font-family:'Orbitron'; color:var(--primary);">DAKU STORE</div></div>
 
     <div id="auth-view">
         <div class="auth-card" style="background:var(--card); padding:30px; border-radius:25px; border:1px solid #333; width:100%; max-width:380px; text-align:center; box-shadow: 0 0 30px rgba(255, 75, 43, 0.2);">
@@ -106,23 +102,18 @@
             
             <div id="topup" class="section-container active">
                 <div class="card"><div><h3>100 Diamonds</h3><p>Instant Topup</p></div><div style="text-align:right;"><span class="amt">₹80</span><br><button class="btn-buy" onclick="openPay('100💎','₹80')">BUY</button></div></div>
-                <div class="card"><div><h3>520 Diamonds</h3><p>Direct Topup</p></div><div style="text-align:right;"><span class="amt">₹400</span><br><button class="btn-buy" onclick="openPay('520💎','₹400')">BUY</button></div></div>
-                <div class="card"><div><h3>1060 Diamonds</h3><p>VIP Value Pack</p></div><div style="text-align:right;"><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('1060💎','₹800')">BUY</button></div></div>
-                <div class="card"><div><h3>4000 Diamonds</h3><p>Mega Booster</p></div><div style="text-align:right;"><span class="amt">₹2000</span><br><button class="btn-buy" onclick="openPay('4000💎','₹2000')">BUY</button></div></div>
+                <div class="card"><div><h3>1060 Diamonds</h3><p>VIP Pack</p></div><div style="text-align:right;"><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('1060💎','₹800')">BUY</button></div></div>
+                <div class="card"><div><h3>4000 Diamonds</h3><p>Mega Pack</p></div><div style="text-align:right;"><span class="amt">₹2000</span><br><button class="btn-buy" onclick="openPay('4000💎','₹2000')">BUY</button></div></div>
             </div>
 
             <div id="likes" class="section-container">
-                <div class="card"><div><h3>Weekly Starter</h3><p>1540 Total Likes</p></div><div style="text-align:right;"><span class="amt">₹100</span><br><button class="btn-buy" onclick="openPay('Weekly Likes','₹100')">BUY</button></div></div>
-                <div class="card"><div><h3>Pro Booster</h3><p>3300 Total Likes</p></div><div style="text-align:right;"><span class="amt">₹170</span><br><button class="btn-buy" onclick="openPay('Pro Likes','₹170')">BUY</button></div></div>
-                <div class="card"><div><h3>Elite Monthly</h3><p>6600 Total Likes</p></div><div style="text-align:right;"><span class="amt">₹300</span><br><button class="btn-buy" onclick="openPay('Elite Likes','₹300')">BUY</button></div></div>
-                <div class="card"><div><h3>Grandmaster</h3><p>19800 Total Likes</p></div><div style="text-align:right;"><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('GM Likes','₹800')">BUY</button></div></div>
+                <div class="card"><div><h3>Weekly Starter</h3><p>1540 Likes</p></div><div style="text-align:right;"><span class="amt">₹100</span><br><button class="btn-buy" onclick="openPay('Weekly Starter','₹100')">BUY</button></div></div>
+                <div class="card"><div><h3>Grandmaster</h3><p>19800 Likes</p></div><div style="text-align:right;"><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('GM Likes','₹800')">BUY</button></div></div>
             </div>
 
             <div id="glory" class="section-container">
                 <div class="card"><div><h3>Mini Glory</h3><p>200k Boost</p></div><div style="text-align:right;"><span class="amt">₹200</span><br><button class="btn-buy" onclick="openPay('Mini Glory','₹200')">ORDER</button></div></div>
-                <div class="card"><div><h3>Starter Glory</h3><p>500k Boost</p></div><div style="text-align:right;"><span class="amt">₹800</span><br><button class="btn-buy" onclick="openPay('Starter Glory','₹800')">ORDER</button></div></div>
-                <div class="card"><div><h3>Mega Glory</h3><p>1M Boost</p></div><div style="text-align:right;"><span class="amt">₹1000</span><br><button class="btn-buy" onclick="openPay('Mega Glory','₹1000')">ORDER</button></div></div>
-                <div class="card"><div><h3>Full Match</h3><p>Full Glory</p></div><div style="text-align:right;"><span class="amt">₹1500</span><br><button class="btn-buy" onclick="openPay('Full Glory','₹1500')">ORDER</button></div></div>
+                <div class="card"><div><h3>Full Match</h3><p>Full Boost</p></div><div style="text-align:right;"><span class="amt">₹1500</span><br><button class="btn-buy" onclick="openPay('Full Glory','₹1500')">ORDER</button></div></div>
             </div>
 
             <div id="guildwar" class="section-container">
@@ -179,7 +170,7 @@
         ];
 
         function startApp() {
-            setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 1500);
+            setTimeout(() => { document.getElementById('loader').style.display = 'none'; }, 2000);
             auth.onAuthStateChanged(user => {
                 if(user) {
                     uE = user.email; document.getElementById('prof-email').innerText = uE;
@@ -196,38 +187,6 @@
             });
         }
 
-        function switchTab(id, btn) {
-            document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            btn.classList.add('active');
-        }
-
-        function showView(v) {
-            document.getElementById('home-view').style.display = v==='home' ? 'block' : 'none';
-            document.getElementById('orders-view').style.display = v==='orders' ? 'block' : 'none';
-            document.getElementById('home-icon').classList.toggle('active', v==='home');
-            document.getElementById('order-icon').classList.toggle('active', v==='orders');
-            if(v==='orders') loadOrders();
-        }
-
-        function openPay(n, p) {
-            document.getElementById('mName').innerText = n; document.getElementById('mPrice').innerText = p;
-            document.getElementById('mModal').style.display = 'flex';
-            const box = document.getElementById('ol'); box.innerHTML = "";
-            servers.forEach(s => {
-                const d = document.createElement('div'); d.className = "owl-item";
-                d.innerHTML = `<span><span class="status-dot"></span>${s.n}</span><small style="color:var(--pink); font-weight:bold;">${s.p}</small>`;
-                d.onclick = () => { srv = s.n; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); d.classList.add('active'); };
-                box.appendChild(d);
-            });
-        }
-
-        function setM(m) { method = m; document.getElementById('u_info').style.display = m==='UPI'?'block':'none'; }
-        function openProfile() { document.getElementById('profModal').style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function toggleAuth() { isLoginMode = !isLoginMode; document.getElementById('auth-title').innerText = isLoginMode ? "DAKU LOGIN" : "DAKU SIGNUP"; document.getElementById('toggle-span').innerText = isLoginMode ? "SIGNUP" : "LOGIN"; }
-
         async function handleAuth() {
             const e = document.getElementById('auth-email').value, p = document.getElementById('auth-pass').value;
             if(!e || !p) return alert("Fill data!");
@@ -236,19 +195,65 @@
 
         async function submitOrder() {
             const uid = document.getElementById('uid').value, file = document.getElementById('file').files[0], btn = document.getElementById('subBtn');
+            const planName = document.getElementById('mName').innerText;
+            const planPrice = document.getElementById('mPrice').innerText;
             if(!uid || !srv || !method || !file) return alert("Fill all details!");
+            
             btn.disabled = true; btn.innerText = "UPLOADING...";
             const fd = new FormData(); fd.append('image', file);
-            const res = await fetch('https://api.imgbb.com/1/upload?key=78923d40e6ec332df5f35ccc57f05aa6', { method: 'POST', body: fd });
-            const data = await res.json();
-            if(data.success) {
-                const url = data.data.url;
-                await db.collection("orders").add({ email: uE, uid: uid, plan: document.getElementById('mName').innerText, server: srv, screenshot: url, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
-                fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage?chat_id=6829395007&parse_mode=Markdown&text=🚨 *NEW ORDER* %0A👤 User: ${uE} %0A🆔 UID: ${uid} %0A🌍 Server: ${srv} %0A📸 [PROOF](${url})`);
-                alert("Order Placed!"); closeModal('mModal');
-            }
+            
+            try {
+                const res = await fetch('https://api.imgbb.com/1/upload?key=78923d40e6ec332df5f35ccc57f05aa6', { method: 'POST', body: fd });
+                const data = await res.json();
+                if(data.success) {
+                    const url = data.data.url;
+                    // Firebase Order
+                    await db.collection("orders").add({ email: uE, uid: uid, plan: planName, server: srv, screenshot: url, status: "Pending", timestamp: firebase.firestore.FieldValue.serverTimestamp() });
+                    
+                    // 🔥 TELEGRAM NOTIFICATION
+                    const msg = `🚨 *NEW ORDER* %0A👤 User: ${uE} %0A🆔 UID: ${uid} %0A🌍 Server: ${srv} %0A📦 Plan: ${planName} %0A💰 Price: ${planPrice} %0A📸 [VIEW PROOF](${url})`;
+                    fetch(`https://api.telegram.org/bot8677747394:AAEO10zDYYEA_jwC9HH7VoDOCOc7_4eSZDY/sendMessage?chat_id=6829395007&parse_mode=Markdown&text=${msg}`);
+                    
+                    alert("Order Placed Successfully!"); closeModal('mModal');
+                }
+            } catch(e) { alert("Error placing order!"); }
             btn.disabled = false; btn.innerText = "SUBMIT ORDER";
         }
 
         function loadOrders() {
-            db.collection("orders").where("email", "==", uE).orderBy("timestamp", "desc").onSnapshot(snap =
+            db.collection("orders").where("email", "==", uE).orderBy("timestamp", "desc").onSnapshot(snap => {
+                const list = document.getElementById('history-list'); list.innerHTML = "";
+                snap.forEach(doc => {
+                    const o = doc.data(); const sCls = o.status === "Pending" ? "status-pending" : "status-success";
+                    list.innerHTML += `<div class="history-card" onclick="viewOrder('${doc.id}')"><div style="padding:15px;"><b>${o.plan}</b><br><small>UID: ${o.uid}</small></div><span class="status-pill ${sCls}" style="margin-right:10px;">${o.status}</span></div>`;
+                });
+            });
+        }
+
+        async function viewOrder(id) {
+            const doc = await db.collection("orders").doc(id).get(); const o = doc.data();
+            document.getElementById('detail-cont').innerHTML = `<h3 style="color:var(--primary); font-family:'Orbitron';">ORDER DETAILS</h3><div style="text-align:left; font-size:13px; line-height:1.8; margin:15px 0;"><b>PLAN:</b> ${o.plan}<br><b>UID:</b> ${o.uid}<br><b>SERVER:</b> ${o.server}<br><b>STATUS:</b> <span style="color:var(--accent)">${o.status}</span></div><a href="${o.screenshot}" target="_blank" style="color:var(--pink); display:block; margin-bottom:15px;">Payment Proof</a><button class="btn-buy" style="width:100%;" onclick="closeModal('detailModal')">CLOSE</button>`;
+            document.getElementById('detailModal').style.display = 'flex';
+        }
+
+        function switchTab(id, btn) {
+            document.querySelectorAll('.section-container').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active'); btn.classList.add('active');
+        }
+
+        function showView(v) {
+            document.getElementById('home-view').style.display = v==='home' ? 'block' : 'none';
+            document.getElementById('orders-view').style.display = v==='orders' ? 'block' : 'none';
+            document.getElementById('home-icon').classList.toggle('active', v==='home');
+            document.getElementById('order-icon').classList.toggle('active', v==='orders');
+        }
+
+        function openPay(n, p) {
+            document.getElementById('mName').innerText = n; document.getElementById('mPrice').innerText = p;
+            document.getElementById('mModal').style.display = 'flex';
+            const box = document.getElementById('ol'); box.innerHTML = "";
+            servers.forEach(s => {
+                const d = document.createElement('div'); d.className = "owl-item";
+                d.innerHTML = `<span><span style="height:7px;width:7px;background:#0f0;border-radius:50%;display:inline-block;margin-right:8px;"></span>${s.n}</span><small style="color:var(--pink); font-weight:bold;">${s.p}</small>`;
+                d.onclick = () => { srv = s.n; document.querySelectorAll('.owl-item').forEach(i=>i.classList.remove('active')); d.cl
